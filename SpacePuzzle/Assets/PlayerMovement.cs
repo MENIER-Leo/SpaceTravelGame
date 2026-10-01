@@ -8,7 +8,30 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundLayer;
 
     private Vector3 velocity;
+    private const float SPEED = 5f;
     private bool isGrounded;
+
+
+    void handleInput()
+    {
+        if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            velocity.y = jumpForce;
+        if (Input.GetKeyDown(KeyCode.W))
+            velocity += Vector3.forward;
+        if (Input.GetKeyDown(KeyCode.S))
+            velocity += Vector3.back;
+        if(Input.GetKeyDown(KeyCode.A))
+            velocity += Vector3.left;
+        if(Input.GetKeyDown(KeyCode.D))
+            velocity += Vector3.right;
+    }
+
+    void normalizeHorizontalVelocity()
+    {
+        float norm = Mathf.Sqrt(velocity.x * velocity.x + velocity.z * velocity.z);
+        if (norm != 0)
+            velocity = new Vector3(velocity.x / norm * SPEED, velocity.y, velocity.z / norm * SPEED);
+    }
 
     void Update()
     {
@@ -35,7 +58,14 @@ public class PlayerMovement : MonoBehaviour
             velocity.y = jumpForce;
         }
 
+        handleInput();
+        normalizeHorizontalVelocity();
+
+
         velocity.y += gravity * Time.deltaTime;
         transform.position += velocity * Time.deltaTime;
+
+        velocity.x = 0;
+        velocity.z = 0;
     }
 }
