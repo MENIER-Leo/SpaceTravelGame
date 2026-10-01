@@ -16,13 +16,13 @@ public class PlayerMovement : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
             velocity.y = jumpForce;
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKey(KeyCode.W))
             velocity += Vector3.forward;
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKey(KeyCode.S))
             velocity += Vector3.back;
-        if(Input.GetKeyDown(KeyCode.A))
+        if(Input.GetKey(KeyCode.A))
             velocity += Vector3.left;
-        if(Input.GetKeyDown(KeyCode.D))
+        if(Input.GetKey(KeyCode.D))
             velocity += Vector3.right;
     }
 
@@ -51,11 +51,6 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             isGrounded = false;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
-            velocity.y = jumpForce;
         }
 
         handleInput();
