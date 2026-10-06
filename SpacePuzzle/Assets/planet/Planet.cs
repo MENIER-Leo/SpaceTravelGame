@@ -5,6 +5,24 @@ public class Planet : MonoBehaviour
     [Range(2, 128)]
     public int resolution = 10;
 
+    [Range (1f, 10f)]
+    public float radius = 1f;
+    [Range(0f, 1f)]
+    public float floor = 1f;
+    [SerializeField]
+    public int seed = 1;
+
+
+
+    [Range(1, 8)]
+    public int layers = 4;
+    [Range(1f, 10f)]
+    public float roughness = 4f;
+    [Range(0f, 1f)]
+    public float strength = 0.25f;
+
+    public NoiseFilter noiseFilter;
+
     public Material planetMaterial;
 
     [SerializeField, HideInInspector]
@@ -18,6 +36,7 @@ public class Planet : MonoBehaviour
         faces = new PlanetFace[6];
 
         Vector3[] dir = { Vector3.up, Vector3.down, Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
+
 
         for (int i = 0; i < 6; i++)
         {
@@ -34,9 +53,11 @@ public class Planet : MonoBehaviour
                 meshFilters[i].GetComponent<MeshRenderer>().sharedMaterial = planetMaterial;
             }
 
-            faces[i] = new PlanetFace(dir[i], resolution, meshFilters[i].sharedMesh);
+            noiseFilter = new NoiseFilter(seed, layers, roughness, strength);
+            faces[i] = new PlanetFace(dir[i], resolution, meshFilters[i].sharedMesh, radius, noiseFilter, floor);
         }
     }
+
 
     void GenerateMesh()
     {

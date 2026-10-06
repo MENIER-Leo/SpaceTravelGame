@@ -6,6 +6,8 @@ public class PlanetFace
     public Mesh mesh;
     public int resolution;
 
+    public NoiseFilter noiseFilter;
+
     Vector3 localUp;
     Vector3 AxisA;
     Vector3 AxisB;
@@ -13,15 +15,20 @@ public class PlanetFace
 
     private Vector3[] vertices;
     private int[] triangle;
+    float radius;
+    float floor;
 
 
-    public PlanetFace(Vector3 localUp, int resolution, Mesh mesh)
+    public PlanetFace(Vector3 localUp, int resolution, Mesh mesh, float radius, NoiseFilter noiseFilter, float floor)
     {
         this.localUp = localUp;
         AxisA = new Vector3(this.localUp.y, this.localUp.z, this.localUp.x);
         AxisB = Vector3.Cross(this.localUp, AxisA);
         this.mesh = mesh;
+        this.radius = radius;
         this.resolution = resolution;   
+        this.noiseFilter = noiseFilter;
+        this.floor = floor;
     }
 
     public void buildMesh()
@@ -36,6 +43,14 @@ public class PlanetFace
         this.mesh.RecalculateNormals();
     }
 
+    Vector3 calculatePoint(Vector3 pointOnUnitSphere)
+    {
+        Vector3 h = pointOnUnitSphere * (1f + (noiseFilter.Evaluate(pointOnUnitSphere) - floor)) * radius;
+        if(h.magnitude < radius)
+            h = pointOnUnitSphere * radius;
+        return h;
+    }
+
     void addPoints()
     {
         vertices = new Vector3[resolution * resolution];
@@ -47,7 +62,7 @@ public class PlanetFace
                 Vector2 percent = new Vector2(i, y) / (resolution - 1);
                 Vector3 pointOnUnitCube = localUp + (percent.x - 0.5f) * 2 * AxisA + (percent.y - 0.5f) * 2 * AxisB;
                 Vector3 pointOnUnitSphere = pointOnUnitCube.normalized;
-                vertices[index] = pointOnUnitSphere;
+                vertices[index] = calculatePoint(pointOnUnitSphere);
             }
         }
     }

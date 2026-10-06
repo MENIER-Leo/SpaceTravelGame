@@ -308,7 +308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5abf3d63a46076141acd34b24bd93ea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resolution: 14
+  resolution: 23
   planetMaterial: {fileID: 2100000, guid: 219628474be91274ea60056c45eb99c1, type: 2}
   meshFilters:
   - {fileID: 2057392830975148102}
