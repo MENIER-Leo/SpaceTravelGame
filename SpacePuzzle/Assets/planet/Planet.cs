@@ -18,8 +18,10 @@ public class Planet : MonoBehaviour
     public int layers = 4;
     [Range(1f, 10f)]
     public float roughness = 4f;
-    [Range(0f, 1f)]
+    [Range(0.1f, 1f)]
     public float strength = 0.25f;
+    [Range(0.1f, 1f)]
+    public float baseFrequency = 0.5f;
 
     public NoiseFilter noiseFilter;
 
@@ -53,7 +55,7 @@ public class Planet : MonoBehaviour
                 meshFilters[i].GetComponent<MeshRenderer>().sharedMaterial = planetMaterial;
             }
 
-            noiseFilter = new NoiseFilter(seed, layers, roughness, strength);
+            noiseFilter = new NoiseFilter(seed, layers, baseFrequency, roughness, strength);
             faces[i] = new PlanetFace(dir[i], resolution, meshFilters[i].sharedMesh, radius, noiseFilter, floor);
         }
     }

@@ -4,35 +4,38 @@ public class NoiseFilter
 {
     int seed;
 
-    public int layers;
-    public float roughness;
-    public float strength;
+    readonly int layers;
+    readonly float roughness;
+    readonly float strength;
+    readonly float baseFrequency;
 
     Vector3 offset;
 
-    public NoiseFilter(int seed, int layers, float roughness, float strength)
+    public NoiseFilter(int seed, int layers,float baseFrequency, float roughness, float strength)
     {
         this.seed = seed;
         this.layers = layers;
         this.roughness = roughness;
         this.strength = strength;
+        this.baseFrequency = baseFrequency;
+
+        GenerateSeed();
     }
 
     void GenerateSeed()
     {
         System.Random random = new System.Random(seed);
-        offset = new Vector3((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble());
+        offset = new Vector3((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble()) * 100f;
 
     }
 
     public float Evaluate(Vector3 pointOnUnitSphere)
     {
-        GenerateSeed();
 
-        float noiseValue = 0;
-        float frequency = 1;
-        float amplitude = 1;
-        float totalAmplitude = 0;
+        float noiseValue = 0f;
+        float frequency = baseFrequency;
+        float amplitude = 1f;
+        float totalAmplitude = 0f;
         Vector3 pointF;
 
         for (int i = 0; i < layers; i++)
@@ -40,8 +43,8 @@ public class NoiseFilter
             pointF = pointOnUnitSphere * frequency + offset;
             noiseValue += Unity.Mathematics.noise.snoise(new Unity.Mathematics.float3(pointF)) * amplitude;
             frequency *= this.roughness;
-            amplitude *= this.strength;
             totalAmplitude += amplitude;
+            amplitude *= this.strength;
         }
         return noiseValue/totalAmplitude;
     }
