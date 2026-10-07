@@ -36,12 +36,12 @@ public class CameraFollowTrig : MonoBehaviour
 
             // Conversion des angles en radians pour la trigonométrie
             float pitch = currentY * Mathf.Deg2Rad;
-            float yaw = currentX * Mathf.Deg2Rad;
+            float rota = currentX * Mathf.Deg2Rad;
 
             // Formule des coordonnées sphériques pour un espace 3D (Y vers le haut)
-            float offsetX = distance * Mathf.Sin(yaw) * Mathf.Cos(pitch);
+            float offsetX = distance * Mathf.Sin(rota) * Mathf.Cos(pitch);
             float offsetY = distance * Mathf.Sin(pitch);
-            float offsetZ = -distance * Mathf.Cos(yaw) * Mathf.Cos(pitch);
+            float offsetZ = -distance * Mathf.Cos(rota) * Mathf.Cos(pitch);
 
             // On applique l'offset calculé à la position du joueur
             transform.position = player.position + new Vector3(offsetX, offsetY, offsetZ);
