@@ -4,20 +4,14 @@ public class NoiseFilter
 {
     int seed;
 
-    readonly int layers;
-    readonly float roughness;
-    readonly float strength;
-    readonly float baseFrequency;
+    readonly NoiseSettings settings;
 
     Vector3 offset;
 
-    public NoiseFilter(int seed, int layers,float baseFrequency, float roughness, float strength)
+    public NoiseFilter(int seed, NoiseSettings settings)
     {
         this.seed = seed;
-        this.layers = layers;
-        this.roughness = roughness;
-        this.strength = strength;
-        this.baseFrequency = baseFrequency;
+        this.settings = settings;
 
         GenerateSeed();
     }
@@ -33,18 +27,18 @@ public class NoiseFilter
     {
 
         float noiseValue = 0f;
-        float frequency = baseFrequency;
+        float frequency = settings.baseFrequency;
         float amplitude = 1f;
         float totalAmplitude = 0f;
         Vector3 pointF;
 
-        for (int i = 0; i < layers; i++)
+        for (int i = 0; i < settings.layers; i++)
         {
             pointF = pointOnUnitSphere * frequency + offset;
             noiseValue += Unity.Mathematics.noise.snoise(new Unity.Mathematics.float3(pointF)) * amplitude;
-            frequency *= this.roughness;
+            frequency *= settings.roughness;
             totalAmplitude += amplitude;
-            amplitude *= this.strength;
+            amplitude *= settings.persistence;
         }
         return noiseValue/totalAmplitude;
     }

@@ -309,6 +309,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resolution: 23
+  radius: 1
+  seaLevel: 0
+  reliefHeight: 0.1
+  seed: 1
+  layers: 4
+  roughness: 4
+  persistence: 0.25
+  baseFrequency: 0.5
   planetMaterial: {fileID: 2100000, guid: 219628474be91274ea60056c45eb99c1, type: 2}
   meshFilters:
   - {fileID: 2057392830975148102}
