@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19e87cd25d893be45a2e6ec9f2b146b0, type: 3}
-  m_Name: planet
+  m_Name: Boule
   m_EditorClassIdentifier: 
   radius: 1
   seed: 1
@@ -19,8 +19,8 @@ MonoBehaviour:
     roughness: 2
     persistence: 0.5
     baseFrequency: 0.8
-  seaLevel: -0.071
-  seaRelief: 0.138
+  seaLevel: 0.5
+  seaRelief: 0.1
   mountains:
     layers: 5
     roughness: 2
@@ -35,4 +35,4 @@ MonoBehaviour:
     baseFrequency: 2
   plainsHeight: 0.01
   plainsRoughness: 0.005
-  mountainHeight: 0.027
+  mountainHeight: 0.06

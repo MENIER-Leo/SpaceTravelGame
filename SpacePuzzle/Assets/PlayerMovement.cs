@@ -11,6 +11,15 @@ public class PlayerMovement : MonoBehaviour
     private const float SPEED = 5f;
     private bool isGrounded;
 
+    private Transform pTransform;
+
+
+    void Start()
+    {
+
+        pTransform = GameObject.FindWithTag("Boule").transform;
+    }
+
 
     void handleInput()
     {
@@ -33,34 +42,45 @@ public class PlayerMovement : MonoBehaviour
             velocity = new Vector3(velocity.x / norm * SPEED, velocity.y, velocity.z / norm * SPEED);
     }
 
+    void applyGravity()
+    {
+        Vector3 up = transform.position - pTransform.position;
+
+        velocity += up.normalized * gravity;
+
+        Quaternion targetRotation = Quaternion.FromToRotation(transform.up, up) * transform.rotation;
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 100f * Time.deltaTime);
+    }
+
     void Update()
     {
         RaycastHit hit;
         float rayLength = sphereRadius + 0.1f;
 
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, rayLength, groundLayer))
+        handleInput();
+        //normalizeHorizontalVelocity();
+        applyGravity();
+
+        Debug.Log(Physics.Raycast(transform.position, -transform.up, out hit, rayLength, groundLayer));
+
+        if (Physics.Raycast(transform.position, -transform.up, out hit, rayLength, groundLayer))
         {
             isGrounded = true;
 
-            if (velocity.y < 0)
+            transform.position = hit.point + Vector3.up * sphereRadius;
+
+            /*if(velocity.y < 0)
             {
-                velocity.y = 0f;
                 transform.position = new Vector3(transform.position.x, hit.point.y + sphereRadius, transform.position.z);
-            }
+            }*/
         }
         else
         {
             isGrounded = false;
         }
 
-        handleInput();
-        normalizeHorizontalVelocity();
 
-
-        velocity.y += gravity * Time.deltaTime;
         transform.position += velocity * Time.deltaTime;
-
-        velocity.x = 0;
-        velocity.z = 0;
+        velocity = Vector3.zero;
     }
 }
