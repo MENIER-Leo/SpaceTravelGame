@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87cd25d893be45a2e6ec9f2b146b0, type: 3}
   m_Name: Boule
   m_EditorClassIdentifier: 
-  radius: 1
+  radius: 7
   seed: 1
   continents:
     layers: 4
@@ -20,19 +20,19 @@ MonoBehaviour:
     persistence: 0.5
     baseFrequency: 0.8
   seaLevel: 0.5
-  seaRelief: 0.1
+  seaRelief: 0.204
   mountains:
     layers: 5
     roughness: 2
     persistence: 0.5
     baseFrequency: 1.5
   mountainZoneStart: 0.1
-  mountainZoneEnd: 0.5
+  mountainZoneEnd: -0.247
   craters:
     layers: 3
     roughness: 1.5
     persistence: 0.5
     baseFrequency: 2
-  plainsHeight: 0.01
-  plainsRoughness: 0.005
-  mountainHeight: 0.06
+  plainsHeight: 0.0664
+  plainsRoughness: 0.0593
+  mountainHeight: 0.203

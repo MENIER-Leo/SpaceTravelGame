@@ -40,6 +40,10 @@ public class Planet : MonoBehaviour
                 rend = meshFilters[i].gameObject.AddComponent<MeshRenderer>();
             rend.sharedMaterial = planetMaterial;
 
+            MeshCollider col = meshFilters[i].GetComponent<MeshCollider>();
+            if (col == null)
+                col = meshFilters[i].gameObject.AddComponent<MeshCollider>();
+
             if (meshFilters[i].sharedMesh == null)
                 meshFilters[i].sharedMesh = new Mesh();
 
