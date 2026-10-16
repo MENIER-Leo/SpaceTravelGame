@@ -44,7 +44,11 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 up = transform.position - pTransform.position;
 
-        verticalSpeed = Mathf.Min(verticalSpeed + gravity * Time.deltaTime, 20f);
+        Debug.Log("Avant verticalSpeed: " + verticalSpeed);
+
+        verticalSpeed = Mathf.Min(verticalSpeed + gravity * Time.deltaTime, 100f);
+
+        Debug.Log("Apres verticalSpeed: " + verticalSpeed);
 
         Quaternion targetRotation = Quaternion.FromToRotation(transform.up, up) * transform.rotation;
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 100f * Time.deltaTime);
@@ -55,7 +59,6 @@ public class PlayerMovement : MonoBehaviour
     {
         RaycastHit hit;
         float rayLength = sphereRadius + 0.1f;
-        verticalSpeed = Vector3.Dot(velocity, transform.up);
 
         handleInput();
 
