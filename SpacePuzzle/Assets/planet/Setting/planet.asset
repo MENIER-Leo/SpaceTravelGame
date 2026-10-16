@@ -19,8 +19,8 @@ MonoBehaviour:
     roughness: 2
     persistence: 0.5
     baseFrequency: 0.8
-  seaLevel: 0
-  seaRelief: 0.1
+  seaLevel: -0.071
+  seaRelief: 0.138
   mountains:
     layers: 5
     roughness: 2
@@ -35,4 +35,4 @@ MonoBehaviour:
     baseFrequency: 2
   plainsHeight: 0.01
   plainsRoughness: 0.005
-  mountainHeight: 0.06
+  mountainHeight: 0.027

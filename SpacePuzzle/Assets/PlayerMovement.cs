@@ -2,35 +2,57 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float gravity = -15f;
-    public float jumpForce = 8f;
+    public float gravity = 5f;
+    public float jumpForce = 100f;
     public float sphereRadius = 0.5f;
     public LayerMask groundLayer;
 
     private Vector3 velocity;
     private const float SPEED = 5f;
     private bool isGrounded;
+    private bool isJumping = false;
+    private Vector3 horizontalMove = Vector3.zero;
+    private float verticalSpeed = 0f;
+
+
+    private Transform pTransform;
+
+
+    void Start()
+    {
+
+        pTransform = GameObject.FindWithTag("Boule").transform;
+    }
 
 
     void handleInput()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
-            velocity.y = jumpForce;
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            isJumping = true;
         if (Input.GetKey(KeyCode.W))
-            velocity += Vector3.forward;
+            horizontalMove += transform.forward;
         if (Input.GetKey(KeyCode.S))
-            velocity += Vector3.back;
+            horizontalMove += -transform.forward;
         if(Input.GetKey(KeyCode.A))
-            velocity += Vector3.left;
+            horizontalMove += -transform.right;
         if(Input.GetKey(KeyCode.D))
-            velocity += Vector3.right;
+            horizontalMove += transform.right;
+        horizontalMove = Vector3.ClampMagnitude(horizontalMove, 1f) * SPEED;
     }
 
-    void normalizeHorizontalVelocity()
+    void applyGravity()
     {
-        float norm = Mathf.Sqrt(velocity.x * velocity.x + velocity.z * velocity.z);
-        if (norm != 0)
-            velocity = new Vector3(velocity.x / norm * SPEED, velocity.y, velocity.z / norm * SPEED);
+        Vector3 up = transform.position - pTransform.position;
+
+        Debug.Log("Avant verticalSpeed: " + verticalSpeed);
+
+        verticalSpeed = Mathf.Min(verticalSpeed + gravity * Time.deltaTime, 100f);
+
+        Debug.Log("Apres verticalSpeed: " + verticalSpeed);
+
+        Quaternion targetRotation = Quaternion.FromToRotation(transform.up, up) * transform.rotation;
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 100f * Time.deltaTime);
+
     }
 
     void Update()
@@ -38,29 +60,42 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit hit;
         float rayLength = sphereRadius + 0.1f;
 
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, rayLength, groundLayer))
-        {
-            isGrounded = true;
+        handleInput();
 
-            if (velocity.y < 0)
-            {
-                velocity.y = 0f;
-                transform.position = new Vector3(transform.position.x, hit.point.y + sphereRadius, transform.position.z);
-            }
-        }
-        else
+
+        bool isHit = Physics.Raycast(transform.position, -transform.up, out hit, rayLength, groundLayer);
+
+        if(!isHit)
         {
             isGrounded = false;
         }
 
-        handleInput();
-        normalizeHorizontalVelocity();
+        if (!isGrounded)
+        {
+            applyGravity();
+        }
 
 
-        velocity.y += gravity * Time.deltaTime;
-        transform.position += velocity * Time.deltaTime;
+        if(isJumping && isGrounded)
+        {
+            verticalSpeed += jumpForce;
+        }
 
-        velocity.x = 0;
-        velocity.z = 0;
+        if (isJumping && verticalSpeed < 0) isJumping = false;
+
+        if (!isJumping && isHit)
+        {
+            isGrounded = true;
+
+            if(verticalSpeed < 0)
+            {
+                verticalSpeed = 0;
+                transform.position = hit.point + transform.up * sphereRadius;
+            }
+        }
+
+        velocity = (verticalSpeed * transform.up + horizontalMove) * Time.deltaTime;
+        horizontalMove = Vector3.zero;
+        transform.position += velocity;
     }
 }
