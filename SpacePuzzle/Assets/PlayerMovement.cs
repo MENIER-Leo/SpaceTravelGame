@@ -7,12 +7,14 @@ public class PlayerMovement : MonoBehaviour
     public float sphereRadius = 0.5f;
     public LayerMask groundLayer;
 
+    public CameraFollow cameraFollow;  
+
     private Vector3 velocity;
     private const float SPEED = 5f;
     private bool isGrounded;
-    private bool isJumping = false;
     private Vector3 horizontalMove = Vector3.zero;
     private float verticalSpeed = 0f;
+    private Vector3 up;
 
 
     private Transform pTransform;
@@ -28,7 +30,10 @@ public class PlayerMovement : MonoBehaviour
     void handleInput()
     {
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-            isJumping = true;
+        {
+            verticalSpeed = jumpForce;
+            isGrounded = false;
+        }
         if (Input.GetKey(KeyCode.W))
             horizontalMove += transform.forward;
         if (Input.GetKey(KeyCode.S))
@@ -42,60 +47,48 @@ public class PlayerMovement : MonoBehaviour
 
     void applyGravity()
     {
-        Vector3 up = transform.position - pTransform.position;
 
-        Debug.Log("Avant verticalSpeed: " + verticalSpeed);
+        up = GetUp();
 
-        verticalSpeed = Mathf.Min(verticalSpeed + gravity * Time.deltaTime, 100f);
-
-        Debug.Log("Apres verticalSpeed: " + verticalSpeed);
+        if (!isGrounded)
+            verticalSpeed = Mathf.Min(verticalSpeed + gravity * Time.deltaTime, 100f);
 
         Quaternion targetRotation = Quaternion.FromToRotation(transform.up, up) * transform.rotation;
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 100f * Time.deltaTime);
 
     }
 
+    Vector3 GetUp()
+    {
+        return (transform.position - pTransform.position).normalized;
+    }
+
     void Update()
     {
         RaycastHit hit;
-        float rayLength = sphereRadius + 0.1f;
 
         handleInput();
+        applyGravity();   
+        
+        Vector3 tangentMove = Vector3.ProjectOnPlane(horizontalMove, transform.up);
+        velocity = (verticalSpeed * transform.up + tangentMove) * Time.deltaTime;
+        horizontalMove = Vector3.zero;
+        transform.position += velocity;
 
+        up = GetUp();
 
-        bool isHit = Physics.Raycast(transform.position, -transform.up, out hit, rayLength, groundLayer);
+        float rayLength = sphereRadius + 0.3f;
+        bool isHit = Physics.Raycast(transform.position, -up, out hit, rayLength, groundLayer);
 
-        if(!isHit)
+        if (verticalSpeed <= 0f && isHit)
+        {
+            isGrounded = true;
+            verticalSpeed = 0;
+            transform.position = hit.point + hit.normal * sphereRadius;
+        }
+        else
         {
             isGrounded = false;
         }
-
-        if (!isGrounded)
-        {
-            applyGravity();
-        }
-
-
-        if(isJumping && isGrounded)
-        {
-            verticalSpeed += jumpForce;
-        }
-
-        if (isJumping && verticalSpeed < 0) isJumping = false;
-
-        if (!isJumping && isHit)
-        {
-            isGrounded = true;
-
-            if(verticalSpeed < 0)
-            {
-                verticalSpeed = 0;
-                transform.position = hit.point + transform.up * sphereRadius;
-            }
-        }
-
-        velocity = (verticalSpeed * transform.up + horizontalMove) * Time.deltaTime;
-        horizontalMove = Vector3.zero;
-        transform.position += velocity;
     }
 }
