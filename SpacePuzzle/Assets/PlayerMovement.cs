@@ -7,14 +7,17 @@ public class PlayerMovement : MonoBehaviour
     public float sphereRadius = 0.5f;
     public LayerMask groundLayer;
 
-    public CameraFollow cameraFollow;  
-
-    private Vector3 velocity;
     private const float SPEED = 5f;
+
     private bool isGrounded;
+
     private Vector3 horizontalMove = Vector3.zero;
     private float verticalSpeed = 0f;
+
     private Vector3 up;
+    private const float raycastMargin = 0.1f;
+    private const float maxSlopeAngle = 45f; // angle max de pente pour marcher dessus
+    public float stepHeight = 0.5f;     // d'où on regarde vers le sol
 
 
     private Transform pTransform;
@@ -51,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
         up = GetUp();
 
         if (!isGrounded)
-            verticalSpeed = Mathf.Min(verticalSpeed + gravity * Time.deltaTime, 100f);
+            verticalSpeed = Mathf.Max(verticalSpeed + gravity * Time.deltaTime, -30f);
 
         Quaternion targetRotation = Quaternion.FromToRotation(transform.up, up) * transform.rotation;
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 100f * Time.deltaTime);
@@ -63,28 +66,58 @@ public class PlayerMovement : MonoBehaviour
         return (transform.position - pTransform.position).normalized;
     }
 
+    bool IsWalkable(Vector3 surfaceNormal, Vector3 up)
+    {
+        return Vector3.Angle(surfaceNormal, up) <= maxSlopeAngle;
+    }
+
+    Vector3 BlockWalls(Vector3 move, Vector3 up)
+    {
+        if (move.sqrMagnitude < 1e-7f) return move;
+
+        Vector3 origin = transform.position - up * (sphereRadius * 0.8f);
+        float checkDistance = sphereRadius + move.magnitude;
+
+        if (Physics.Raycast(origin, move.normalized,
+                            out RaycastHit wall, checkDistance, groundLayer)
+            && !IsWalkable(wall.normal, up))
+        {
+            move = Vector3.ProjectOnPlane(move, wall.normal);
+            move = Vector3.ProjectOnPlane(move, up);
+        }
+        return move;
+    }
+
+    bool FindGround(Vector3 up, out RaycastHit hit)
+    {
+;
+        Vector3 origin = transform.position + up * stepHeight;
+        float distance = stepHeight + sphereRadius + raycastMargin;
+
+        return Physics.Raycast(origin, -up, out hit, distance, groundLayer) && IsWalkable(hit.normal, up);
+    }
+
     void Update()
     {
-        RaycastHit hit;
 
         handleInput();
-        applyGravity();   
-        
-        Vector3 tangentMove = Vector3.ProjectOnPlane(horizontalMove, transform.up);
-        velocity = (verticalSpeed * transform.up + tangentMove) * Time.deltaTime;
+        applyGravity();
+        up = GetUp();
+
+        Vector3 move = Vector3.ProjectOnPlane(horizontalMove, up) * Time.deltaTime;
         horizontalMove = Vector3.zero;
-        transform.position += velocity;
+
+        move = BlockWalls(move, up);
+
+        transform.position += move + up * verticalSpeed * Time.deltaTime;
 
         up = GetUp();
 
-        float rayLength = sphereRadius + 0.3f;
-        bool isHit = Physics.Raycast(transform.position, -up, out hit, rayLength, groundLayer);
-
-        if (verticalSpeed <= 0f && isHit)
+        if (verticalSpeed <= 0f && FindGround(up, out RaycastHit hit))
         {
             isGrounded = true;
             verticalSpeed = 0;
-            transform.position = hit.point + hit.normal * sphereRadius;
+            transform.position = hit.point + up * sphereRadius;
         }
         else
         {
