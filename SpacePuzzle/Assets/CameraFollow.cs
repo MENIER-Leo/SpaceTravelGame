@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraFollowTrig : MonoBehaviour
+public class CameraFollow : MonoBehaviour
 {
     public Transform player;
     public float distance = 10.0f;
@@ -10,18 +10,11 @@ public class CameraFollowTrig : MonoBehaviour
     public float sensitivityY = 2.0f;
 
     [Header("Limites d'angle vertical")]
-    public float minY = -20.0f;
+    public float minY = 5.0f;  // Bloqué à 5 degrés pour ne pas traverser le sol de la planète
     public float maxY = 80.0f;
 
     private float currentX = 0.0f;
-    private float currentY = 0.0f;
-
-    void Start()
-    {
-        Vector3 angles = transform.eulerAngles;
-        currentX = angles.y;
-        currentY = angles.x;
-    }
+    private float currentY = 20.0f;
 
     void LateUpdate()
     {
@@ -34,19 +27,18 @@ public class CameraFollowTrig : MonoBehaviour
                 currentY = Mathf.Clamp(currentY, minY, maxY);
             }
 
-            // Conversion des angles en radians pour la trigonométrie
-            float pitch = currentY * Mathf.Deg2Rad;
-            float rota = currentX * Mathf.Deg2Rad;
+            //Crée la rotation de la caméra à partir des angles de la souris
+            Quaternion localOrbit = Quaternion.Euler(currentY, currentX, 0f);
 
-            // Formule des coordonnées sphériques pour un espace 3D (Y vers le haut)
-            float offsetX = distance * Mathf.Sin(rota) * Mathf.Cos(pitch);
-            float offsetY = distance * Mathf.Sin(pitch);
-            float offsetZ = -distance * Mathf.Cos(rota) * Mathf.Cos(pitch);
+            //Combine l'inclinaison du joueur sur la planète avec la rotation de la souris
+            Quaternion finalRotation = player.rotation * localOrbit;
 
-            // On applique l'offset calculé à la position du joueur
-            transform.position = player.position + new Vector3(offsetX, offsetY, offsetZ);
+            //Calcule le recul de la caméra selon la rotation
+            Vector3 direction = new Vector3(0f, 0f, -distance);
+            transform.position = player.position + (finalRotation * direction);
 
-            transform.LookAt(player);
+            //Oriente la caméra vers le joueur (en gardant la tête à l'endroit)
+            transform.rotation = finalRotation;
         }
     }
 }
