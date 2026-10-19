@@ -39,6 +39,7 @@ public class Planet : MonoBehaviour
             if (rend == null)
                 rend = meshFilters[i].gameObject.AddComponent<MeshRenderer>();
             rend.sharedMaterial = planetMaterial;
+            rend.sharedMaterial.SetFloat("_Radius", settings.radius);
 
             MeshCollider col = meshFilters[i].GetComponent<MeshCollider>();
             if (col == null)

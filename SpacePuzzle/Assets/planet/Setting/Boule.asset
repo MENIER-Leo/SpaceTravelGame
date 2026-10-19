@@ -26,13 +26,13 @@ MonoBehaviour:
     roughness: 2
     persistence: 0.5
     baseFrequency: 1.5
-  mountainZoneStart: 0.1
-  mountainZoneEnd: -0.247
+  mountainZoneStart: -0.066
+  mountainZoneEnd: 0.787
   craters:
     layers: 3
     roughness: 1.5
     persistence: 0.5
     baseFrequency: 2
-  plainsHeight: 0.0664
-  plainsRoughness: 0.0593
-  mountainHeight: 0.203
+  plainsHeight: 0.0938
+  plainsRoughness: 0.0749
+  mountainHeight: 0.342
