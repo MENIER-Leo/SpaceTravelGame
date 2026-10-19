@@ -23,7 +23,7 @@ public class PlanetGenerator
 
         float continentNoise = continents.Evaluate(pointOnUnitSphere);
 
-        float land = Mathf.SmoothStep(0f, 1f, continentNoise - s.seaLevel) / s.seaRelief;
+        float land = Mathf.SmoothStep(0f, 1f, (continentNoise - s.seaLevel) / s.seaRelief);
 
         float crater = Mathf.InverseLerp(s.mountainZoneStart, s.mountainZoneEnd, craters.Evaluate(pointOnUnitSphere));
 
