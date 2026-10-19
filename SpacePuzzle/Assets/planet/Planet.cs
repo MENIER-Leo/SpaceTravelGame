@@ -30,10 +30,10 @@ public class Planet : MonoBehaviour
             if (meshFilters[i] == null)
             {
                 GameObject meshObj = new GameObject("mesh");
+                meshFilters[i].gameObject.layer = gameObject.layer;
                 meshObj.transform.parent = transform;
                 meshFilters[i] = meshObj.AddComponent<MeshFilter>();
             }
-
 
             MeshRenderer rend = meshFilters[i].GetComponent<MeshRenderer>();
             if (rend == null)
@@ -54,10 +54,14 @@ public class Planet : MonoBehaviour
 
     void GenerateMesh()
     {
-        foreach (PlanetFace face in faces)
+        for (int i = 0; i < 6; i++)
         {
-            face.mesh.Clear();
-            face.BuildMesh();
+            faces[i].mesh.Clear();
+            faces[i].BuildMesh();
+
+            MeshCollider col = meshFilters[i].GetComponent<MeshCollider>();
+            col.sharedMesh = null;               // force la reconstruction de la collision
+            col.sharedMesh = faces[i].mesh;
         }
     }
 
