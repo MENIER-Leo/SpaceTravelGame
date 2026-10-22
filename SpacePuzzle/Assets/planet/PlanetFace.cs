@@ -10,21 +10,23 @@ public class PlanetFace
     Vector3 axisA;
     Vector3 axisB;
 
-
     private Vector3[] vertices;
     private int[] triangle;
     PlanetGenerator planetGenerator;
 
+    MinMax distanceMinMax;
 
-    public PlanetFace(Vector3 localUp, int resolution, Mesh mesh, PlanetGenerator planetGenerator)
+
+    public PlanetFace(Vector3 localUp, int resolution, Mesh mesh, PlanetGenerator planetGenerator, MinMax distanceMinMax)
     {
         this.localUp = localUp;
         axisA = new Vector3(this.localUp.y, this.localUp.z, this.localUp.x);
         axisB = Vector3.Cross(this.localUp, axisA);
         this.mesh = mesh;
         this.planetGenerator = planetGenerator;
-        this.resolution = resolution;   
-  
+        this.resolution = resolution;
+        this.distanceMinMax = distanceMinMax;
+
     }
 
     public void BuildMesh()
@@ -50,6 +52,7 @@ public class PlanetFace
                 Vector3 pointOnUnitCube = localUp + (percent.x - 0.5f) * 2 * axisA + (percent.y - 0.5f) * 2 * axisB;
                 Vector3 pointOnUnitSphere = pointOnUnitCube.normalized;
                 vertices[index] = planetGenerator.calculatePoint(pointOnUnitSphere);
+                distanceMinMax.AddValue(vertices[index].magnitude);
             }
         }
     }
