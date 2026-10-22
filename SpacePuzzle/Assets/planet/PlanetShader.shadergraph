@@ -59,6 +59,7 @@
         },
         {
             "m_Id": "869414f06c9746bc8242f14ce64dda7c"
+<<<<<<< Updated upstream
         },
         {
             "m_Id": "7f505e6254e6482e8e363293d0df2a90"
@@ -77,6 +78,8 @@
         },
         {
             "m_Id": "38f89e97be724eeb8538fd9e7f50fa78"
+=======
+>>>>>>> Stashed changes
         }
     ],
     "m_GroupDatas": [],
@@ -475,21 +478,6 @@
         "z": 0.0,
         "w": 0.0
     }
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
-    "m_ObjectId": "201aa88ccdbf423eae392b128a1745f7",
-    "m_Id": 0,
-    "m_DisplayName": "radius",
-    "m_SlotType": 1,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "Out",
-    "m_StageCapability": 3,
-    "m_Value": 0.0,
-    "m_DefaultValue": 0.0,
-    "m_Labels": []
 }
 
 {
@@ -1176,6 +1164,7 @@
 
 {
     "m_SGVersion": 0,
+<<<<<<< Updated upstream
     "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
     "m_ObjectId": "7f505e6254e6482e8e363293d0df2a90",
     "m_Group": {
@@ -1212,6 +1201,8 @@
 
 {
     "m_SGVersion": 0,
+=======
+>>>>>>> Stashed changes
     "m_Type": "UnityEditor.ShaderGraph.CategoryData",
     "m_ObjectId": "81a09ea09cc5452b950da0f0b598487b",
     "m_Name": "",

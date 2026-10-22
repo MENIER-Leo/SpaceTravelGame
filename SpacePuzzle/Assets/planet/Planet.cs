@@ -72,14 +72,27 @@ public class Planet : MonoBehaviour
             planetMaterial.SetVector("_MinMax", new Vector2(distanceMinMax.Min, distanceMinMax.Max));
     }
 
+    void OnEnable()
+    {
+        Subscribe();
+    }
+
+    void OnDisable()
+    {
+        if (settings != null)
+            settings.onChanged -= Regenerate;
+    }
+
     void OnValidate()
     {
+        Subscribe();   // on se réabonne si tu changes le champ "settings", sans régénérer
+    }
+
+    void Subscribe()
+    {
         if (settings == null) return;
-
-        settings.onChanged -= Regenerate;   // d'abord on se désabonne...
-        settings.onChanged += Regenerate;   // ...puis on s'abonne (évite les doublons)
-
-        Regenerate();
+        settings.onChanged -= Regenerate;   // d'abord on se désabonne pour éviter les doublons...
+        settings.onChanged += Regenerate;   // ...puis on s'abonne
     }
 
     private void Start()

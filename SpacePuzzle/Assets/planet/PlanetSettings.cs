@@ -10,7 +10,7 @@ public class NoiseSettings
     public float roughness = 2f;
     [Range(0.1f, 1f)]
     public float persistence = 0.5f;
-    [Range(0.1f, 1f)]
+    [Range(0.1f, 8f)]
     public float baseFrequency = 1f;
 }
 
@@ -24,7 +24,7 @@ public class PlanetSettings : ScriptableObject
     
     public int seed = 1;
 
-    public NoiseSettings continents = new NoiseSettings { layers = 4, baseFrequency = 0.8f };
+    public NoiseSettings continents = new NoiseSettings { layers = 4, baseFrequency = 0.8f, roughness = 2f, persistence = 0.5f };
 
     [Range(-0.5f, 0.5f)]
     public float seaLevel = 0f;
@@ -38,7 +38,7 @@ public class PlanetSettings : ScriptableObject
     [Range(-1f, 1f)] 
     public float mountainZoneEnd = 0.5f;
 
-    public NoiseSettings craters = new NoiseSettings { layers = 3, baseFrequency = 2f, roughness = 1.5f, persistence = 0.5f };
+    public NoiseSettings craters = new NoiseSettings { layers = 4, baseFrequency = 2f, roughness = 2f, persistence = 0.5f };
 
     [Range(0f, 0.2f)] 
     public float plainsHeight = 0.01f;    
@@ -50,7 +50,7 @@ public class PlanetSettings : ScriptableObject
 
     public event System.Action onChanged;
 
-    void OnValidate()
+    public void Validate()
     {
         onChanged?.Invoke();
     }

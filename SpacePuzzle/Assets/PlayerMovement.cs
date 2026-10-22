@@ -34,22 +34,26 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-
         planet = GameObject.FindWithTag("Boule").transform;
+        groundLayer = LayerMask.GetMask("Planete", "Ground");
     }
 
 
-    void handleInput()
+    public void handleInput(Transform camera)
     {
+        Vector3 up = GetUp();
+        Vector3 lateral = Vector3.ProjectOnPlane(camera.right, up).normalized;
+        Vector3 longi = Vector3.ProjectOnPlane(camera.forward, up).normalized;
+
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             verticalSpeed = jumpForce;
             isGrounded = false;
         }
-        if (Input.GetKey(KeyCode.W)) horizontalMove += transform.forward;
-        if (Input.GetKey(KeyCode.S)) horizontalMove -= transform.forward;
-        if(Input.GetKey(KeyCode.A)) horizontalMove -= transform.right;
-        if(Input.GetKey(KeyCode.D)) horizontalMove += transform.right;
+        if (Input.GetKey(KeyCode.W)) horizontalMove += longi;
+        if (Input.GetKey(KeyCode.S)) horizontalMove -= longi;
+        if(Input.GetKey(KeyCode.A)) horizontalMove -= lateral;
+        if(Input.GetKey(KeyCode.D)) horizontalMove += lateral;
         horizontalMove = Vector3.ClampMagnitude(horizontalMove, 1f) * SPEED;
     }
 
@@ -160,7 +164,6 @@ public class PlayerMovement : MonoBehaviour
 
         float dt = Mathf.Min(Time.deltaTime, 0.05f); // évite les pics de lag
 
-        handleInput();
         Vector3 up = GetUp();
         AlignToPlanet(up, dt);
 

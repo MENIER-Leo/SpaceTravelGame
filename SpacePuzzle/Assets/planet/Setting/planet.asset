@@ -19,20 +19,20 @@ MonoBehaviour:
     roughness: 2
     persistence: 0.5
     baseFrequency: 0.8
-  seaLevel: -0.035
-  seaRelief: 0.484
+  seaLevel: 0.05
+  seaRelief: 0.06
   mountains:
     layers: 5
     roughness: 2
     persistence: 0.5
     baseFrequency: 1.5
-  mountainZoneStart: 0.07
-  mountainZoneEnd: 0.31
+  mountainZoneStart: 0.15
+  mountainZoneEnd: 0.35
   craters:
     layers: 3
     roughness: 1.5
     persistence: 0.5
     baseFrequency: 2
-  plainsHeight: 0.2
-  plainsRoughness: 0.2
-  mountainHeight: 0.268
+  plainsHeight: 0.015
+  plainsRoughness: 0.008
+  mountainHeight: 0.12
