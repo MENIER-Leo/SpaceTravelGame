@@ -35,10 +35,6 @@ public class PlayerMovement : MonoBehaviour
         groundLayer = LayerMask.GetMask("Planete", "Ground");
     }
 
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
     public void handleInput(Transform camera)
     {
         Vector3 up = GetUp();
@@ -52,13 +48,8 @@ public class PlayerMovement : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.W)) horizontalMove += longi;
         if (Input.GetKey(KeyCode.S)) horizontalMove -= longi;
-<<<<<<< Updated upstream
-        if(Input.GetKey(KeyCode.A)) horizontalMove -= lateral;
-        if(Input.GetKey(KeyCode.D)) horizontalMove += lateral;
-=======
         if (Input.GetKey(KeyCode.A)) horizontalMove -= lateral;
         if (Input.GetKey(KeyCode.D)) horizontalMove += lateral;
->>>>>>> Stashed changes
         horizontalMove = Vector3.ClampMagnitude(horizontalMove, 1f) * SPEED;
     }
 
