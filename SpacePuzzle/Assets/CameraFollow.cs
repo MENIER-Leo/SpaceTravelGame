@@ -16,6 +16,11 @@ public class CameraFollow : MonoBehaviour
     private float currentX = 0.0f;
     private float currentY = 20.0f;
 
+    void Start()
+    {
+        player = GameObject.Find("Joueur").transform;
+    }
+
     void LateUpdate()
     {
         if (player != null)

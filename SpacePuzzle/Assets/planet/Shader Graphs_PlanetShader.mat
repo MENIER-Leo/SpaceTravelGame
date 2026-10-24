@@ -40,8 +40,9 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Radius: 7
-    m_Colors: []
+    - _Radius: 8
+    m_Colors:
+    - _X_and_Y: {r: -0.3, g: 0.9, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &1950812680201708702

@@ -10,6 +10,8 @@ public class Planet : MonoBehaviour
 
     public Material planetMaterial;
 
+    MinMax distanceMinMax;
+
     [SerializeField, HideInInspector]
     MeshFilter[] meshFilters;
     PlanetFace[] faces;
@@ -21,6 +23,8 @@ public class Planet : MonoBehaviour
 
         faces = new PlanetFace[6];
 
+        distanceMinMax = new MinMax();
+
         Vector3[] dir = { Vector3.up, Vector3.down, Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
         
         planetGenerator = new PlanetGenerator(settings);
@@ -30,7 +34,7 @@ public class Planet : MonoBehaviour
             if (meshFilters[i] == null)
             {
                 GameObject meshObj = new GameObject("mesh");
-                meshFilters[i].gameObject.layer = gameObject.layer;
+                meshObj.layer = gameObject.layer;
                 meshObj.transform.parent = transform;
                 meshFilters[i] = meshObj.AddComponent<MeshFilter>();
             }
@@ -39,7 +43,6 @@ public class Planet : MonoBehaviour
             if (rend == null)
                 rend = meshFilters[i].gameObject.AddComponent<MeshRenderer>();
             rend.sharedMaterial = planetMaterial;
-            rend.sharedMaterial.SetFloat("_Radius", settings.radius);
 
             MeshCollider col = meshFilters[i].GetComponent<MeshCollider>();
             if (col == null)
@@ -48,7 +51,7 @@ public class Planet : MonoBehaviour
             if (meshFilters[i].sharedMesh == null)
                 meshFilters[i].sharedMesh = new Mesh();
 
-            faces[i] = new PlanetFace(dir[i], resolution, meshFilters[i].sharedMesh, planetGenerator);
+            faces[i] = new PlanetFace(dir[i], resolution, meshFilters[i].sharedMesh, planetGenerator, distanceMinMax);
         }
     }
 
@@ -64,16 +67,32 @@ public class Planet : MonoBehaviour
             col.sharedMesh = null;               // force la reconstruction de la collision
             col.sharedMesh = faces[i].mesh;
         }
+
+        if (planetMaterial != null)
+            planetMaterial.SetVector("_MinMax", new Vector2(distanceMinMax.Min, distanceMinMax.Max));
+    }
+
+    void OnEnable()
+    {
+        Subscribe();
+    }
+
+    void OnDisable()
+    {
+        if (settings != null)
+            settings.onChanged -= Regenerate;
     }
 
     void OnValidate()
     {
+        Subscribe();   // on se réabonne si tu changes le champ "settings", sans régénérer
+    }
+
+    void Subscribe()
+    {
         if (settings == null) return;
-
-        settings.onChanged -= Regenerate;   // d'abord on se désabonne...
-        settings.onChanged += Regenerate;   // ...puis on s'abonne (évite les doublons)
-
-        Regenerate();
+        settings.onChanged -= Regenerate;   // d'abord on se désabonne pour éviter les doublons...
+        settings.onChanged += Regenerate;   // ...puis on s'abonne
     }
 
     private void Start()
