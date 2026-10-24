@@ -22,7 +22,7 @@ public class CameraFollow : MonoBehaviour
         {
             if (Input.GetMouseButton(1))
             {
-                currentX += Input.GetAxis("Mouse X") * sensitivityX;
+                currentX -= Input.GetAxis("Mouse X") * sensitivityX;
                 currentY -= Input.GetAxis("Mouse Y") * sensitivityY;
                 currentY = Mathf.Clamp(currentY, minY, maxY);
             }
