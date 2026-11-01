@@ -26,24 +26,13 @@ MonoBehaviour:
     roughness: 2
     persistence: 0.5
     baseFrequency: 1.5
-<<<<<<< Updated upstream
-  mountainZoneStart: 0.09
-  mountainZoneEnd: 0.22
-=======
   mountainZoneStart: 0.05
   mountainZoneEnd: 0.3
->>>>>>> Stashed changes
   craters:
     layers: 3
     roughness: 1.5
     persistence: 0.5
     baseFrequency: 2
-<<<<<<< Updated upstream
-  plainsHeight: 0.025
-  plainsRoughness: 0.055
-  mountainHeight: 0.277
-=======
   plainsHeight: 0.02
   plainsRoughness: 0.02
   mountainHeight: 0.2
->>>>>>> Stashed changes

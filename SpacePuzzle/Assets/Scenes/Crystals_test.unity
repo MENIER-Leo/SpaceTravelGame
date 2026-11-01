@@ -382,6 +382,10 @@ PrefabInstance:
       propertyPath: crystalType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
+      propertyPath: targetColor
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4685416557354449098, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: m_Name
       value: Receiver
@@ -609,6 +613,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
+      propertyPath: emittedColor
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4685416557354449098, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: m_Name
       value: Emitter
