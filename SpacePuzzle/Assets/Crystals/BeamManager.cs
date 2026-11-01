@@ -34,6 +34,8 @@ public class BeamManager : MonoBehaviour
     private MaterialPropertyBlock propertyBlock;
     private static readonly int EmissionColorId = Shader.PropertyToID("_EmissionColor");
 
+    public Transform PlanetTransform => planet;
+
 
     private void Start()
     {
@@ -86,6 +88,7 @@ public class BeamManager : MonoBehaviour
 
         Colors[] previous = new Colors[count];
         for (int i = 0; i < count; i++) previous[i] = crystals[i].OutputColor;
+        bool stable = false;
 
         // On répète les passes jusqu'à ce que plus rien ne change
         for (int iteration = 0; iteration < maxIterations; iteration++)
@@ -106,7 +109,7 @@ public class BeamManager : MonoBehaviour
             }
 
             // Comparaison avec la passe précédente
-            bool stable = true;
+            stable = true;
             for (int i = 0; i < count; i++)
             {
                 Colors current = crystals[i].OutputColor;
@@ -117,7 +120,10 @@ public class BeamManager : MonoBehaviour
             if (stable) break;
         }
 
+
+        if (!stable) Debug.LogWarning($"{name} : faisceaux instables (boucle de mixeur ?).");
         DrawBeams();
+        foreach (Crystal c in crystals) c.UpdateVisual();
         LogReceivers();
     }
 
@@ -195,29 +201,18 @@ public class BeamManager : MonoBehaviour
             lr.positionCount = s.points.Length;
             lr.SetPositions(s.points);
 
-            propertyBlock.SetColor(EmissionColorId, ToColor(s.color) * emissionIntensity);
+            propertyBlock.SetColor(EmissionColorId, ColorsUtil.ToColor(s.color) * emissionIntensity);
             lr.SetPropertyBlock(propertyBlock);
 
             lr.gameObject.SetActive(true);
         }
     }
 
-    // Convertit une couleur de l'enum en couleur Unity
-    private static Color ToColor(Colors c)
-    {
-        if (c == Colors.None) return new Color(0.3f, 0.3f, 0.3f);
-
-        float r = (c & Colors.Red) != 0 ? 1f : 0f;
-        float g = (c & Colors.Green) != 0 ? 1f : 0f;
-        float b = (c & Colors.Blue) != 0 ? 1f : 0f;
-        return new Color(r, g, b);
-    }
-
     private void OnDrawGizmos()
     {
         foreach (BeamSegment s in segments)
         {
-            Gizmos.color = ToColor(s.color);
+            Gizmos.color = ColorsUtil.ToColor(s.color);
             for (int i = 0; i < s.points.Length - 1; i++)
                 Gizmos.DrawLine(s.points[i], s.points[i + 1]);
         }
