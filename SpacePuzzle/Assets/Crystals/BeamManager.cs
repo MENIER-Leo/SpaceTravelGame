@@ -11,7 +11,8 @@ public class BeamManager : MonoBehaviour
     private float maxDistance = 50f;
     [SerializeField] 
     private int maxIterations = 10;
-    
+    [SerializeField] private bool debugLogs = false;
+
     [SerializeField] 
     private Transform planet;
     [SerializeField] 
@@ -126,7 +127,7 @@ public class BeamManager : MonoBehaviour
         if (!stable) Debug.LogWarning($"{name} : faisceaux instables (boucle de mixeur ?).");
         DrawBeams();
         foreach (Crystal c in crystals) c.UpdateVisual();
-        LogReceivers();
+        if (debugLogs) LogReceivers();
         OnRecomputed?.Invoke();
     }
 

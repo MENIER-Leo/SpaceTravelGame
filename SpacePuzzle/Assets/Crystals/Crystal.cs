@@ -49,7 +49,7 @@ public class Crystal : MonoBehaviour
     {
         get
         {
-            if (isRotating) return Colors.None;
+            if (isRotating || isAbsorbed) return Colors.None;
             switch (crystalType)
             {
                 case CrystalType.Emitter:
@@ -89,7 +89,10 @@ public class Crystal : MonoBehaviour
     [SerializeField] private float stepAngle = 7.5f;
     [SerializeField] private float rotationSpeed = 15f;   // degrés par seconde
     [SerializeField] private float relightDelay = 0.15f;
+    private bool initialRotatable;
     [SerializeField] private GameObject highlight;
+    private bool isAbsorbed;
+    public bool IsAbsorbed => isAbsorbed;
 
     private Quaternion baseRotation;
     private int stepIndex;
@@ -129,6 +132,7 @@ public class Crystal : MonoBehaviour
     {
         baseRotation = transform.rotation;
         stepIndex = 0;
+        initialRotatable = rotatable;
     }
 
     private void OnDisable()
@@ -149,7 +153,7 @@ public class Crystal : MonoBehaviour
 
     public void StartTurning(int direction)
     {
-        if (!rotatable || !isActiveAndEnabled) return;
+        if (!rotatable || isAbsorbed || !isActiveAndEnabled) return;
         turnDirection = direction >= 0 ? 1 : -1;
         turnHeld = true;
         stepRequested = true;
@@ -225,6 +229,30 @@ public class Crystal : MonoBehaviour
     {
         receivedColor = Colors.None;
         inputCount = 0;
+    }
+
+    // Remet le cristal dans son état de départ (orientation + verrou), sans recalcul
+    public void ResetState()
+    {
+        StopAllCoroutines();
+        turnRoutine = null;
+        isRotating = false;
+        turnHeld = false;
+        stepRequested = false;
+        stepIndex = 0;
+        SetYaw(0f);
+        rotatable = initialRotatable;
+    }
+
+    // Déclenche un recalcul unique des faisceaux depuis l'extérieur
+    public static void NotifyChanged()
+    {
+        OnAnyCrystalChanged?.Invoke();
+    }
+
+    public void SetAbsorbed(bool value)
+    {
+        isAbsorbed = value;
     }
 
 
@@ -327,7 +355,7 @@ public class Crystal : MonoBehaviour
     public void UpdateVisual()
     {
 
-        if (isRotating) { ApplyGlow(Colors.None, 0f); return; }
+        if (isRotating || isAbsorbed) { ApplyGlow(Colors.None, 0f); return; }
 
         Colors color = Colors.None;
         float factor = 0f;

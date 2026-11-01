@@ -6,8 +6,9 @@ public class CrystalInteractor : MonoBehaviour
     [SerializeField] private LayerMask crystalMask;
     [SerializeField] private KeyCode rotateLeftKey = KeyCode.Q;
     [SerializeField] private KeyCode rotateRightKey = KeyCode.E;
+    [SerializeField] private KeyCode resetHoldKey = KeyCode.E;
 
-    private Crystal current;
+    private MonoBehaviour current;   // Crystal ou ResetCrystal
     private KeyCode heldKey = KeyCode.None;
 
     private void Update()
@@ -18,55 +19,84 @@ public class CrystalInteractor : MonoBehaviour
 
     private void UpdateTarget()
     {
-        Crystal best = null;
+        MonoBehaviour best = null;
         float bestDist = float.MaxValue;
 
         Collider[] hits = Physics.OverlapSphere(transform.position, range, crystalMask, QueryTriggerInteraction.Collide);
         foreach (Collider hit in hits)
         {
-            Crystal c = hit.GetComponentInParent<Crystal>();
-            if (c == null || !c.rotatable) continue;
+            MonoBehaviour candidate = null;
 
-            float d = (c.transform.position - transform.position).sqrMagnitude;
-            if (d < bestDist) { bestDist = d; best = c; }
+            Crystal c = hit.GetComponentInParent<Crystal>();
+            if (c != null)
+            {
+                if (c.rotatable && !c.IsAbsorbed) candidate = c;
+            }
+            else
+            {
+                ResetCrystal r = hit.GetComponentInParent<ResetCrystal>();
+                if (r != null && r.CanInteract) candidate = r;
+            }
+
+            if (candidate == null) continue;
+
+            float d = (candidate.transform.position - transform.position).sqrMagnitude;
+            if (d < bestDist) { bestDist = d; best = candidate; }
         }
 
         if (best == current) return;
 
-        if (current != null)
-        {
-            current.StopTurning();
-            current.SetHighlighted(false);
-        }
-
+        Release(current);
         current = best;
         heldKey = KeyCode.None;
 
-        if (current != null) current.SetHighlighted(true);
+        if (current is Crystal crystal) crystal.SetHighlighted(true);
+        else if (current is ResetCrystal reset) reset.SetHighlighted(true);
     }
 
     private void HandleInput()
     {
-        if (current == null) return;
-
-        if (Input.GetKeyDown(rotateLeftKey)) { heldKey = rotateLeftKey; current.StartTurning(-1); }
-        else if (Input.GetKeyDown(rotateRightKey)) { heldKey = rotateRightKey; current.StartTurning(1); }
-
-        if (heldKey != KeyCode.None && Input.GetKeyUp(heldKey))
+        if (current is Crystal crystal)
         {
-            heldKey = KeyCode.None;
-            current.StopTurning();
+            if (Input.GetKeyDown(rotateLeftKey)) { heldKey = rotateLeftKey; crystal.StartTurning(-1); }
+            else if (Input.GetKeyDown(rotateRightKey)) { heldKey = rotateRightKey; crystal.StartTurning(1); }
+
+            if (heldKey != KeyCode.None && Input.GetKeyUp(heldKey))
+            {
+                heldKey = KeyCode.None;
+                crystal.StopTurning();
+            }
+        }
+        else if (current is ResetCrystal reset)
+        {
+            if (Input.GetKeyDown(resetHoldKey)) { heldKey = resetHoldKey; reset.BeginHold(); }
+
+            if (heldKey == resetHoldKey && Input.GetKeyUp(resetHoldKey))
+            {
+                heldKey = KeyCode.None;
+                reset.EndHold();
+            }
+        }
+    }
+
+    private void Release(MonoBehaviour target)
+    {
+        if (target is Crystal c)
+        {
+            c.StopTurning();
+            c.SetHighlighted(false);
+        }
+        else if (target is ResetCrystal r)
+        {
+            r.EndHold();
+            r.SetHighlighted(false);
         }
     }
 
     private void OnDisable()
     {
-        if (current != null)
-        {
-            current.StopTurning();
-            current.SetHighlighted(false);
-            current = null;
-        }
+        Release(current);
+        current = null;
         heldKey = KeyCode.None;
     }
 

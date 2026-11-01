@@ -2,12 +2,15 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections;
 
 [RequireComponent(typeof(BeamManager))]
 public class PuzzleController : MonoBehaviour
 {
     [SerializeField] private float confirmDelay = 0.5f;   // la solution doit tenir ce temps avant validation
     [SerializeField] private bool lockWhenSolved = true;  // bloque tous les cristaux une fois résolu
+    [SerializeField] private KeyCode resetKey = KeyCode.R;   // None pour désactiver
+    [SerializeField] private float absorbDuration = 0.5f;   // durée du noir pendant la réinitialisation
 
     [Header("Affichage (optionnel)")]
     [SerializeField] private TMP_Text statusText;
@@ -15,6 +18,7 @@ public class PuzzleController : MonoBehaviour
     [Header("Événements")]
     public UnityEvent onSolved;
     public UnityEvent onUnsolved;
+    public UnityEvent onReset;
 
     private BeamManager beamManager;
     private Crystal[] crystals;
@@ -22,8 +26,10 @@ public class PuzzleController : MonoBehaviour
     private bool isSolved;
     private bool pending;
     private float pendingTimer;
+    private bool isResetting;
 
     public bool IsSolved => isSolved;
+    public bool CanReset => !isResetting && !(isSolved && lockWhenSolved);
 
     private void Awake()
     {
@@ -91,6 +97,9 @@ public class PuzzleController : MonoBehaviour
 
     private void Update()
     {
+        if (resetKey != KeyCode.None && Input.GetKeyDown(resetKey))
+            ResetPuzzle();
+
         if (!pending) return;
 
         pendingTimer += Time.deltaTime;
@@ -119,6 +128,43 @@ public class PuzzleController : MonoBehaviour
         UpdateStatus(receivers.Count);
         onSolved.Invoke();
         Debug.Log($"{name} : puzzle résolu !");
+    }
+
+    [ContextMenu("Réinitialiser")]
+    public void ResetPuzzle()
+    {
+        if (!Application.isPlaying || isResetting) return;
+        StartCoroutine(ResetRoutine());
+    }
+
+    private IEnumerator ResetRoutine()
+    {
+        isResetting = true;
+        pending = false;
+        bool wasSolved = isSolved;
+        isSolved = false;
+
+        // 1. Tout s'éteint
+        foreach (Crystal c in crystals)
+        {
+            c.ResetState();
+            c.SetAbsorbed(true);
+        }
+
+        if (wasSolved) onUnsolved.Invoke();
+        onReset.Invoke();
+        Debug.Log($"{name} : puzzle réinitialisé.");
+        Crystal.NotifyChanged();
+
+        // 2. Pause dans le noir
+        yield return new WaitForSeconds(absorbDuration);
+
+        // 3. Tout se rallume, dans l'état de départ
+        foreach (Crystal c in crystals)
+            c.SetAbsorbed(false);
+
+        isResetting = false;
+        Crystal.NotifyChanged();
     }
 
     private int CountSatisfied()
