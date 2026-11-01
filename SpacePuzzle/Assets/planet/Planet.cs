@@ -30,7 +30,7 @@ public class Planet : MonoBehaviour
             if (meshFilters[i] == null)
             {
                 GameObject meshObj = new GameObject("mesh");
-                meshFilters[i].gameObject.layer = gameObject.layer;
+                meshObj.layer = gameObject.layer;          // on utilise meshObj, pas meshFilters[i]
                 meshObj.transform.parent = transform;
                 meshFilters[i] = meshObj.AddComponent<MeshFilter>();
             }
