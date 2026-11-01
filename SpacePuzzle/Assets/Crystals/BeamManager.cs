@@ -11,16 +11,28 @@ public class BeamManager : MonoBehaviour
     private float maxDistance = 50f;
     [SerializeField] 
     private int maxIterations = 10;
+    
+    [SerializeField] 
+    private Transform planet;
+    [SerializeField] 
+    private float stepLength = 0.4f;
 
     private struct BeamSegment
     {
-        public Vector3 start;
-        public Vector3 end;
+        public Vector3[] points;
         public Colors color;
     }
 
     private Crystal[] crystals;
     private readonly List<BeamSegment> segments = new List<BeamSegment>();
+
+    [Header("Affichage")]
+    [SerializeField] private LineRenderer segmentPrefab;
+    [SerializeField] private float emissionIntensity = 4f;
+
+    private readonly List<LineRenderer> pool = new List<LineRenderer>();
+    private MaterialPropertyBlock propertyBlock;
+    private static readonly int EmissionColorId = Shader.PropertyToID("_EmissionColor");
 
 
     private void Start()
@@ -38,12 +50,13 @@ public class BeamManager : MonoBehaviour
     private void OnDisable()
     {
         Crystal.OnAnyCrystalChanged -= Recompute;
+        HideAllSegments();
     }
 
     [ContextMenu("Refresh crystals")]
     private void RefreshCrystals()
     {
-        crystals = FindObjectsByType<Crystal>(FindObjectsSortMode.None);
+        crystals = GetComponentsInChildren<Crystal>();
     }
 
     // Vrai si tous les récepteurs de la scène sont satisfaits
@@ -104,28 +117,89 @@ public class BeamManager : MonoBehaviour
             if (stable) break;
         }
 
+        DrawBeams();
         LogReceivers();
     }
 
     private void TraceBeam(Crystal source, Colors color)
     {
-        Vector3 origin = source.BeamStart();
-        Vector3 direction = source.Heading;
-        Vector3 end = origin + direction * maxDistance;
+        Vector3 center = planet != null ? planet.position : Vector3.zero;
+        Vector3 current = source.BeamStart();
+        Vector3 normal = (current - center).normalized;
+        Vector3 direction = Vector3.ProjectOnPlane(source.Heading, normal).normalized;
 
-        if (Physics.Raycast(origin, direction, out RaycastHit hit, maxDistance,
-                            beamMask, QueryTriggerInteraction.Ignore))
+        if (direction == Vector3.zero)
         {
-            end = hit.point;
-
-            Crystal target = hit.collider.GetComponentInParent<Crystal>();
-            if (target != null && target != source)
-            {
-                target.AddInput(color);
-            }
+            Debug.LogWarning($"{source.name} : Heading perpendiculaire à la surface, cristal mal aligné.");
+            return;
         }
 
-        segments.Add(new BeamSegment { start = origin, end = end, color = color });
+        float altitude = (current - center).magnitude;
+        Vector3 axis = Vector3.Cross(normal, direction).normalized;
+        float angle = stepLength / altitude * Mathf.Rad2Deg;
+        Quaternion stepRotation = Quaternion.AngleAxis(angle, axis);
+
+        List<Vector3> points = new List<Vector3> { current };
+        float travelled = 0f;
+
+        while (travelled < maxDistance)
+        {
+            Vector3 next = center + stepRotation * (current - center);
+            Vector3 chord = next - current;
+            float length = chord.magnitude;
+
+            if (Physics.Raycast(current, chord / length, out RaycastHit hit, length,
+                                beamMask, QueryTriggerInteraction.Ignore))
+            {
+                points.Add(hit.point);
+
+                Crystal target = hit.collider.GetComponentInParent<Crystal>();
+                if (target != null && target != source) target.AddInput(color);
+                break;
+            }
+
+            points.Add(next);
+            current = next;
+            travelled += length;
+        }
+
+        segments.Add(new BeamSegment { points = points.ToArray(), color = color });
+    }
+
+    private LineRenderer GetSegment()
+    {
+        foreach (LineRenderer lr in pool)
+            if (!lr.gameObject.activeSelf) return lr;
+
+        LineRenderer created = Instantiate(segmentPrefab, transform);
+        pool.Add(created);
+        return created;
+    }
+
+    private void HideAllSegments()
+    {
+        foreach (LineRenderer lr in pool)
+            if (lr != null) lr.gameObject.SetActive(false);
+    }
+
+    private void DrawBeams()
+    {
+        if (!Application.isPlaying || segmentPrefab == null) return;
+        if (propertyBlock == null) propertyBlock = new MaterialPropertyBlock();
+
+        HideAllSegments();
+
+        foreach (BeamSegment s in segments)
+        {
+            LineRenderer lr = GetSegment();
+            lr.positionCount = s.points.Length;
+            lr.SetPositions(s.points);
+
+            propertyBlock.SetColor(EmissionColorId, ToColor(s.color) * emissionIntensity);
+            lr.SetPropertyBlock(propertyBlock);
+
+            lr.gameObject.SetActive(true);
+        }
     }
 
     // Convertit une couleur de l'enum en couleur Unity
@@ -144,7 +218,8 @@ public class BeamManager : MonoBehaviour
         foreach (BeamSegment s in segments)
         {
             Gizmos.color = ToColor(s.color);
-            Gizmos.DrawLine(s.start, s.end);
+            for (int i = 0; i < s.points.Length - 1; i++)
+                Gizmos.DrawLine(s.points[i], s.points[i + 1]);
         }
     }
 

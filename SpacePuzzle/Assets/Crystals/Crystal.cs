@@ -106,5 +106,10 @@ public class Crystal : MonoBehaviour
         inputCount++;
     }
 
+    private void OnValidate()
+    {
+        emittedColor &= Colors.White;
+        targetColor &= Colors.White;
+    }
 
 }

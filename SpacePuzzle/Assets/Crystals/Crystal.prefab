@@ -58,7 +58,7 @@ Transform:
   m_GameObject: {fileID: 4685416557354449098}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 10.22, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -100,8 +100,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crystalType: 0
-  rotatable: 1
+  rotatable: 0
   beamOrigin: {fileID: 1452698736392290168}
+  inputCount: 0
+  emittedColor: 0
+  targetColor: 0
+  receivedColor: 0
 --- !u!1 &8294690967575821339
 GameObject:
   m_ObjectHideFlags: 0
