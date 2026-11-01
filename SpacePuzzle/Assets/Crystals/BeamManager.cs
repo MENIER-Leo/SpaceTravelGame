@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[DefaultExecutionOrder(100)]
 public class BeamManager : MonoBehaviour
 {
 
@@ -17,6 +19,11 @@ public class BeamManager : MonoBehaviour
     private Transform planet;
     [SerializeField] 
     private float stepLength = 0.4f;
+
+    [Header("Terrain")]
+    [SerializeField] private LayerMask groundMask;          // Planete
+    [SerializeField] private float maxSlopeAngle = 35f;     // au-delà, le faisceau est coupé
+    [SerializeField] private bool snapOnStart = true;       // recale les cristaux au lancement
 
     private struct BeamSegment
     {
@@ -43,6 +50,7 @@ public class BeamManager : MonoBehaviour
     private void Start()
     {
         RefreshCrystals();
+        if (snapOnStart) SnapAllToTerrain();
         Recompute();
     }
 
@@ -64,9 +72,18 @@ public class BeamManager : MonoBehaviour
         crystals = GetComponentsInChildren<Crystal>();
     }
 
+    [ContextMenu("Snap all to terrain")]
+    private void SnapAllToTerrain()
+    {
+        foreach (Crystal c in GetComponentsInChildren<Crystal>()) c.AlignToPlanet(false);
+        foreach (ResetCrystal r in GetComponentsInChildren<ResetCrystal>()) r.AlignToPlanet();
+    }
+
     // Vrai si tous les récepteurs de la scène sont satisfaits
     public bool AllReceiversSatisfied()
     {
+        if (crystals == null) RefreshCrystals();
+
         bool anyReceiver = false;
 
         foreach (Crystal c in crystals)
@@ -133,33 +150,74 @@ public class BeamManager : MonoBehaviour
 
     private void TraceBeam(Crystal source, Colors color)
     {
-        Vector3 center = planet != null ? planet.position : Vector3.zero;
-        Vector3 current = source.BeamStart();
-        Vector3 normal = (current - center).normalized;
-        Vector3 direction = Vector3.ProjectOnPlane(source.Heading, normal).normalized;
+        if (planet == null)
+        {
+            Debug.LogWarning($"{name} : aucune planète assignée.");
+            return;
+        }
 
-        if (direction == Vector3.zero)
+        Vector3 center = planet.position;
+        Vector3 start = source.BeamStart();
+        Vector3 dir = (start - center).normalized;
+        Vector3 heading = Vector3.ProjectOnPlane(source.Heading, dir).normalized;
+
+        if (heading == Vector3.zero)
         {
             Debug.LogWarning($"{source.name} : Heading perpendiculaire à la surface, cristal mal aligné.");
             return;
         }
 
-        float altitude = (current - center).magnitude;
-        Vector3 axis = Vector3.Cross(normal, direction).normalized;
-        float angle = stepLength / altitude * Mathf.Rad2Deg;
-        Quaternion stepRotation = Quaternion.AngleAxis(angle, axis);
+        int ground = groundMask.value != 0 ? groundMask.value : LayerMask.GetMask("Planete");
+        int hitMask = beamMask & ~ground;                       // le long du faisceau : uniquement les cristaux
+        float startRadius = (start - center).magnitude;
+        float probeStart = startRadius + 20f;
 
-        List<Vector3> points = new List<Vector3> { current };
+        // Hauteur du faisceau au-dessus du sol, prise au départ
+        if (!TerrainSnap.GroundRadius(planet, dir, probeStart, ground, out float groundR, out _))
+        {
+            Debug.LogWarning($"{source.name} : sol introuvable sous le cristal.");
+            return;
+        }
+        float height = startRadius - groundR;
+
+        Vector3 axis = Vector3.Cross(dir, heading).normalized;
+        Quaternion stepRotation = Quaternion.AngleAxis(stepLength / startRadius * Mathf.Rad2Deg, axis);
+        float maxRise = Mathf.Tan(maxSlopeAngle * Mathf.Deg2Rad) * stepLength;
+
+        List<Vector3> points = new List<Vector3> { start };
+        Vector3 current = start;
         float travelled = 0f;
 
         while (travelled < maxDistance)
         {
-            Vector3 next = center + stepRotation * (current - center);
+            Vector3 nextDir = stepRotation * dir;
+
+            // Pas de sol (trou) : faisceau coupé
+            if (!TerrainSnap.GroundRadius(planet, nextDir, probeStart, ground, out float nextGroundR, out _))
+                break;
+
+            // Pente trop forte : faisceau coupé
+            if (Mathf.Abs(nextGroundR - groundR) > maxRise)
+            {
+                if (nextGroundR > groundR)   // montée : il s'écrase sur la paroi
+                {
+                    Vector3 flat = center + nextDir * (current - center).magnitude;
+                    Vector3 d = flat - current;
+                    if (Physics.Raycast(current, d.normalized, out RaycastHit wall, d.magnitude,
+                                        ground, QueryTriggerInteraction.Ignore))
+                        points.Add(wall.point);
+                    else
+                        points.Add(flat);
+                }
+                break;
+            }
+
+            Vector3 next = center + nextDir * (nextGroundR + height);
             Vector3 chord = next - current;
             float length = chord.magnitude;
 
             if (Physics.Raycast(current, chord / length, out RaycastHit hit, length,
-                                beamMask, QueryTriggerInteraction.Ignore))
+                                hitMask, QueryTriggerInteraction.Ignore))
             {
                 points.Add(hit.point);
 
@@ -170,6 +228,8 @@ public class BeamManager : MonoBehaviour
 
             points.Add(next);
             current = next;
+            dir = nextDir;
+            groundR = nextGroundR;
             travelled += length;
         }
 

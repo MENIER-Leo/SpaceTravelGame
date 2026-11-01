@@ -275,48 +275,33 @@ public class Crystal : MonoBehaviour
 
 
     [ContextMenu("Align to planet")]
-    private void AlignToPlanet()
+    private void AlignToPlanetMenu() => AlignToPlanet(true);
+
+    public bool AlignToPlanet(bool notify)
     {
         BeamManager manager = GetComponentInParent<BeamManager>();
         if (manager == null || manager.PlanetTransform == null)
         {
             Debug.LogWarning($"{name} : aucun BeamManager avec Planet dans les parents.");
-            return;
+            return false;
         }
-
-        Vector3 center = manager.PlanetTransform.position;
-        Vector3 normal = (transform.position - center).normalized;
-        if (normal == Vector3.zero)
-        {
-            Debug.LogWarning($"{name} : le cristal est au centre de la planète.");
-            return;
-        }
-
-        int mask = groundMask.value != 0 ? groundMask.value : LayerMask.GetMask("Planete");
-        float probe = (transform.position - center).magnitude + 100f;
-        Vector3 start = center + normal * probe;
-
-        Physics.SyncTransforms();
-        if (!Physics.Raycast(start, -normal, out RaycastHit hit, probe, mask, QueryTriggerInteraction.Ignore))
-        {
-            Debug.LogWarning($"{name} : sol introuvable (collider ou layer de la planète ?).");
-            return;
-        }
-
-        float pivotHeight = 0f;
-        BoxCollider box = GetComponent<BoxCollider>();
-        if (box != null) pivotHeight = (box.size.y * 0.5f - box.center.y) * transform.lossyScale.y;
 
 #if UNITY_EDITOR
-    UnityEditor.Undo.RecordObject(transform, "Align to planet");
+    if (!Application.isPlaying) UnityEditor.Undo.RecordObject(transform, "Align to planet");
 #endif
-        transform.position = hit.point + normal * pivotHeight;
-        transform.rotation = Quaternion.FromToRotation(transform.up, normal) * transform.rotation;
+
+        int mask = groundMask.value != 0 ? groundMask.value : LayerMask.GetMask("Planete");
+        if (!TerrainSnap.Snap(transform, manager.PlanetTransform, mask))
+        {
+            Debug.LogWarning($"{name} : sol introuvable (collider ou layer de la planète ?).");
+            return false;
+        }
 
         baseRotation = transform.rotation;
         stepIndex = 0;
 
-        if (Application.isPlaying) OnAnyCrystalChanged?.Invoke();
+        if (notify && Application.isPlaying) OnAnyCrystalChanged?.Invoke();
+        return true;
     }
 
 

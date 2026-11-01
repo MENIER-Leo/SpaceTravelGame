@@ -126,4 +126,22 @@ public class ResetCrystal : MonoBehaviour
             meshTransform.localPosition = meshBasePosition + Random.insideUnitSphere * shake;
         }
     }
+
+    [ContextMenu("Align to planet")]
+    public void AlignToPlanet()
+    {
+        BeamManager manager = GetComponentInParent<BeamManager>();
+        if (manager == null || manager.PlanetTransform == null)
+        {
+            Debug.LogWarning($"{name} : aucun BeamManager avec Planet dans les parents.");
+            return;
+        }
+
+#if UNITY_EDITOR
+    if (!Application.isPlaying) UnityEditor.Undo.RecordObject(transform, "Align to planet");
+#endif
+
+        if (!TerrainSnap.Snap(transform, manager.PlanetTransform, LayerMask.GetMask("Planete")))
+            Debug.LogWarning($"{name} : sol introuvable.");
+    }
 }
