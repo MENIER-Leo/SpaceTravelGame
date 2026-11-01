@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         planet = GameObject.FindWithTag("Boule").transform;
-        groundLayer = LayerMask.GetMask("Planete", "Ground");
+        groundLayer = LayerMask.GetMask("Planete", "Ground", "Crystal");
     }
 
     public void handleInput(Transform camera)
@@ -63,6 +63,17 @@ public class PlayerMovement : MonoBehaviour
         return (transform.position - planet.position).normalized;
     }
 
+    Transform GetPlanetOf(Collider col)
+    {
+        Planet p = col.GetComponentInParent<Planet>();
+        if (p != null) return p.transform;
+
+        for (Transform t = col.transform; t != null; t = t.parent)
+            if (t.CompareTag("Boule")) return t;
+
+        return null;
+    }
+
     bool IsWalkable(Vector3 surfaceNormal, Vector3 up)
     {
         return Vector3.Angle(surfaceNormal, up) <= maxSlopeAngle;
@@ -83,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Physics.Raycast(origin, move.normalized, out RaycastHit wall, checkDistance, groundLayer))
         {
-            Planet hitPlanet = wall.collider.GetComponentInParent<Planet>();
+            Transform hitPlanet = GetPlanetOf(wall.collider);
 
             // FIX 1 : Si on touche le pont de face ou de côté, on NE change PAS isOnBridge ici !
             // On vérifie simplement si la surface touchée est praticable, sinon c'est un mur normal.
@@ -91,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 // Si on est au bout du pont et qu'on touche la nouvelle planète devant nous
                 isOnBridge = false;
-                planet = hitPlanet.transform;
+                planet = hitPlanet;
                 return move;
             }
 
@@ -167,7 +178,7 @@ public class PlayerMovement : MonoBehaviour
 
         foreach (RaycastHit h in hits)
         {
-            bool hitIsBridge = (h.collider.GetComponentInParent<Planet>() == null);
+            bool hitIsBridge = (GetPlanetOf(h.collider) == null);
 
             if (hitIsBridge)
             {
@@ -223,11 +234,11 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            Planet hitPlanet = bestHit.collider.GetComponentInParent<Planet>();
+            Transform hitPlanet = GetPlanetOf(bestHit.collider);
             if (hitPlanet != null)
             {
                 isOnBridge = false;
-                planet = hitPlanet.transform;
+                planet = hitPlanet;
                 up = GetUp();
             }
         }

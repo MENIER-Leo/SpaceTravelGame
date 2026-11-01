@@ -14,6 +14,9 @@ public class Planet : MonoBehaviour
     MeshFilter[] meshFilters;
     PlanetFace[] faces;
 
+    MinMax distanceMinMax;
+    public MinMax DistanceMinMax => distanceMinMax;
+
     void Initialize()
     {
         if (meshFilters == null || meshFilters.Length == 0)
@@ -24,6 +27,8 @@ public class Planet : MonoBehaviour
         Vector3[] dir = { Vector3.up, Vector3.down, Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
         
         planetGenerator = new PlanetGenerator(settings);
+
+        distanceMinMax = new MinMax();
 
         for (int i = 0; i < 6; i++)
         {
@@ -48,7 +53,7 @@ public class Planet : MonoBehaviour
             if (meshFilters[i].sharedMesh == null)
                 meshFilters[i].sharedMesh = new Mesh();
 
-            faces[i] = new PlanetFace(dir[i], resolution, meshFilters[i].sharedMesh, planetGenerator);
+            faces[i] = new PlanetFace(dir[i], resolution, meshFilters[i].sharedMesh, planetGenerator, distanceMinMax);
         }
     }
 

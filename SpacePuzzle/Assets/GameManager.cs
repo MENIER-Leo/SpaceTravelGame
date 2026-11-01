@@ -4,22 +4,24 @@ public class GameManager : MonoBehaviour
 {
 
     GameObject player;
-    GameObject camera;
+    GameObject mainCamera;
     PlayerMovement PMU;
     CameraFollow CVEC;
 
     void Start()
     {
         player = GameObject.Find("Joueur");
-        PMU = player.AddComponent<PlayerMovement>();
+        PMU = player.GetComponent<PlayerMovement>();
+        if (PMU == null) PMU = player.AddComponent<PlayerMovement>();
 
-        camera = GameObject.Find("Main Camera");
-        CVEC = camera.AddComponent<CameraFollow>();
+        mainCamera = GameObject.Find("Main Camera");
+        CVEC = mainCamera.GetComponent<CameraFollow>();
+        if (CVEC == null) CVEC = mainCamera.AddComponent<CameraFollow>();
     }
 
     void Update()
     {
-        PMU.handleInput(camera.transform);
+        PMU.handleInput(mainCamera.transform);
     }
 
 }
