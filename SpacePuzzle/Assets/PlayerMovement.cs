@@ -13,9 +13,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Collisions")]
     public float sphereRadius = 0.5f;
     public const float raycastMargin = 0.1f;
-    public const float maxSlopeAngle = 50f; // angle max de pente pour marcher dessus
-    public float stepHeight = 0.5f;         // d'où on regarde vers le sol
-    public float slideSpeed = 4f;           // vitesse de glissement sur les pentes raides
+    public const float maxSlopeAngle = 50f;
+    public float stepHeight = 0.5f;
+    public float slideSpeed = 4f;
     public float minDistanceFromCenter = 5f;
     public LayerMask groundLayer;
 
@@ -53,7 +53,6 @@ public class PlayerMovement : MonoBehaviour
         horizontalMove = Vector3.ClampMagnitude(horizontalMove, 1f) * SPEED;
     }
 
-    // Retourne le haut du pont si on est dessus, sinon le haut de la planète actuelle
     Vector3 GetUp()
     {
         if (isOnBridge && bridgeUp != Vector3.zero)
@@ -63,20 +62,17 @@ public class PlayerMovement : MonoBehaviour
         return (transform.position - planet.position).normalized;
     }
 
-    // Retourne vrai si la marche est possible
     bool IsWalkable(Vector3 surfaceNormal, Vector3 up)
     {
         return Vector3.Angle(surfaceNormal, up) <= maxSlopeAngle;
     }
 
-    // Aligne le joueur avec le sol actuel (planète ou pont)
     void AlignToPlanet(Vector3 up, float dt)
     {
         Quaternion target = Quaternion.FromToRotation(transform.up, up) * transform.rotation;
         transform.rotation = Quaternion.Slerp(transform.rotation, target, 15f * dt);
     }
 
-    // Bloque les murs et gère les transitions Pont-Planète par l'avant
     Vector3 BlockWalls(Vector3 move, Vector3 up)
     {
         if (move.sqrMagnitude < 1e-7f) return move;
@@ -88,18 +84,13 @@ public class PlayerMovement : MonoBehaviour
         {
             Planet hitPlanet = wall.collider.GetComponentInParent<Planet>();
 
-            // Si l'objet touché devant nous N'EST PAS une planète, c'est le pont
-            if (hitPlanet == null)
+            // FIX 1 : Si on touche le pont de face ou de côté, on NE change PAS isOnBridge ici !
+            // On vérifie simplement si la surface touchée est praticable, sinon c'est un mur normal.
+            if (isOnBridge && hitPlanet != null)
             {
-                isOnBridge = true;
-                bridgeUp = wall.transform.up; // Utilise le "Haut" plat du pont
-                return move; // Ne bloque pas le joueur
-            }
-            // Si on était sur le pont et qu'on touche une planète au bout
-            else if (isOnBridge && hitPlanet != null)
-            {
+                // Si on est au bout du pont et qu'on touche la nouvelle planète devant nous
                 isOnBridge = false;
-                planet = hitPlanet.transform; // Bascule la gravité sur la nouvelle planète
+                planet = hitPlanet.transform;
                 return move;
             }
 
@@ -114,7 +105,6 @@ public class PlayerMovement : MonoBehaviour
 
     void handleVerticalMovement(float step, Vector3 up, float dt)
     {
-        // Si on monte (saut), pas besoin de chercher le sol
         if (step > 0f)
         {
             transform.position += up * step;
@@ -122,48 +112,90 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        // Si on descend ou qu'on est au sol, on cherche tous les sols sous nos pieds
         float fall = -step;
         Vector3 origin = transform.position + up * stepHeight;
-        float range = stepHeight + sphereRadius + raycastMargin + fall;
+        float groundRange = stepHeight + sphereRadius + raycastMargin + fall;
 
-        // RaycastAll permet de détecter le pont MÊME s'il chevauche légèrement la surface de la planète
-        RaycastHit[] hits = Physics.RaycastAll(origin, -up, range, groundLayer);
+        // Si on est sur le pont, on sonde jusqu'à 10m en dessous pour savoir si on survole toujours le pont pendant un saut
+        float searchRange = isOnBridge ? Mathf.Max(groundRange, 10f) : groundRange;
+
+        RaycastHit[] hits = Physics.RaycastAll(origin, -up, searchRange, groundLayer);
         if (hits.Length == 0)
         {
-            transform.position += up * step; // rien sous nous : on tombe
+            // Rien même à 10m sous nos pieds : on a sauté dans le vide à côté du pont !
+            if (isOnBridge)
+            {
+                isOnBridge = false;
+                FindClosestPlanet();
+            }
+            transform.position += up * step;
             isGrounded = false;
             return;
         }
 
-        // On trie pour prendre le point le plus haut sous nos pieds, en donnant la priorité au pont aux jonctions
-        RaycastHit hit = hits[0];
-        bool foundBridge = false;
+        RaycastHit bestHit = new RaycastHit();
+        bool foundValidGround = false;
+        bool isBridgeHit = false;
 
         foreach (RaycastHit h in hits)
         {
-            if (h.collider.GetComponentInParent<Planet>() == null) // C'est le pont
+            bool hitIsBridge = (h.collider.GetComponentInParent<Planet>() == null);
+
+            if (hitIsBridge)
             {
-                hit = h;
-                foundBridge = true;
-                break;
+                bool isTopSurface = Vector3.Dot(h.normal, h.transform.up) > 0.8f;
+                float heightDiff = stepHeight - h.distance + sphereRadius;
+                bool isStepReachable = heightDiff <= (stepHeight * 0.6f);
+
+                if (isTopSurface && (isOnBridge || isStepReachable))
+                {
+                    bestHit = h;
+                    foundValidGround = true;
+                    isBridgeHit = true;
+                    break;
+                }
             }
-            if (h.distance < hit.distance)
+            else if (h.distance <= groundRange) // Les planètes ne comptent qu'à portée de pied
             {
-                hit = h;
+                if (!foundValidGround || h.distance < bestHit.distance)
+                {
+                    bestHit = h;
+                    foundValidGround = true;
+                    isBridgeHit = false;
+                }
             }
         }
 
-        // Mise à jour de l'état (Pont vs Planète)
-        if (foundBridge)
+        if (!foundValidGround)
+        {
+            // On était sur le pont, mais le rayon n'a plus trouvé le pont sous nous (on est sorti sur le côté)
+            if (isOnBridge)
+            {
+                isOnBridge = false;
+                FindClosestPlanet();
+            }
+            transform.position += up * step;
+            isGrounded = false;
+            return;
+        }
+
+        // Si le pont est détecté loin sous nos pieds (pendant le saut), on garde sa gravité mais on continue de tomber normalement !
+        if (bestHit.distance > groundRange)
+        {
+            transform.position += up * step;
+            isGrounded = false;
+            return;
+        }
+
+        if (isBridgeHit)
         {
             isOnBridge = true;
-            bridgeUp = hit.normal;
+            bridgeUp = bestHit.transform.up;
             up = bridgeUp;
         }
         else
         {
-            Planet hitPlanet = hit.collider.GetComponentInParent<Planet>();
+            Planet hitPlanet = bestHit.collider.GetComponentInParent<Planet>();
             if (hitPlanet != null)
             {
                 isOnBridge = false;
@@ -172,11 +204,11 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        Vector3 restPosition = hit.point + up * sphereRadius; // position "posé sur le sol"
+        Vector3 restPosition = bestHit.point + up * sphereRadius;
 
-        if (IsWalkable(hit.normal, up))
+        if (IsWalkable(bestHit.normal, up))
         {
-            transform.position = restPosition; // on se colle au sol
+            transform.position = restPosition;
             verticalSpeed = 0f;
             isGrounded = true;
         }
@@ -190,13 +222,29 @@ public class PlayerMovement : MonoBehaviour
                 verticalSpeed = 0f;
             }
 
-            Vector3 downhill = Vector3.ProjectOnPlane(-up, hit.normal).normalized;
+            Vector3 downhill = Vector3.ProjectOnPlane(-up, bestHit.normal).normalized;
             transform.position = next + downhill * slideSpeed * dt;
             isGrounded = false;
         }
     }
 
-    // Sécurité désactivé sur le pont pour ne pas être téléporté en arrière
+    // Permet de retomber sur la planète la plus proche si on saute/tombe sur les côtés du pont
+    void FindClosestPlanet()
+    {
+        Planet[] allPlanets = FindObjectsByType<Planet>(FindObjectsSortMode.None);
+        float minDistance = Mathf.Infinity;
+
+        foreach (Planet p in allPlanets)
+        {
+            float dist = Vector3.Distance(transform.position, p.transform.position);
+            if (dist < minDistance)
+            {
+                minDistance = dist;
+                planet = p.transform;
+            }
+        }
+    }
+
     void RecoverIfInsidePlanet()
     {
         if (isOnBridge) return;
@@ -214,23 +262,23 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        float dt = Mathf.Min(Time.deltaTime, 0.05f); // évite les pics de lag
+        float dt = Mathf.Min(Time.deltaTime, 0.05f);
 
         Vector3 up = GetUp();
         AlignToPlanet(up, dt);
 
-        // 1. Avancer
+        // Avancer
         Vector3 move = Vector3.ProjectOnPlane(horizontalMove, up) * dt;
         horizontalMove = Vector3.zero;
         transform.position += BlockWalls(move, up);
 
-        // 2. Gravité
+        // Gravité
         float previousSpeed = verticalSpeed;
         if (!isGrounded)
             verticalSpeed = Mathf.Max(verticalSpeed - gravity * dt, -maxFallSpeed);
         float verticalStep = (previousSpeed + verticalSpeed) * 0.5f * dt;
 
-        // 3. Monter / descendre / se coller au sol
+        //Monter / descendre / se coller au sol
         up = GetUp();
         handleVerticalMovement(verticalStep, up, dt);
 
