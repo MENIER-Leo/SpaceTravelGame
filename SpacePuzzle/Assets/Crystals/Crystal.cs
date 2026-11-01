@@ -49,6 +49,7 @@ public class Crystal : MonoBehaviour
     {
         get
         {
+            if (isRotating) return Colors.None;
             switch (crystalType)
             {
                 case CrystalType.Emitter:
@@ -73,7 +74,7 @@ public class Crystal : MonoBehaviour
 
     public bool IsLit => receivedColor != Colors.None;
 
-    [Header("Placement (éditeur)")]
+    [Header("Placement")]
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private Crystal aimTarget;
 
@@ -84,16 +85,34 @@ public class Crystal : MonoBehaviour
     [SerializeField] private float emissionIntensity = 3f;
     [SerializeField, Range(0f, 1f)] private float weakFactor = 0.25f;
 
+    [Header("Rotation")]
+    [SerializeField] private float stepAngle = 7.5f;
+    [SerializeField] private float rotationSpeed = 15f;   // degrés par seconde
+    [SerializeField] private float relightDelay = 0.15f;
+    [SerializeField] private GameObject highlight;
+
+    private Quaternion baseRotation;
+    private int stepIndex;
+    private bool isRotating;
+    private bool turnHeld;
+    private bool stepRequested;
+    private int turnDirection = 1;
+    private Coroutine turnRoutine;
+
+    public bool IsRotating => isRotating;
+    private int StepsPerTurn => Mathf.Max(1, Mathf.RoundToInt(360f / stepAngle));
+
     private MaterialPropertyBlock propertyBlock;
     private static readonly int EmissionColorId = Shader.PropertyToID("_EmissionColor");
 
 
-    public void RotateStep(float angle)
-    {
-        if (!rotatable) return;
-        transform.Rotate(0f, angle, 0f, Space.Self);
-        OnAnyCrystalChanged?.Invoke();
+    public void RotateStep(float angle) 
+    { 
+        if (!rotatable) return; 
+        transform.Rotate(0f, angle, 0f, Space.Self); 
+        OnAnyCrystalChanged?.Invoke(); 
     }
+
 
     public Vector3 BeamStart()
     {         if (beamOrigin != null)
@@ -106,11 +125,101 @@ public class Crystal : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        baseRotation = transform.rotation;
+        stepIndex = 0;
+    }
+
+    private void OnDisable()
+    {
+        if (!isRotating) return;
+        StopAllCoroutines();
+        SetYaw(stepIndex * stepAngle);
+        isRotating = false;
+        turnHeld = false;
+        stepRequested = false;
+        turnRoutine = null;
+    }
+
+    public void SetHighlighted(bool on)
+    {
+        if (highlight != null) highlight.SetActive(on);
+    }
+
+    public void StartTurning(int direction)
+    {
+        if (!rotatable || !isActiveAndEnabled) return;
+        turnDirection = direction >= 0 ? 1 : -1;
+        turnHeld = true;
+        stepRequested = true;
+        if (turnRoutine == null) turnRoutine = StartCoroutine(TurnRoutine());
+    }
+
+    public void StopTurning()
+    {
+        turnHeld = false;
+    }
+
+    private IEnumerator TurnRoutine()
+    {
+        isRotating = true;
+        OnAnyCrystalChanged?.Invoke();   // extinction
+
+        while (true)
+        {
+            while (turnHeld || stepRequested)
+            {
+                stepRequested = false;
+                yield return StartCoroutine(RotateOneStep(turnDirection));
+            }
+
+            float waited = 0f;
+            while (waited < relightDelay && !stepRequested)
+            {
+                waited += Time.deltaTime;
+                yield return null;
+            }
+            if (!stepRequested) break;
+        }
+
+        isRotating = false;
+        turnRoutine = null;
+        OnAnyCrystalChanged?.Invoke();   // rallumage
+    }
+
+    private IEnumerator RotateOneStep(int direction)
+    {
+        float from = stepIndex * stepAngle;
+        float to = from + direction * stepAngle;
+        float duration = stepAngle / Mathf.Max(rotationSpeed, 0.01f);
+
+        for (float t = 0f; t < duration; t += Time.deltaTime)
+        {
+            SetYaw(Mathf.Lerp(from, to, t / duration));
+            yield return null;
+        }
+
+        stepIndex = (stepIndex + direction + StepsPerTurn) % StepsPerTurn;
+        SetYaw(stepIndex * stepAngle);   // rotation exacte, pas d'arrondi cumulé
+    }
+
+    private void SetYaw(float yaw)
+    {
+        transform.rotation = baseRotation * Quaternion.Euler(0f, yaw, 0f);
+    }
+
+
     [ContextMenu("Rotate")]
     private void ApplyRotation()
     {
-        RotateStep(90f);
+        if (Application.isPlaying) { StartTurning(1); StopTurning(); return; }
+#if UNITY_EDITOR
+    UnityEditor.Undo.RecordObject(transform, "Rotate crystal");
+#endif
+        transform.Rotate(0f, stepAngle, 0f, Space.Self);
     }
+
 
     public void ResetInput()
     {
@@ -118,17 +227,24 @@ public class Crystal : MonoBehaviour
         inputCount = 0;
     }
 
+
     public void AddInput(Colors color)
     {
         receivedColor |= color;
         inputCount++;
     }
 
+
     private void OnValidate()
     {
         emittedColor &= Colors.White;
         targetColor &= Colors.White;
+
+        stepAngle = Mathf.Clamp(stepAngle, 1f, 90f);
+        if (Mathf.Abs(360f / stepAngle - Mathf.Round(360f / stepAngle)) > 0.001f)
+            Debug.LogWarning($"{name} : stepAngle ({stepAngle}) ne divise pas 360.");
     }
+
 
     [ContextMenu("Align to planet")]
     private void AlignToPlanet()
@@ -168,8 +284,13 @@ public class Crystal : MonoBehaviour
 #endif
         transform.position = hit.point + normal * pivotHeight;
         transform.rotation = Quaternion.FromToRotation(transform.up, normal) * transform.rotation;
+
+        baseRotation = transform.rotation;
+        stepIndex = 0;
+
         if (Application.isPlaying) OnAnyCrystalChanged?.Invoke();
     }
+
 
     [ContextMenu("Aim at target")]
     private void AimAtTarget()
@@ -188,17 +309,26 @@ public class Crystal : MonoBehaviour
             return;
         }
 
+
 #if UNITY_EDITOR
     UnityEditor.Undo.RecordObject(transform, "Aim at target");
 #endif
         transform.rotation = Quaternion.LookRotation(direction.normalized, up);
+
+        baseRotation = transform.rotation;
+        stepIndex = 0;
+
         if (Application.isPlaying) OnAnyCrystalChanged?.Invoke();
     }
+
 
 
     // Appelée par BeamManager après chaque recalcul
     public void UpdateVisual()
     {
+
+        if (isRotating) { ApplyGlow(Colors.None, 0f); return; }
+
         Colors color = Colors.None;
         float factor = 0f;
 
@@ -223,6 +353,8 @@ public class Crystal : MonoBehaviour
 
         ApplyGlow(color, factor);
     }
+
+
 
     private void ApplyGlow(Colors color, float factor)
     {

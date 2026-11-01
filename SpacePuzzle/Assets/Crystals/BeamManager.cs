@@ -36,6 +36,8 @@ public class BeamManager : MonoBehaviour
 
     public Transform PlanetTransform => planet;
 
+    public event System.Action OnRecomputed;
+
 
     private void Start()
     {
@@ -125,6 +127,7 @@ public class BeamManager : MonoBehaviour
         DrawBeams();
         foreach (Crystal c in crystals) c.UpdateVisual();
         LogReceivers();
+        OnRecomputed?.Invoke();
     }
 
     private void TraceBeam(Crystal source, Colors color)
