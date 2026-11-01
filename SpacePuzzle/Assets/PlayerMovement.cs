@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public float slideSpeed = 4f;
     public float minDistanceFromCenter = 5f;
     public LayerMask groundLayer;
+    public LayerMask obstacleLayer;   // couches qui bloquent le joueur (Crystal)
 
     // Mouvements
     private const float SPEED = 5f;
@@ -102,6 +103,33 @@ public class PlayerMovement : MonoBehaviour
         }
         return move;
     }
+
+    // Repousse le joueur hors des obstacles qu'il chevauche (sur le plan tangent à la planète)
+    void PushOutOfObstacles(Vector3 up)
+    {
+        Vector3 center = transform.position;
+        Collider[] hits = Physics.OverlapSphere(center, sphereRadius, obstacleLayer, QueryTriggerInteraction.Ignore);
+
+        foreach (Collider col in hits)
+        {
+            Vector3 closest = col.ClosestPoint(center);
+            Vector3 away = center - closest;
+            float dist = away.magnitude;
+
+            if (dist < 1e-4f)   // centre du joueur à l'intérieur du collider
+            {
+                away = center - col.bounds.center;
+                dist = 0f;
+            }
+
+            away = Vector3.ProjectOnPlane(away, up);   // pas de poussée verticale (on peut rester posé dessus)
+            if (away.sqrMagnitude < 1e-8f) continue;
+
+            center += away.normalized * (sphereRadius - dist);
+        }
+
+        transform.position = center;
+    }   
 
     void handleVerticalMovement(float step, Vector3 up, float dt)
     {
@@ -281,6 +309,7 @@ public class PlayerMovement : MonoBehaviour
         //Monter / descendre / se coller au sol
         up = GetUp();
         handleVerticalMovement(verticalStep, up, dt);
+        PushOutOfObstacles(up);
 
         RecoverIfInsidePlanet();
     }
