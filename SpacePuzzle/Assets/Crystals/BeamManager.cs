@@ -125,7 +125,8 @@ public class BeamManager : MonoBehaviour
                 if (color == Colors.None) continue;
                 if (source.crystalType == CrystalType.Receiver) continue;
 
-                TraceBeam(source, color);
+                foreach (Vector3 heading in source.GetHeadings())
+                    TraceBeam(source, color, heading);
             }
 
             // Comparaison avec la passe précédente
@@ -148,7 +149,7 @@ public class BeamManager : MonoBehaviour
         OnRecomputed?.Invoke();
     }
 
-    private void TraceBeam(Crystal source, Colors color)
+    private void TraceBeam(Crystal source, Colors color, Vector3 sourceHeading)
     {
         if (planet == null)
         {
@@ -159,7 +160,7 @@ public class BeamManager : MonoBehaviour
         Vector3 center = planet.position;
         Vector3 start = source.BeamStart();
         Vector3 dir = (start - center).normalized;
-        Vector3 heading = Vector3.ProjectOnPlane(source.Heading, dir).normalized;
+        Vector3 heading = Vector3.ProjectOnPlane(sourceHeading, dir).normalized;
 
         if (heading == Vector3.zero)
         {

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public enum CrystalType { Emitter, Relay, Receiver, Mixer };
+public enum CrystalType { Emitter, Relay, Receiver, Mixer, Prism };
 
 [Flags]
 public enum Colors
@@ -34,6 +34,18 @@ public class Crystal : MonoBehaviour
     public Vector3 Heading => transform.forward;
     public Vector3 Up => transform.up;
 
+    // Directions de sortie : 1 pour les cristaux classiques, 2 pour le prisme
+    public Vector3[] GetHeadings()
+    {
+        if (crystalType != CrystalType.Prism) return new[] { transform.forward };
+
+        return new[]
+        {
+        Quaternion.AngleAxis(-splitAngle, transform.up) * transform.forward,   // gauche
+        Quaternion.AngleAxis( splitAngle, transform.up) * transform.forward    // droite
+    };
+    }
+
     [SerializeField] 
     private int inputCount;        // nombre de faisceaux reçus
 
@@ -56,6 +68,7 @@ public class Crystal : MonoBehaviour
                     return emittedColor;
 
                 case CrystalType.Relay:
+                case CrystalType.Prism:
                     return inputCount == 1 ? receivedColor : Colors.None;
 
                 case CrystalType.Mixer:
@@ -90,6 +103,13 @@ public class Crystal : MonoBehaviour
     [SerializeField] private float rotationSpeed = 15f;   // degrés par seconde
     [SerializeField] private float relightDelay = 0.15f;
     private bool initialRotatable;
+
+    [Header("Prisme")]
+    [SerializeField] private float splitAngle = 45f;   // demi-angle entre les deux sorties
+    [SerializeField] private Crystal firstTarget;    // cible de la sortie gauche (outil éditeur)
+    [SerializeField] private Crystal secondTarget;   // cible de la sortie droite (outil éditeur)
+
+
     [SerializeField] private GameObject highlight;
     private bool isAbsorbed;
     public bool IsAbsorbed => isAbsorbed;
@@ -271,6 +291,7 @@ public class Crystal : MonoBehaviour
         stepAngle = Mathf.Clamp(stepAngle, 1f, 90f);
         if (Mathf.Abs(360f / stepAngle - Mathf.Round(360f / stepAngle)) > 0.001f)
             Debug.LogWarning($"{name} : stepAngle ({stepAngle}) ne divise pas 360.");
+        splitAngle = Mathf.Clamp(splitAngle, 5f, 90f);
     }
 
 
@@ -328,10 +349,80 @@ public class Crystal : MonoBehaviour
 #endif
         transform.rotation = Quaternion.LookRotation(direction.normalized, up);
 
+        if (crystalType == CrystalType.Prism)
+            transform.rotation = Quaternion.AngleAxis(splitAngle, up) * transform.rotation;   // sortie gauche vers la cible
+
         baseRotation = transform.rotation;
         stepIndex = 0;
 
         if (Application.isPlaying) OnAnyCrystalChanged?.Invoke();
+    }
+
+
+    [ContextMenu("Setup prism targets (gauche + droite)")]
+    private void SetupPrismTargets()
+    {
+        if (crystalType != CrystalType.Prism) { Debug.LogWarning($"{name} : n'est pas un prisme."); return; }
+        if (firstTarget == null) { Debug.LogWarning($"{name} : First Target non assigné."); return; }
+
+        BeamManager manager = GetComponentInParent<BeamManager>();
+        if (manager == null) { Debug.LogWarning($"{name} : aucun BeamManager trouvé dans les parents."); return; }
+
+        // 1. Recaler d'abord le prisme et la première cible (plus rien ne bougera au Play)
+        AlignToPlanet(false);
+        firstTarget.AlignToPlanet(false);
+
+        // 2. Orienter la sortie gauche avec le même repère que TraceBeam
+        Vector3 center = manager.PlanetTransform.position;
+        Vector3 dir = (BeamStart() - center).normalized;
+        Vector3 toFirst = Vector3.ProjectOnPlane(firstTarget.transform.position - center, dir);
+        if (toFirst.sqrMagnitude < 1e-6f) { Debug.LogWarning($"{name} : First Target est à la verticale du prisme."); return; }
+
+#if UNITY_EDITOR
+    if (!Application.isPlaying) UnityEditor.Undo.RecordObject(transform, "Setup prism targets");
+#endif
+        transform.rotation = Quaternion.AngleAxis(splitAngle, dir) * Quaternion.LookRotation(toFirst, dir);
+        baseRotation = transform.rotation;
+        stepIndex = 0;
+
+        // 3. Placer la deuxième cible sur la sortie droite
+        if (secondTarget != null) PlaceSecondTarget();
+
+        // Contrôle : doit afficher ~0°
+        Vector3 left = Vector3.ProjectOnPlane(GetHeadings()[0], dir);
+        Debug.Log($"{name} : écart sortie gauche / First Target = {Vector3.Angle(left, toFirst):F2}°");
+    }
+
+
+
+    [ContextMenu("Place second target (sortie droite)")]
+    private void PlaceSecondTarget()
+    {
+        if (crystalType != CrystalType.Prism) { Debug.LogWarning($"{name} : n'est pas un prisme."); return; }
+        if (secondTarget == null) { Debug.LogWarning($"{name} : Second Target non assigné."); return; }
+
+        BeamManager manager = GetComponentInParent<BeamManager>();
+        if (manager == null) { Debug.LogWarning($"{name} : aucun BeamManager trouvé dans les parents."); return; }
+
+        Vector3 center = manager.PlanetTransform.position;
+        Vector3 dir = (BeamStart() - center).normalized;
+        Vector3 heading = Vector3.ProjectOnPlane(GetHeadings()[1], dir).normalized;
+
+        // Garde la distance (angle sur la sphère) actuelle entre le prisme et la cible
+        Vector3 targetOffset = secondTarget.transform.position - center;
+        float angle = Vector3.Angle(dir, targetOffset);
+        if (angle < 1f) { Debug.LogWarning($"{name} : la cible est trop proche du prisme."); return; }
+
+        // Même grand cercle que TraceBeam
+        Vector3 newDir = Quaternion.AngleAxis(angle, Vector3.Cross(dir, heading)) * dir;
+
+#if UNITY_EDITOR
+    if (!Application.isPlaying) UnityEditor.Undo.RecordObject(secondTarget.transform, "Place second target");
+#endif
+        secondTarget.transform.position = center + newDir * targetOffset.magnitude;
+
+        if (!secondTarget.AlignToPlanet(true))
+            Debug.LogWarning($"{secondTarget.name} : recalage sur le terrain impossible.");
     }
 
 
@@ -354,6 +445,7 @@ public class Crystal : MonoBehaviour
 
             case CrystalType.Relay:
             case CrystalType.Mixer:
+            case CrystalType.Prism:
                 if (OutputColor != Colors.None) { color = OutputColor; factor = 1f; }
                 else if (IsLit) { color = receivedColor; factor = weakFactor; }
                 break;
@@ -387,6 +479,18 @@ public class Crystal : MonoBehaviour
             meshRenderer.GetPropertyBlock(propertyBlock);
             propertyBlock.SetColor(EmissionColorId, on ? c * emissionIntensity * factor : Color.black);
             meshRenderer.SetPropertyBlock(propertyBlock);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.white;
+        Vector3 start = BeamStart();
+        foreach (Vector3 h in GetHeadings()) Gizmos.DrawRay(start, h * 2f);
+        if (crystalType == CrystalType.Prism && secondTarget != null)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawLine(transform.position, secondTarget.transform.position);
         }
     }
 
