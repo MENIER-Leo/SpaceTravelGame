@@ -19,7 +19,7 @@ public class NoiseSettings
 public class PlanetSettings : ScriptableObject
 {
 
-    [Range(1f, 10f)]
+    [Range(1f, 30f)]
     public float radius = 1f;
     
     public int seed = 1;

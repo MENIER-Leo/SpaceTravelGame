@@ -61,7 +61,7 @@ public class Crystal : MonoBehaviour
     {
         get
         {
-            if (isRotating || isAbsorbed) return Colors.None;
+            if (isRotating || isAbsorbed || forcedOff) return Colors.None;
             switch (crystalType)
             {
                 case CrystalType.Emitter:
@@ -102,6 +102,9 @@ public class Crystal : MonoBehaviour
     [SerializeField] private float stepAngle = 7.5f;
     [SerializeField] private float rotationSpeed = 15f;   // degrés par seconde
     [SerializeField] private float relightDelay = 0.15f;
+    [SerializeField, Tooltip("Crans de décalage appliqués au lancement (mélange). 0 = position résolue.")]
+    private int startStep;
+    private int initialStepIndex;
     private bool initialRotatable;
 
     [Header("Prisme")]
@@ -113,6 +116,10 @@ public class Crystal : MonoBehaviour
     [SerializeField] private GameObject highlight;
     private bool isAbsorbed;
     public bool IsAbsorbed => isAbsorbed;
+    private bool forcedOff;      // éteint de force par le BeamManager (boucle instable)
+    private Colors lastOutput;   // sortie utilisée au dernier passage du calcul
+    public bool IsUnstable => OutputColor != lastOutput;
+    public void SetForcedOff(bool value) { forcedOff = value; }
 
     private Quaternion baseRotation;
     private int stepIndex;
@@ -151,8 +158,10 @@ public class Crystal : MonoBehaviour
     private void Awake()
     {
         baseRotation = transform.rotation;
-        stepIndex = 0;
         initialRotatable = rotatable;
+        initialStepIndex = rotatable ? ((startStep % StepsPerTurn) + StepsPerTurn) % StepsPerTurn : 0;
+        stepIndex = initialStepIndex;
+        SetYaw(stepIndex * stepAngle);
     }
 
     private void OnDisable()
@@ -247,6 +256,7 @@ public class Crystal : MonoBehaviour
 
     public void ResetInput()
     {
+        lastOutput = OutputColor;
         receivedColor = Colors.None;
         inputCount = 0;
     }
@@ -259,8 +269,8 @@ public class Crystal : MonoBehaviour
         isRotating = false;
         turnHeld = false;
         stepRequested = false;
-        stepIndex = 0;
-        SetYaw(0f);
+        stepIndex = initialStepIndex;
+        SetYaw(stepIndex * stepAngle);
         rotatable = initialRotatable;
     }
 
@@ -320,6 +330,7 @@ public class Crystal : MonoBehaviour
 
         baseRotation = transform.rotation;
         stepIndex = 0;
+        initialStepIndex = 0;
 
         if (notify && Application.isPlaying) OnAnyCrystalChanged?.Invoke();
         return true;
@@ -423,6 +434,53 @@ public class Crystal : MonoBehaviour
 
         if (!secondTarget.AlignToPlanet(true))
             Debug.LogWarning($"{secondTarget.name} : recalage sur le terrain impossible.");
+    }
+
+
+    [ContextMenu("Aim prism at both targets (split auto)")]
+    private void AimPrismAtBothTargets()
+    {
+        if (crystalType != CrystalType.Prism) { Debug.LogWarning($"{name} : n'est pas un prisme."); return; }
+        if (firstTarget == null || secondTarget == null) { Debug.LogWarning($"{name} : First Target et Second Target doivent être assignés."); return; }
+        BeamManager manager = GetComponentInParent<BeamManager>();
+        if (manager == null) { Debug.LogWarning($"{name} : aucun BeamManager trouvé dans les parents."); return; }
+
+        AlignToPlanet(false);
+        firstTarget.AlignToPlanet(false);
+        secondTarget.AlignToPlanet(false);
+
+        Vector3 center = manager.PlanetTransform.position;
+        Vector3 dir = (BeamStart() - center).normalized;
+        Vector3 toFirst = Vector3.ProjectOnPlane(firstTarget.transform.position - center, dir);
+        Vector3 toSecond = Vector3.ProjectOnPlane(secondTarget.transform.position - center, dir);
+        if (toFirst.sqrMagnitude < 1e-6f || toSecond.sqrMagnitude < 1e-6f) { Debug.LogWarning($"{name} : une cible est à la verticale du prisme."); return; }
+
+#if UNITY_EDITOR
+    if (!Application.isPlaying) UnityEditor.Undo.RecordObjects(new UnityEngine.Object[] { this, transform }, "Aim prism at both targets");
+#endif
+
+        // Sortie droite = sortie gauche tournée de 2 × split autour de la verticale (sens positif).
+        float between = Vector3.SignedAngle(toFirst, toSecond, dir);
+        if (between < 0f)
+        {
+            (firstTarget, secondTarget) = (secondTarget, firstTarget);
+            (toFirst, toSecond) = (toSecond, toFirst);
+            between = -between;
+            Debug.Log($"{name} : First et Second Target inversés automatiquement (gauche/droite).");
+        }
+
+        splitAngle = between * 0.5f;
+        if (splitAngle < 10f || splitAngle > 80f)
+            Debug.LogWarning($"{name} : écart extrême ({splitAngle:F1}°), rapproche ou écarte les cibles.");
+
+        transform.rotation = Quaternion.AngleAxis(splitAngle, dir) * Quaternion.LookRotation(toFirst, dir);
+        baseRotation = transform.rotation;
+        stepIndex = 0;
+
+        Vector3[] headings = GetHeadings();
+        float errLeft = Vector3.Angle(Vector3.ProjectOnPlane(headings[0], dir), toFirst);
+        float errRight = Vector3.Angle(Vector3.ProjectOnPlane(headings[1], dir), toSecond);
+        Debug.Log($"{name} : split = {splitAngle:F1}° — écart gauche {errLeft:F2}°, droite {errRight:F2}°");
     }
 
 

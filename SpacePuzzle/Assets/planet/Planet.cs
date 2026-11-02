@@ -16,6 +16,8 @@ public class Planet : MonoBehaviour
 
     MinMax distanceMinMax;
     public MinMax DistanceMinMax => distanceMinMax;
+    static readonly int MinMaxId = Shader.PropertyToID("_MinMax");
+    MaterialPropertyBlock propertyBlock;
 
     void Initialize()
     {
@@ -44,7 +46,6 @@ public class Planet : MonoBehaviour
             if (rend == null)
                 rend = meshFilters[i].gameObject.AddComponent<MeshRenderer>();
             rend.sharedMaterial = planetMaterial;
-            rend.sharedMaterial.SetFloat("_Radius", settings.radius);
 
             MeshCollider col = meshFilters[i].GetComponent<MeshCollider>();
             if (col == null)
@@ -69,6 +70,8 @@ public class Planet : MonoBehaviour
             col.sharedMesh = null;               // force la reconstruction de la collision
             col.sharedMesh = faces[i].mesh;
         }
+
+        UpdateShaderMinMax();
     }
 
     void OnValidate()
@@ -93,5 +96,19 @@ public class Planet : MonoBehaviour
         if (settings == null) return;
         Initialize();
         GenerateMesh();
+    }
+
+    void UpdateShaderMinMax()
+    {
+        if (propertyBlock == null) propertyBlock = new MaterialPropertyBlock();
+        Vector4 minMax = new Vector4(distanceMinMax.Min, distanceMinMax.Max, 0f, 0f);
+
+        for (int i = 0; i < 6; i++)
+        {
+            MeshRenderer rend = meshFilters[i].GetComponent<MeshRenderer>();
+            rend.GetPropertyBlock(propertyBlock);
+            propertyBlock.SetVector(MinMaxId, minMax);
+            rend.SetPropertyBlock(propertyBlock);
+        }
     }
 }

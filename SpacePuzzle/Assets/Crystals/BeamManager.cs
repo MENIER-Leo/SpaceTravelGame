@@ -6,6 +6,9 @@ using UnityEngine;
 public class BeamManager : MonoBehaviour
 {
 
+    private int stabilizeDepth;
+    private const int MaxStabilizeDepth = 5;
+
     [Header("Réglages")]
     [SerializeField] 
     private LayerMask beamMask;
@@ -17,7 +20,7 @@ public class BeamManager : MonoBehaviour
 
     [SerializeField] 
     private Transform planet;
-    [SerializeField] 
+    [SerializeField]
     private float stepLength = 0.4f;
 
     [Header("Terrain")]
@@ -101,6 +104,9 @@ public class BeamManager : MonoBehaviour
     {
         if (crystals == null) RefreshCrystals();
 
+        if (stabilizeDepth == 0)
+            foreach (Crystal c in crystals) c.SetForcedOff(false);
+
         int count = crystals.Length;
 
         // Départ : tout à zéro, seuls les émetteurs ont une sortie
@@ -141,6 +147,23 @@ public class BeamManager : MonoBehaviour
             if (stable) break;
         }
 
+
+        if (stabilizeDepth < MaxStabilizeDepth)
+        {
+            var unstable = new System.Collections.Generic.List<Crystal>();
+            foreach (Crystal c in crystals) if (c.IsUnstable) unstable.Add(c);
+
+            if (unstable.Count > 0)
+            {
+                foreach (Crystal c in unstable) c.SetForcedOff(true);
+                if (debugLogs) Debug.Log($"{name} : boucle instable, éteints de force : {string.Join(", ", unstable.ConvertAll(c => c.name))}");
+
+                stabilizeDepth++;
+                Recompute();          // le recalcul imbriqué dessine et met à jour tout
+                stabilizeDepth--;
+                return;
+            }
+        }
 
         if (!stable) Debug.LogWarning($"{name} : faisceaux instables (boucle de mixeur ?).");
         DrawBeams();

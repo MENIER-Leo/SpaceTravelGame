@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87cd25d893be45a2e6ec9f2b146b0, type: 3}
   m_Name: planet
   m_EditorClassIdentifier: 
-  radius: 7
+  radius: 14
   seed: 1
   continents:
     layers: 4
