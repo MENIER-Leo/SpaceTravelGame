@@ -96,7 +96,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Transform hitPlanet = GetPlanetOf(wall.collider);
 
-            // FIX 1 : Si on touche le pont de face ou de côté, on NE change PAS isOnBridge ici !
+            // Si on touche le pont de face ou de côté, on NE change PAS isOnBridge ici !
             // On vérifie simplement si la surface touchée est praticable, sinon c'est un mur normal.
             if (isOnBridge && hitPlanet != null)
             {
