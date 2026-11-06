@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e87cd25d893be45a2e6ec9f2b146b0, type: 3}
+  m_Name: planetMirror
+  m_EditorClassIdentifier: 
+  radius: 14
+  seed: 1
+  continents:
+    layers: 5
+    roughness: 2.1
+    persistence: 0.55
+    baseFrequency: 0.9
+  seaLevel: 0.02
+  seaRelief: 0.07
+  mountains:
+    layers: 6
+    roughness: 2.2
+    persistence: 0.5
+    baseFrequency: 1.8
+  mountainZoneStart: 0.05
+  mountainZoneEnd: 0.3
+  craters:
+    layers: 3
+    roughness: 2
+    persistence: 0.5
+    baseFrequency: 1.2
+  plainsHeight: 0.03
+  plainsRoughness: 0.008
+  mountainHeight: 0.38

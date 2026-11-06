@@ -8,9 +8,12 @@ public class SpacePirate : MonoBehaviour
     public Transform respawnPoint;
 
     [Header("Patrouille / Rotation")]
-    public float patrolSpeed = 25f;
-    public float turnSpeed = 40f;
+    public float patrolSpeed = 10f;
+    public float turnSpeed = 20f;
+    public float heightOffset = 1f;
     public bool walkAroundPlanet = true;
+    [Tooltip("Coche si le pirate ne doit marcher QUE sur l'objet 'planet' et ignorer le pont")]
+    public bool stickOnlyToPlanet = true;
 
     [Header("Cône de Vision")]
     public float viewDistance = 8f;
@@ -21,25 +24,56 @@ public class SpacePirate : MonoBehaviour
     {
         if (planet == null || player == null) return;
 
-        // Maintenir le pirate debout sur la courbure de la planète
-        Vector3 up = (transform.position - planet.position).normalized;
+        Vector3 dirFromCenter = (transform.position - planet.position).normalized;
 
         if (walkAroundPlanet)
         {
-            // Fait avancer le pirate en cercle autour de la planète
             transform.RotateAround(planet.position, transform.right, patrolSpeed * Time.deltaTime);
+            dirFromCenter = (transform.position - planet.position).normalized;
         }
         else
         {
-            // Mode sentinelle fixe : tourne sur lui-même pour scanner les alentours
-            transform.Rotate(up, turnSpeed * Time.deltaTime, Space.World);
+            transform.Rotate(dirFromCenter, turnSpeed * Time.deltaTime, Space.World);
         }
 
-        // Réaligne ses pieds avec la normale de la planète
-        Quaternion targetRot = Quaternion.FromToRotation(transform.up, up) * transform.rotation;
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 10f * Time.deltaTime);
+        // 1. On fait partir le rayon juste au-dessus du pirate (5m) et non à 100m dans l'espace
+        float rayHeight = 5f;
+        float maxRayDistance = 20f;
+        Vector3 rayStart = transform.position + dirFromCenter * rayHeight;
 
-        // Vérifier si le joueur est repéré
+        RaycastHit[] hits = Physics.RaycastAll(rayStart, -dirFromCenter, maxRayDistance, obstacleLayer);
+
+        // 2. On cherche l'impact valide LE PLUS PROCHE du pirate
+        RaycastHit closestHit = new RaycastHit();
+        float closestDistance = Mathf.Infinity;
+        bool foundGround = false;
+
+        foreach (RaycastHit hit in hits)
+        {
+            // Ignore le pirate lui-même
+            if (hit.transform == transform || hit.transform.IsChildOf(transform))
+                continue;
+
+            // Si activé, ignore le pont et les autres planètes
+            if (stickOnlyToPlanet && hit.transform != planet && !hit.transform.IsChildOf(planet))
+                continue;
+
+            if (hit.distance < closestDistance)
+            {
+                closestDistance = hit.distance;
+                closestHit = hit;
+                foundGround = true;
+            }
+        }
+
+        if (foundGround)
+        {
+            transform.position = closestHit.point + dirFromCenter * heightOffset;
+        }
+
+        Quaternion targetRot = Quaternion.FromToRotation(transform.up, dirFromCenter) * transform.rotation;
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 15f * Time.deltaTime);
+
         CheckLineOfSight();
     }
 
@@ -50,11 +84,9 @@ public class SpacePirate : MonoBehaviour
 
         if (distanceToPlayer <= viewDistance)
         {
-            // Le joueur est-il dans l'angle de vue ?
             float angle = Vector3.Angle(transform.forward, dirToPlayer.normalized);
             if (angle <= viewAngle * 0.5f)
             {
-                // Y a-t-il un obstacle entre les deux ?
                 Vector3 eyePosition = transform.position + transform.up * 0.5f;
                 if (!Physics.Raycast(eyePosition, dirToPlayer.normalized, distanceToPlayer, obstacleLayer))
                 {
@@ -69,12 +101,10 @@ public class SpacePirate : MonoBehaviour
         Debug.Log("Repéré par les pirates !");
         if (respawnPoint != null)
         {
-            // Téléporte le joueur au point de départ de la planète 2
             player.position = respawnPoint.position;
         }
     }
 
-    // Dessine le cône de vision en rouge dans la vue Scene pour aider à régler la difficulté
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
