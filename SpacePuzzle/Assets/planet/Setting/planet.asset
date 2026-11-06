@@ -35,4 +35,4 @@ MonoBehaviour:
     baseFrequency: 2
   plainsHeight: 0.02
   plainsRoughness: 0.02
-  mountainHeight: 0.1
+  mountainHeight: 0.2
