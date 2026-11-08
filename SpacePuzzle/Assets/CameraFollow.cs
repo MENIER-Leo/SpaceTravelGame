@@ -2,6 +2,14 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
+
+    [Header("Collision caméra")]
+    public LayerMask collisionMask;         // couches qui bloquent la caméra (Ground)
+    public float collisionRadius = 0.3f;    // marge autour du rayon pour ne pas frôler les murs
+    public float minDistance = 1.0f;        // distance minimale au joueur
+    public float zoomOutSpeed = 8f;         // vitesse de recul quand le mur n'est plus là
+
+    private float currentDistance;
     public Transform player;
     public float distance = 10.0f;
 
@@ -19,6 +27,7 @@ public class CameraFollow : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Joueur").transform;
+        currentDistance = distance;
     }
 
     void LateUpdate()
@@ -39,8 +48,16 @@ public class CameraFollow : MonoBehaviour
             Quaternion finalRotation = player.rotation * localOrbit;
 
             //Calcule le recul de la caméra selon la rotation
-            Vector3 direction = new Vector3(0f, 0f, -distance);
-            transform.position = player.position + (finalRotation * direction);
+            Vector3 back = finalRotation * Vector3.back;
+            float wanted = distance;
+
+            if (Physics.SphereCast(player.position, collisionRadius, back, out RaycastHit hit, distance, collisionMask, QueryTriggerInteraction.Ignore))
+                wanted = Mathf.Max(hit.distance, minDistance);
+
+            // Se rapproche immédiatement d'un mur, recule en douceur quand il disparaît
+            currentDistance = wanted < currentDistance ? wanted : Mathf.MoveTowards(currentDistance, wanted, zoomOutSpeed * Time.deltaTime);
+
+            transform.position = player.position + back * currentDistance;
 
             //Oriente la caméra vers le joueur (en gardant la tête à l'endroit)
             transform.rotation = finalRotation;

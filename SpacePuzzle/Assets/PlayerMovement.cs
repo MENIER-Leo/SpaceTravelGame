@@ -2,6 +2,12 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+
+    [Header("Mode plat (scène sans planète)")]
+    public float killHeight = -20f;           // sous cette hauteur, retour à la dernière position sûre
+    private bool IsFlat => planet == null;    // aucune planète "Boule" dans la scène
+
+
     [Header("Gravité et Saut")]
     public float gravity = 20f;
     public float jumpForce = 8f;
@@ -32,8 +38,13 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        planet = GameObject.FindWithTag("Boule").transform;
+        GameObject boule = GameObject.FindWithTag("Boule");
+        planet = boule != null ? boule.transform : null;
+        lastSafePosition = transform.position;
         groundLayer = LayerMask.GetMask("Planete", "Ground", "Crystal");
+
+        if (IsFlat)
+            obstacleLayer = LayerMask.GetMask("Crystal", "Ground");
     }
 
     public void handleInput(Transform camera)
@@ -56,6 +67,9 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 GetUp()
     {
+
+        if (IsFlat) return Vector3.up;
+
         if (isOnBridge && bridgeUp != Vector3.zero)
         {
             return bridgeUp;
@@ -178,7 +192,7 @@ public class PlayerMovement : MonoBehaviour
 
         foreach (RaycastHit h in hits)
         {
-            bool hitIsBridge = (GetPlanetOf(h.collider) == null);
+            bool hitIsBridge = !IsFlat && GetPlanetOf(h.collider) == null;
 
             if (hitIsBridge)
             {
@@ -292,7 +306,7 @@ public class PlayerMovement : MonoBehaviour
         {
             lastSafePosition = transform.position;
         }
-        else if ((transform.position - planet.position).magnitude < minDistanceFromCenter)
+        else if (IsFlat ? transform.position.y < killHeight : (transform.position - planet.position).magnitude < minDistanceFromCenter)
         {
             transform.position = lastSafePosition;
             verticalSpeed = 0f;
