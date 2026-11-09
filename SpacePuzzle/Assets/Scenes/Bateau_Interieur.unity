@@ -3358,8 +3358,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 244746384}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.49219292, y: -0.12313925, z: 0.070568755, w: -0.85883814}
+  m_LocalPosition: {x: 12.70052, y: 6.485094, z: 11.595673}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6049,6 +6049,14 @@ PrefabInstance:
       propertyPath: door
       value: 
       objectReference: {fileID: 1427237953}
+    - target: {fileID: 431226566896245095, guid: c02c5b722c262454b8234ee7336da144, type: 3}
+      propertyPath: camPoint
+      value: 
+      objectReference: {fileID: 1065691767}
+    - target: {fileID: 431226566896245095, guid: c02c5b722c262454b8234ee7336da144, type: 3}
+      propertyPath: cinematic
+      value: 
+      objectReference: {fileID: 549618355}
     - target: {fileID: 2429072100957826049, guid: c02c5b722c262454b8234ee7336da144, type: 3}
       propertyPath: m_Name
       value: Bouton_Couloir
@@ -6093,6 +6101,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5851056762184234646, guid: c02c5b722c262454b8234ee7336da144, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6108,6 +6120,39 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8887868807432744953, guid: 22cb7c482d598744d8a9082f22d5241c, type: 3}
   m_PrefabInstance: {fileID: 64232134}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &451655335 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8126681435938706042, guid: 173318861d129c14f81ce467068ed8f0, type: 3}
+  m_PrefabInstance: {fileID: 1058338016}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &451655342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 451655335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd943202308f0a0469082a2c05d8f4f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  killHeight: -20
+  gravity: 20
+  jumpForce: 8
+  maxFallSpeed: 10
+  isOnBridge: 0
+  bridgeUp: {x: 0, y: 0, z: 0}
+  sphereRadius: 0.5
+  stepHeight: 0.5
+  slideSpeed: 4
+  minDistanceFromCenter: 5
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 72
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 136
 --- !u!4 &451744744 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8887868807432744953, guid: 22cb7c482d598744d8a9082f22d5241c, type: 3}
@@ -6277,6 +6322,14 @@ PrefabInstance:
       propertyPath: door
       value: 
       objectReference: {fileID: 1394477683}
+    - target: {fileID: 431226566896245095, guid: c02c5b722c262454b8234ee7336da144, type: 3}
+      propertyPath: camPoint
+      value: 
+      objectReference: {fileID: 244746385}
+    - target: {fileID: 431226566896245095, guid: c02c5b722c262454b8234ee7336da144, type: 3}
+      propertyPath: cinematic
+      value: 
+      objectReference: {fileID: 549618355}
     - target: {fileID: 2429072100957826049, guid: c02c5b722c262454b8234ee7336da144, type: 3}
       propertyPath: m_Name
       value: Bouton_1
@@ -7771,6 +7824,58 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8887868807432744953, guid: 22cb7c482d598744d8a9082f22d5241c, type: 3}
   m_PrefabInstance: {fileID: 1172346826}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &549618353
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 549618354}
+  - component: {fileID: 549618355}
+  m_Layer: 0
+  m_Name: CinematicManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &549618354
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549618353}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1665226443}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &549618355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549618353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61e01220c10a51142b933b571d45aeb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 961739752}
+  playerMovement: {fileID: 451655342}
+  cameraFollow: {fileID: 961739754}
+  goDuration: 0.6
+  pauseBeforeOpen: 0.2
+  doorOpenDuration: 1
+  holdAfterOpen: 0.3
+  returnDuration: 0.5
 --- !u!4 &551539975 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8887868807432744953, guid: 22cb7c482d598744d8a9082f22d5241c, type: 3}
@@ -15538,7 +15643,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8126681435938706042, guid: 173318861d129c14f81ce467068ed8f0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 451655342}
   m_SourcePrefab: {fileID: 100100000, guid: 173318861d129c14f81ce467068ed8f0, type: 3}
 --- !u!4 &1060848627 stripped
 Transform:
@@ -15569,8 +15677,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1065691766}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.0009833775, y: -0.9569713, z: 0.29016295, w: -0.0032426633}
+  m_LocalPosition: {x: 16.670067, y: 6.6008615, z: 64.29768}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -22000,7 +22108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1497039081}
   m_Layer: 0
-  m_Name: CamPoint_canon
+  m_Name: CamPoint_Canon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22014,8 +22122,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1497039080}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.3938232, y: 0.07944166, z: -0.034183767, w: -0.91510856}
+  m_LocalPosition: {x: 18.771427, y: 7.1158767, z: 22.577827}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23003,6 +23111,14 @@ PrefabInstance:
       propertyPath: door
       value: 
       objectReference: {fileID: 2075395080}
+    - target: {fileID: 431226566896245095, guid: c02c5b722c262454b8234ee7336da144, type: 3}
+      propertyPath: camPoint
+      value: 
+      objectReference: {fileID: 1497039081}
+    - target: {fileID: 431226566896245095, guid: c02c5b722c262454b8234ee7336da144, type: 3}
+      propertyPath: cinematic
+      value: 
+      objectReference: {fileID: 549618355}
     - target: {fileID: 2429072100957826049, guid: c02c5b722c262454b8234ee7336da144, type: 3}
       propertyPath: m_Name
       value: Bouton_Canon
@@ -23046,6 +23162,10 @@ PrefabInstance:
     - target: {fileID: 2617849820993508251, guid: c02c5b722c262454b8234ee7336da144, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5851056762184234646, guid: c02c5b722c262454b8234ee7336da144, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -24350,6 +24470,7 @@ Transform:
   - {fileID: 519535987}
   - {fileID: 153408391}
   - {fileID: 968210383}
+  - {fileID: 549618354}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1671925686

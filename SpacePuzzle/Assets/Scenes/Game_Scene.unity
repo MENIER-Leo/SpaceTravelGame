@@ -282,7 +282,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4740566070182037567, guid: 4b4e8779634b8f744a7b6f06c8181b78, type: 3}
       propertyPath: startStep
-      value: 5
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4740566070182037567, guid: 4b4e8779634b8f744a7b6f06c8181b78, type: 3}
+      propertyPath: stepAngle
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4740566070182037567, guid: 4b4e8779634b8f744a7b6f06c8181b78, type: 3}
       propertyPath: inputCount
@@ -802,7 +806,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4740566070182037567, guid: 4b4e8779634b8f744a7b6f06c8181b78, type: 3}
       propertyPath: startStep
-      value: 7
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4740566070182037567, guid: 4b4e8779634b8f744a7b6f06c8181b78, type: 3}
+      propertyPath: stepAngle
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4740566070182037567, guid: 4b4e8779634b8f744a7b6f06c8181b78, type: 3}
       propertyPath: inputCount
@@ -1278,11 +1286,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: startStep
-      value: -10
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: stepAngle
-      value: 7.5
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: inputCount
@@ -1508,7 +1516,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: startStep
-      value: 11
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
+      propertyPath: stepAngle
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: inputCount
@@ -1783,7 +1795,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: startStep
-      value: -14
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
+      propertyPath: stepAngle
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: inputCount
@@ -2037,7 +2053,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: startStep
-      value: -9
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
+      propertyPath: stepAngle
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: crystalType
@@ -3349,7 +3369,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4740566070182037567, guid: 4b4e8779634b8f744a7b6f06c8181b78, type: 3}
       propertyPath: startStep
-      value: -6
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4740566070182037567, guid: 4b4e8779634b8f744a7b6f06c8181b78, type: 3}
+      propertyPath: stepAngle
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4740566070182037567, guid: 4b4e8779634b8f744a7b6f06c8181b78, type: 3}
       propertyPath: inputCount
@@ -4025,7 +4049,11 @@ PrefabInstance:
       objectReference: {fileID: 1740387012}
     - target: {fileID: 2711526601433843260, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
       propertyPath: startStep
-      value: -9
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2711526601433843260, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: stepAngle
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2711526601433843260, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
       propertyPath: inputCount
@@ -4125,7 +4153,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4244464902539315565, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
       propertyPath: startStep
-      value: 6
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4244464902539315565, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: stepAngle
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5012127009631859484, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
       propertyPath: planet
@@ -4209,7 +4241,11 @@ PrefabInstance:
       objectReference: {fileID: 929028541}
     - target: {fileID: 5399893740051160751, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
       propertyPath: startStep
-      value: 13
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5399893740051160751, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: stepAngle
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5399893740051160751, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
       propertyPath: inputCount
@@ -4281,7 +4317,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7761212277134697600, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
       propertyPath: startStep
-      value: 4
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7761212277134697600, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: stepAngle
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8060941726990059439, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
       propertyPath: m_Color.b
@@ -4317,7 +4357,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8726108391256221945, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
       propertyPath: startStep
-      value: -5
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8726108391256221945, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: stepAngle
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4695,7 +4739,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: startStep
-      value: 12
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
+      propertyPath: stepAngle
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: inputCount

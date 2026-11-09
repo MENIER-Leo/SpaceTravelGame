@@ -3,7 +3,11 @@ using UnityEngine;
 public class Button : MonoBehaviour
 {
 
+    [Header("Cinématique")]
+    public Transform camPoint;
+    public CinematicManager cinematic;
 
+    [Header("Bouton")]
     public Door door;
     private float offset = 0.13f;
     private bool isPressed = false;
@@ -15,7 +19,8 @@ public class Button : MonoBehaviour
         {
             isPressed = true;
             transform.position -= new Vector3(0, offset, 0);
-            door.Open();
+            if (cinematic != null) cinematic.Play(door, camPoint);
+            else door.Open();
         }
     }
 }
