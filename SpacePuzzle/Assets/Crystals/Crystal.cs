@@ -106,6 +106,11 @@ public class Crystal : MonoBehaviour
     private float hintPulseSpeed = 0.5f;
     private bool showingHint;
 
+    private Colors lastGlowColor;
+    private float lastGlowFactor;
+    private bool isFlashing;
+    private Coroutine flashing;
+
     [Header("Rotation")]
     [SerializeField] private float stepAngle = 7.5f;
     [SerializeField] private float rotationSpeed = 15f;   // degrés par seconde
@@ -534,6 +539,7 @@ public class Crystal : MonoBehaviour
 
     private void ApplyGlow(Colors color, float factor)
     {
+        if (!isFlashing) { lastGlowColor = color; lastGlowFactor = factor; }
         bool on = color != Colors.None && factor > 0f;
         Color c = ColorsUtil.ToColor(color);
 
@@ -565,6 +571,32 @@ public class Crystal : MonoBehaviour
             pulse = 0.6f + 0.4f * Mathf.Sin(Time.time * hintPulseSpeed * Mathf.PI * 2f);
 
         ApplyGlow(hintColor, hintFactor * pulse);
+    }
+
+    public void Flash(float peak, float duration, float delay = 0f)
+    {
+        if (lastGlowColor == Colors.None) return;
+        if (flashing != null) StopCoroutine(flashing);
+        isFlashing = true;
+        flashing = StartCoroutine(FlashRoutine(lastGlowColor, lastGlowFactor, peak, duration, delay));
+    }
+
+    private IEnumerator FlashRoutine(Colors color, float baseFactor, float peak, float duration, float delay)
+    {
+        if (delay > 0f) yield return new WaitForSeconds(delay);
+
+        for (float t = 0f; t < duration; t += Time.deltaTime)
+        {
+            float k = t / duration;
+            // Montée très rapide (15 % du temps), puis redescente douce.
+            float env = k < 0.15f ? k / 0.15f : 1f - Mathf.SmoothStep(0f, 1f, (k - 0.15f) / 0.85f);
+            ApplyGlow(color, baseFactor * Mathf.Lerp(1f, peak, env));
+            yield return null;
+        }
+
+        isFlashing = false;
+        flashing = null;
+        UpdateVisual();
     }
 
     private void OnDrawGizmosSelected()
