@@ -113,7 +113,7 @@ public class HintNPC : MonoBehaviour
         {
             string prompt = string.IsNullOrEmpty(secondLine) || solved
                 ? ""
-                : $"\n<size=75%><color=#BBBBBB>[{moreKey}] Continuer</color></size>";
+                : $"\n<size=75%><color=#BBBBBB>[{moreKey}] Continue</color></size>";
             line = firstLine + prompt;
         }
 
