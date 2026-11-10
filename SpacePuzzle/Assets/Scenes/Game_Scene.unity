@@ -119,6 +119,90 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &107433559
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 326353451887458940, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_Name
+      value: Lou
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 12.396
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 35.952
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.96557975
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.21662116
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.01057926
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.1435933
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: npcName
+      value: Lou
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: firstLine
+      value: "J'ai voulu peindre un soleil avec mon rouge et mon vert... \xE7a a
+        fait du marron ! Mais maman dit que la lumi\xE8re, c'est pas pareil que la
+        peinture."
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: secondLine
+      value: "Un jour, je vais attraper deux rayons et les coincer dans le gros cristal.
+        Comme \xE7a, j'aurai mon soleil \xE0 moi !"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: solvedLine
+      value: T'as vu ? T'as vu ?! Il est tout jaune !
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: planetCenter
+      value: 
+      objectReference: {fileID: 1252233775}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: charsPerSecond
+      value: 45
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
 --- !u!1 &166926636
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,127 +949,87 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61f265d4e128bdf4c898407000e65f6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &410087039
-GameObject:
+--- !u!1001 &455806478
+PrefabInstance:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 410087041}
-  - component: {fileID: 410087040}
-  - component: {fileID: 410087042}
-  m_Layer: 0
-  m_Name: Directional Light
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!108 &410087040
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 410087039}
-  m_Enabled: 1
-  serializedVersion: 11
-  m_Type: 1
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
-  m_Range: 10
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 2
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingLayerMask: 1
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 5000
-  m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
-  m_ForceVisible: 0
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
-  m_LightUnit: 1
-  m_LuxAtDistance: 1
-  m_EnableSpotReflector: 1
---- !u!4 &410087041
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!114 &410087042
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 410087039}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Version: 3
-  m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 2
-  m_LightLayerMask: 1
-  m_RenderingLayers: 1
-  m_CustomShadowLayers: 0
-  m_ShadowLayerMask: 1
-  m_ShadowRenderingLayers: 1
-  m_LightCookieSize: {x: 1, y: 1}
-  m_LightCookieOffset: {x: 0, y: 0}
-  m_SoftShadowQuality: 1
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 326353451887458940, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_Name
+      value: Odile
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.40925598
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.8299217
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 43.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.82001746
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.5720734
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.00058384764
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.017409993
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: firstLine
+      value: "Depuis que les cristaux se sont d\xE9r\xE9gl\xE9s, le village vit dans
+        le noir. Mon d\xE9funt mari disait qu'un cristal, c'est comme une ch\xE8vre
+        : si tu lui en donnes trop, il boude."
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: secondLine
+      value: "ll passait des heures \xE0 les tourner, un par un. Quand l'un d'eux
+        s'\xE9teignait, il grommelait : \xAB Qui est-ce qui t'emb\xEAte encore, toi
+        ? \xBB"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: solvedLine
+      value: "Les lampes se rallument ! Mon mari aurait \xE9t\xE9 fier de toi."
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: planetCenter
+      value: 
+      objectReference: {fileID: 1252233775}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: charsPerSecond
+      value: 28
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
 --- !u!1 &489190581
 GameObject:
   m_ObjectHideFlags: 0
@@ -1139,6 +1183,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &512430895 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+  m_PrefabInstance: {fileID: 1764284365}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7bd2749629d61941ba8aeb0ecc0c654, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &524184002
 GameObject:
   m_ObjectHideFlags: 0
@@ -1367,6 +1422,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61f265d4e128bdf4c898407000e65f6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &647787993 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+  m_PrefabInstance: {fileID: 455806478}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7bd2749629d61941ba8aeb0ecc0c654, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &728663565
@@ -2913,6 +2979,17 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &1218874632 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+  m_PrefabInstance: {fileID: 107433559}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7bd2749629d61941ba8aeb0ecc0c654, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1252233773
 GameObject:
   m_ObjectHideFlags: 0
@@ -2924,7 +3001,7 @@ GameObject:
   - component: {fileID: 1252233775}
   - component: {fileID: 1252233774}
   m_Layer: 6
-  m_Name: Boule
+  m_Name: Shadow Planet
   m_TagString: Boule
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3206,6 +3283,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActivated: 1
   deploySpeed: 5
+--- !u!114 &1312979444 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+  m_PrefabInstance: {fileID: 1778383802}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7bd2749629d61941ba8aeb0ecc0c654, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1517202285
 GameObject:
   m_ObjectHideFlags: 0
@@ -4024,13 +4112,129 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 931040243}
     - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[4].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
       propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1266154899}
     - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 647787993}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 1218874632}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 512430895}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[4].m_Target
+      value: 
+      objectReference: {fileID: 1312979444}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
       propertyPath: onUnsolved.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1266154899}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[4].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnPuzzleSolved
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: OnPuzzleSolved
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: OnPuzzleSolved
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
+      value: OnPuzzleSolved
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: HintNPC, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: HintNPC, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: HintNPC, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[4].m_TargetAssemblyTypeName
+      value: HintNPC, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2290413712088961133, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
       propertyPath: m_Color.g
       value: 0
@@ -4464,6 +4668,171 @@ MonoBehaviour:
   minSplit: 15
   maxSplit: 75
   rotationStep: 7.5
+--- !u!1001 &1764284365
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 326353451887458940, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_Name
+      value: Bertrand
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.371
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.299
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 18.043
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8707819
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.48772314
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.046511695
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.041252468
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: npcName
+      value: Bertrand
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: firstLine
+      value: "Mes salades poussaient sous la lumi\xE8re de ce cristal, un bleu-vert
+        tout doux, comme le ciel du matin. Depuis qu'il s'est \xE9teint, elles font
+        grise mine."
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: secondLine
+      value: "Mon grand-p\xE8re disait que ce cristal avait deux parents : la for\xEAt
+        et la mer. Moi, j'ai jamais rien compris \xE0 ses histoires."
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: solvedLine
+      value: Mes salades vont enfin reprendre des couleurs. Merci, voyageur.
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: planetCenter
+      value: 
+      objectReference: {fileID: 1252233775}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: charsPerSecond
+      value: 35
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+--- !u!1001 &1778383802
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 326353451887458940, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_Name
+      value: Bastien
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.549
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -7.122534
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 17.968266
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.4939388
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.8681512
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.03892106
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.028691698
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: npcName
+      value: Bastien
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: firstLine
+      value: "Moi, je suis comme ces petits cristaux : on me donne une lettre, je
+        la porte. Mais si on m'en donne deux \xE0 la fois, je m'emm\xEAle et je n'en
+        livre aucune !"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: secondLine
+      value: "Et je ne change jamais une lettre, hein ! Ce qu'on me donne, je le
+        livre tel quel. Honn\xEAte, le Bastien."
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: solvedLine
+      value: "Toutes les lumi\xE8res sont livr\xE9es ! M\xEAme moi, je n'aurais pas
+        fait mieux."
+      objectReference: {fileID: 0}
+    - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+      propertyPath: planetCenter
+      value: 
+      objectReference: {fileID: 1252233775}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
 --- !u!1 &1865671480
 GameObject:
   m_ObjectHideFlags: 0
@@ -4676,7 +5045,7 @@ Transform:
   m_GameObject: {fileID: 1866591807}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 15.55, z: 32.11}
+  m_LocalPosition: {x: 0, y: 3.49, z: 44.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4992,7 +5361,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 330585546}
-  - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 1252233775}
   - {fileID: 1666522589}
@@ -5001,3 +5369,7 @@ SceneRoots:
   - {fileID: 1266154903}
   - {fileID: 1180695328}
   - {fileID: 1097971226}
+  - {fileID: 455806478}
+  - {fileID: 107433559}
+  - {fileID: 1764284365}
+  - {fileID: 1778383802}
