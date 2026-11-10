@@ -2,118 +2,125 @@ using UnityEngine;
 
 public class SpacePirate : MonoBehaviour
 {
-    [Header("Références")]
-    public Transform planet;
     public Transform player;
     public Transform respawnPoint;
+    public Transform planet;
 
-    [Header("Patrouille / Rotation")]
-    public float patrolSpeed = 10f;
-    public float turnSpeed = 20f;
-    public float heightOffset = 1f;
-    public bool walkAroundPlanet = true;
-    [Tooltip("Coche si le pirate ne doit marcher QUE sur l'objet 'planet' et ignorer le pont")]
-    public bool stickOnlyToPlanet = true;
+    public Transform[] waypoints;
+    public float walkSpeed = 4f;
+    public float turnSpeed = 10f;
+    public float stopDistance = 0.2f;
 
-    [Header("Cône de Vision")]
     public float viewDistance = 8f;
     public float viewAngle = 45f;
     public LayerMask obstacleLayer;
 
+    private int currentPoint = 0;
+    private int direction = 1;
+    private bool playerInSight = false;
+
+    void Start()
+    {
+        if (planet != null)
+        {
+            Vector3 up = (transform.position - planet.position).normalized;
+            transform.rotation = Quaternion.FromToRotation(transform.up, up) * transform.rotation;
+        }
+    }
+
     void Update()
     {
-        if (planet == null || player == null) return;
+        if (player == null) return;
 
-        Vector3 dirFromCenter = (transform.position - planet.position).normalized;
-
-        if (walkAroundPlanet)
+        if (waypoints != null && waypoints.Length > 0)
         {
-            transform.RotateAround(planet.position, transform.right, patrolSpeed * Time.deltaTime);
-            dirFromCenter = (transform.position - planet.position).normalized;
+            PatrolInBoat();
         }
-        else
-        {
-            transform.Rotate(dirFromCenter, turnSpeed * Time.deltaTime, Space.World);
-        }
-
-        // 1. On fait partir le rayon juste au-dessus du pirate (5m) et non à 100m dans l'espace
-        float rayHeight = 5f;
-        float maxRayDistance = 20f;
-        Vector3 rayStart = transform.position + dirFromCenter * rayHeight;
-
-        RaycastHit[] hits = Physics.RaycastAll(rayStart, -dirFromCenter, maxRayDistance, obstacleLayer);
-
-        // 2. On cherche l'impact valide LE PLUS PROCHE du pirate
-        RaycastHit closestHit = new RaycastHit();
-        float closestDistance = Mathf.Infinity;
-        bool foundGround = false;
-
-        foreach (RaycastHit hit in hits)
-        {
-            // Ignore le pirate lui-même
-            if (hit.transform == transform || hit.transform.IsChildOf(transform))
-                continue;
-
-            // Si activé, ignore le pont et les autres planètes
-            if (stickOnlyToPlanet && hit.transform != planet && !hit.transform.IsChildOf(planet))
-                continue;
-
-            if (hit.distance < closestDistance)
-            {
-                closestDistance = hit.distance;
-                closestHit = hit;
-                foundGround = true;
-            }
-        }
-
-        if (foundGround)
-        {
-            transform.position = closestHit.point + dirFromCenter * heightOffset;
-        }
-
-        Quaternion targetRot = Quaternion.FromToRotation(transform.up, dirFromCenter) * transform.rotation;
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 15f * Time.deltaTime);
 
         CheckLineOfSight();
     }
 
+    void PatrolInBoat()
+    {
+        Transform target = waypoints[currentPoint];
+        if (target == null) return;
+
+        Vector3 targetPos = new Vector3(target.position.x, transform.position.y, target.position.z);
+        Vector3 moveDir = targetPos - transform.position;
+
+        if (moveDir.sqrMagnitude > 0.001f)
+        {
+            Quaternion lookRot = Quaternion.LookRotation(moveDir.normalized, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, turnSpeed * Time.deltaTime);
+        }
+
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, walkSpeed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, targetPos) <= stopDistance && waypoints.Length > 1)
+        {
+            if (currentPoint == waypoints.Length - 1)
+            {
+                direction = -1;
+            }
+            else if (currentPoint == 0)
+            {
+                direction = 1;
+            }
+
+            currentPoint += direction;
+        }
+    }
+
     void CheckLineOfSight()
     {
+        bool canSee = false;
         Vector3 dirToPlayer = player.position - transform.position;
-        float distanceToPlayer = dirToPlayer.magnitude;
+        float distance = dirToPlayer.magnitude;
 
-        if (distanceToPlayer <= viewDistance)
+        if (distance <= viewDistance)
         {
-            float angle = Vector3.Angle(transform.forward, dirToPlayer.normalized);
+            Vector3 flatDir = Vector3.ProjectOnPlane(dirToPlayer, transform.up).normalized;
+            float angle = Vector3.Angle(transform.forward, flatDir);
+
             if (angle <= viewAngle * 0.5f)
             {
-                Vector3 eyePosition = transform.position + transform.up * 0.5f;
-                if (!Physics.Raycast(eyePosition, dirToPlayer.normalized, distanceToPlayer, obstacleLayer))
+                Vector3 eyePos = transform.position + transform.up * 0.5f;
+                if (!Physics.Raycast(eyePos, dirToPlayer.normalized, distance, obstacleLayer))
                 {
-                    CatchPlayer();
+                    canSee = true;
                 }
             }
+        }
+
+        if (canSee != playerInSight)
+        {
+            playerInSight = canSee;
+            if (playerInSight)
+            {
+                Debug.Log("Le pirate voit le joueur !");
+            }
+            else
+            {
+                Debug.Log("Le pirate ne voit plus le joueur.");
+            }
+        }
+
+        if (canSee)
+        {
+            CatchPlayer();
         }
     }
 
     void CatchPlayer()
     {
-        Debug.Log("Repéré par les pirates !");
         if (respawnPoint != null)
         {
+            CharacterController cc = player.GetComponent<CharacterController>();
+            if (cc != null) cc.enabled = false;
+
             player.position = respawnPoint.position;
+
+            if (cc != null) cc.enabled = true;
         }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, viewDistance);
-
-        Vector3 leftRay = Quaternion.AngleAxis(-viewAngle * 0.5f, transform.up) * transform.forward;
-        Vector3 rightRay = Quaternion.AngleAxis(viewAngle * 0.5f, transform.up) * transform.forward;
-
-        Gizmos.DrawRay(transform.position, leftRay * viewDistance);
-        Gizmos.DrawRay(transform.position, rightRay * viewDistance);
     }
 }
