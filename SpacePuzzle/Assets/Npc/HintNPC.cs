@@ -46,6 +46,7 @@ public class HintNPC : MonoBehaviour
 
     void Update()
     {
+        if (PauseMenu.IsPaused) return;
         if (!playerInside || !Input.GetKeyDown(moreKey)) return;
 
         if (isTyping)
