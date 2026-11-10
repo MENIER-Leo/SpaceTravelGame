@@ -125,7 +125,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 978193797}
     m_Modifications:
     - target: {fileID: 326353451887458940, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: m_Name
@@ -141,23 +141,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 35.952
+      value: 5.9519997
       objectReference: {fileID: 0}
     - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.96557975
+      value: 0.9655798
       objectReference: {fileID: 0}
     - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.21662116
+      value: 0.21662118
       objectReference: {fileID: 0}
     - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.01057926
+      value: 0.010579261
       objectReference: {fileID: 0}
     - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.1435933
+      value: -0.14359331
       objectReference: {fileID: 0}
     - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -177,18 +177,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: firstLine
-      value: "J'ai voulu peindre un soleil avec mon rouge et mon vert... \xE7a a
-        fait du marron ! Mais maman dit que la lumi\xE8re, c'est pas pareil que la
-        peinture."
+      value: I wanted to paint a sun with my red and green... it turned out brown!
+        But Mom says light isn't the same as paint.
       objectReference: {fileID: 0}
     - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: secondLine
-      value: "Un jour, je vais attraper deux rayons et les coincer dans le gros cristal.
-        Comme \xE7a, j'aurai mon soleil \xE0 moi !"
+      value: One day, I'm going to catch two rays of sunlight and trap them inside
+        the big crystal. That way, I'll have my very own sun!
       objectReference: {fileID: 0}
     - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: solvedLine
-      value: T'as vu ? T'as vu ?! Il est tout jaune !
+      value: Did you see that? Did you see that?! It's all yellow!
       objectReference: {fileID: 0}
     - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: planetCenter
@@ -785,12 +784,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -8.553893, y: 3.2791507, z: -4.4415765}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 498703791}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
@@ -955,7 +954,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 978193797}
     m_Modifications:
     - target: {fileID: 326353451887458940, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: m_Name
@@ -971,7 +970,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 43.14
+      value: 13.139999
       objectReference: {fileID: 0}
     - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1003,19 +1002,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: firstLine
-      value: "Depuis que les cristaux se sont d\xE9r\xE9gl\xE9s, le village vit dans
-        le noir. Mon d\xE9funt mari disait qu'un cristal, c'est comme une ch\xE8vre
-        : si tu lui en donnes trop, il boude."
+      value: 'Ever since the crystals went haywire, the village has been living in
+        darkness. My late husband used to say that a crystal is like a goat: if you
+        give it too much, it gets sulky.'
       objectReference: {fileID: 0}
     - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: secondLine
-      value: "ll passait des heures \xE0 les tourner, un par un. Quand l'un d'eux
-        s'\xE9teignait, il grommelait : \xAB Qui est-ce qui t'emb\xEAte encore, toi
-        ? \xBB"
+      value: "He would spend hours turning them over, one by one. Whenever one of
+        them went out, he would grumble, \u201CWho\u2019s bothering you again?\u201D"
       objectReference: {fileID: 0}
     - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: solvedLine
-      value: "Les lampes se rallument ! Mon mari aurait \xE9t\xE9 fier de toi."
+      value: The lights are coming back on! My husband would have been proud of you.
       objectReference: {fileID: 0}
     - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: planetCenter
@@ -1150,7 +1148,7 @@ GameObject:
   - component: {fileID: 498703791}
   - component: {fileID: 498703790}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1180,7 +1178,9 @@ Transform:
   m_LocalPosition: {x: 8.553893, y: -2.2791507, z: -5.5584235}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1866591812}
+  - {fileID: 330585546}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &512430895 stripped
@@ -1194,6 +1194,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7bd2749629d61941ba8aeb0ecc0c654, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &512430896 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+  m_PrefabInstance: {fileID: 1764284365}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &524184002
 GameObject:
   m_ObjectHideFlags: 0
@@ -1335,6 +1340,10 @@ PrefabInstance:
       propertyPath: aimTarget
       value: 
       objectReference: {fileID: 929028541}
+    - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
+      propertyPath: hintColor
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: rotatable
       value: 1
@@ -1856,6 +1865,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2098768261}
     - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
+      propertyPath: hintColor
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: rotatable
       value: 1
       objectReference: {fileID: 0}
@@ -2194,6 +2207,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61f265d4e128bdf4c898407000e65f6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &978193796
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 978193797}
+  m_Layer: 6
+  m_Name: NPC
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &978193797
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 978193796}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1080519455}
+  - {fileID: 1390650265}
+  - {fileID: 512430896}
+  - {fileID: 1312979447}
+  - {fileID: 1180695328}
+  m_Father: {fileID: 1252233775}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1080519455 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+  m_PrefabInstance: {fileID: 455806478}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1093468473
 GameObject:
   m_ObjectHideFlags: 0
@@ -2468,85 +2522,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &1097971223
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1097971226}
-  - component: {fileID: 1097971225}
-  - component: {fileID: 1097971224}
-  m_Layer: 0
-  m_Name: EventSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1097971224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1097971223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_MoveRepeatDelay: 0.5
-  m_MoveRepeatRate: 0.1
-  m_XRTrackingOrigin: {fileID: 0}
-  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_DeselectOnBackgroundClick: 1
-  m_PointerBehavior: 0
-  m_CursorLockBehavior: 0
-  m_ScrollDeltaPerTick: 6
---- !u!114 &1097971225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1097971223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
---- !u!4 &1097971226
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1097971223}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1168228090
 Mesh:
   m_ObjectHideFlags: 0
@@ -2807,7 +2782,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 931040242}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 978193797}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3049,6 +3024,8 @@ Transform:
   - {fileID: 166926639}
   - {fileID: 489190584}
   - {fileID: 1740387009}
+  - {fileID: 978193797}
+  - {fileID: 1632088100}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1259568650
@@ -3294,6 +3271,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7bd2749629d61941ba8aeb0ecc0c654, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1312979447 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+  m_PrefabInstance: {fileID: 1778383802}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1390650265 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
+  m_PrefabInstance: {fileID: 107433559}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1517202285
 GameObject:
   m_ObjectHideFlags: 0
@@ -3794,6 +3781,85 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 271624593}
+--- !u!1 &1632088099
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1632088100}
+  - component: {fileID: 1632088102}
+  - component: {fileID: 1632088101}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1632088100
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632088099}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -30}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1252233775}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1632088101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632088099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
+  m_ScrollDeltaPerTick: 6
+--- !u!114 &1632088102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632088099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
 --- !u!1 &1666522587
 GameObject:
   m_ObjectHideFlags: 0
@@ -4111,6 +4177,10 @@ PrefabInstance:
       propertyPath: statusText
       value: 
       objectReference: {fileID: 931040243}
+    - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
+      propertyPath: lockWhenSolved
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2051235667403429589, guid: 85a2f312ae995314ea34651fd72a4af8, type: 3}
       propertyPath: onSolved.m_PersistentCalls.m_Calls.Array.size
       value: 5
@@ -4674,7 +4744,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 978193797}
     m_Modifications:
     - target: {fileID: 326353451887458940, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: m_Name
@@ -4690,7 +4760,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 18.043
+      value: -11.957001
       objectReference: {fileID: 0}
     - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4726,18 +4796,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: firstLine
-      value: "Mes salades poussaient sous la lumi\xE8re de ce cristal, un bleu-vert
-        tout doux, comme le ciel du matin. Depuis qu'il s'est \xE9teint, elles font
-        grise mine."
+      value: My lettuce was growing under the light of that crystal, a soft blue-green,
+        like the morning sky. Ever since it went out, they've been looking a bit
+        glum.
       objectReference: {fileID: 0}
     - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: secondLine
-      value: "Mon grand-p\xE8re disait que ce cristal avait deux parents : la for\xEAt
-        et la mer. Moi, j'ai jamais rien compris \xE0 ses histoires."
+      value: 'My grandfather used to say that this crystal had two parents: the forest
+        and the sea. As for me, I never understood a thing about his stories.'
       objectReference: {fileID: 0}
     - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: solvedLine
-      value: Mes salades vont enfin reprendre des couleurs. Merci, voyageur.
+      value: My salads are finally going to get their color back. Thank you, traveler.
       objectReference: {fileID: 0}
     - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: planetCenter
@@ -4758,7 +4828,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 978193797}
     m_Modifications:
     - target: {fileID: 326353451887458940, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: m_Name
@@ -4774,7 +4844,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 17.968266
+      value: -12.031734
       objectReference: {fileID: 0}
     - target: {fileID: 1270290800849843626, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4810,19 +4880,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: firstLine
-      value: "Moi, je suis comme ces petits cristaux : on me donne une lettre, je
-        la porte. Mais si on m'en donne deux \xE0 la fois, je m'emm\xEAle et je n'en
-        livre aucune !"
+      value: 'I''m like those little crystals: if I''m given a letter, I carry it.
+        But if I''m given two at once, I get all mixed up and end up not delivering
+        either one!'
       objectReference: {fileID: 0}
     - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: secondLine
-      value: "Et je ne change jamais une lettre, hein ! Ce qu'on me donne, je le
-        livre tel quel. Honn\xEAte, le Bastien."
+      value: And I never change a single letter, you know! Whatever I'm given, I
+        deliver it just as it is. Bastien's an honest guy.
       objectReference: {fileID: 0}
     - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: solvedLine
-      value: "Toutes les lumi\xE8res sont livr\xE9es ! M\xEAme moi, je n'aurais pas
-        fait mieux."
+      value: All the lights have been delivered! Even I couldn't have done better.
       objectReference: {fileID: 0}
     - target: {fileID: 8441010988262084743, guid: 3d3247895cca89e4aa2f689d0e05f18b, type: 3}
       propertyPath: planetCenter
@@ -5044,12 +5113,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1866591807}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.49, z: 44.8}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -8.553893, y: 5.7691507, z: 50.35842}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 498703791}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1866591813
 MonoBehaviour:
@@ -5360,16 +5429,8 @@ Mesh:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 330585546}
+  - {fileID: 498703791}
   - {fileID: 832575519}
   - {fileID: 1252233775}
   - {fileID: 1666522589}
-  - {fileID: 1866591812}
-  - {fileID: 498703791}
   - {fileID: 1266154903}
-  - {fileID: 1180695328}
-  - {fileID: 1097971226}
-  - {fileID: 455806478}
-  - {fileID: 107433559}
-  - {fileID: 1764284365}
-  - {fileID: 1778383802}

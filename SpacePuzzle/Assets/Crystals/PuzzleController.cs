@@ -14,6 +14,7 @@ public class PuzzleController : MonoBehaviour
 
     [Header("Affichage (optionnel)")]
     [SerializeField] private TMP_Text statusText;
+    [SerializeField] private bool showDebugHUD = false;
 
     [Header("Événements")]
     public UnityEvent onSolved;
@@ -185,6 +186,7 @@ public class PuzzleController : MonoBehaviour
     private void UpdateStatus(int satisfied)
     {
         if (statusText == null) return;
+        if (!showDebugHUD) { statusText.text = ""; return; }
         statusText.text = isSolved ? "Résolu !" : $"Récepteurs : {satisfied}/{receivers.Count}";
     }
 }

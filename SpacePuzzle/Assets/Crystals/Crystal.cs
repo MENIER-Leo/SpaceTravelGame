@@ -98,6 +98,14 @@ public class Crystal : MonoBehaviour
     [SerializeField] private float emissionIntensity = 3f;
     [SerializeField, Range(0f, 1f)] private float weakFactor = 0.25f;
 
+    [Header("Indice")]
+    [SerializeField]
+    private Colors hintColor = Colors.None;
+    [SerializeField, Range(0f, 1f)] private float hintFactor = 0.1f;
+    [SerializeField]
+    private float hintPulseSpeed = 0.5f;
+    private bool showingHint;
+
     [Header("Rotation")]
     [SerializeField] private float stepAngle = 7.5f;
     [SerializeField] private float rotationSpeed = 15f;   // degrés par seconde
@@ -297,6 +305,7 @@ public class Crystal : MonoBehaviour
     {
         emittedColor &= Colors.White;
         targetColor &= Colors.White;
+        hintColor &= Colors.White;
 
         stepAngle = Mathf.Clamp(stepAngle, 1f, 90f);
         if (Mathf.Abs(360f / stepAngle - Mathf.Round(360f / stepAngle)) > 0.001f)
@@ -488,31 +497,35 @@ public class Crystal : MonoBehaviour
     // Appelée par BeamManager après chaque recalcul
     public void UpdateVisual()
     {
-
-        if (isRotating || isAbsorbed) { ApplyGlow(Colors.None, 0f); return; }
-
         Colors color = Colors.None;
         float factor = 0f;
 
-        switch (crystalType)
+        if (!isRotating && !isAbsorbed)
         {
-            case CrystalType.Emitter:
-                color = emittedColor;
-                factor = 1f;
-                break;
+            switch (crystalType)
+            {
+                case CrystalType.Emitter:
+                    color = emittedColor;
+                    factor = 1f;
+                    break;
 
-            case CrystalType.Relay:
-            case CrystalType.Mixer:
-            case CrystalType.Prism:
-                if (OutputColor != Colors.None) { color = OutputColor; factor = 1f; }
-                else if (IsLit) { color = receivedColor; factor = weakFactor; }
-                break;
+                case CrystalType.Relay:
+                case CrystalType.Mixer:
+                case CrystalType.Prism:
+                    if (OutputColor != Colors.None) { color = OutputColor; factor = 1f; }
+                    else if (IsLit) { color = receivedColor; factor = weakFactor; }
+                    break;
 
-            case CrystalType.Receiver:
-                if (IsSatisfied) { color = targetColor; factor = 1f; }
-                else if (IsLit) { color = receivedColor; factor = weakFactor; }
-                break;
+                case CrystalType.Receiver:
+                    if (IsSatisfied) { color = targetColor; factor = 1f; }
+                    else if (IsLit) { color = receivedColor; factor = weakFactor; }
+                    break;
+            }
         }
+
+        // Rien à afficher : on montre l'indice s'il y en a un
+        showingHint = color == Colors.None && hintColor != Colors.None && !isAbsorbed;
+        if (showingHint) { ApplyHintGlow(); return; }
 
         ApplyGlow(color, factor);
     }
@@ -538,6 +551,20 @@ public class Crystal : MonoBehaviour
             propertyBlock.SetColor(EmissionColorId, on ? c * emissionIntensity * factor : Color.black);
             meshRenderer.SetPropertyBlock(propertyBlock);
         }
+    }
+
+    private void Update()
+    {
+        if (showingHint && hintPulseSpeed > 0f) ApplyHintGlow();
+    }
+
+    private void ApplyHintGlow()
+    {
+        float pulse = 1f;
+        if (hintPulseSpeed > 0f)
+            pulse = 0.6f + 0.4f * Mathf.Sin(Time.time * hintPulseSpeed * Mathf.PI * 2f);
+
+        ApplyGlow(hintColor, hintFactor * pulse);
     }
 
     private void OnDrawGizmosSelected()
