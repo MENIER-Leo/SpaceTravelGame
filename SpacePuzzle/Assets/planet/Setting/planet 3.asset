@@ -12,27 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87cd25d893be45a2e6ec9f2b146b0, type: 3}
   m_Name: planet 3
   m_EditorClassIdentifier: 
-  radius: 20
-  seed: 1
+  radius: 28
+  seed: 6
   continents:
+    layers: 3
+    roughness: 2
+    persistence: 0.4
+    baseFrequency: 1.2
+  seaLevel: -0.15
+  seaRelief: 0.5
+  mountains:
     layers: 4
     roughness: 2
-    persistence: 0.5
-    baseFrequency: 0.8
-  seaLevel: -0.072
-  seaRelief: 0.366
-  mountains:
-    layers: 5
-    roughness: 2
-    persistence: 0.5
+    persistence: 0.4
     baseFrequency: 1.5
-  mountainZoneStart: 0.05
-  mountainZoneEnd: 0.3
+  mountainZoneStart: 0.12
+  mountainZoneEnd: 0.4
   craters:
     layers: 3
     roughness: 1.5
     persistence: 0.5
-    baseFrequency: 2
+    baseFrequency: 1.5
   plainsHeight: 0.02
-  plainsRoughness: 0.02
-  mountainHeight: 0.2
+  plainsRoughness: 0.04
+  mountainHeight: 0.22

@@ -54,6 +54,9 @@ public class Crystal : MonoBehaviour
     public Colors emittedColor;
     public Colors targetColor; // couleur cible pour les récepteurs
 
+    
+    public bool countsForVictory = true;
+
     [SerializeField] private Colors receivedColor;   // visible dans l'Inspector, remplie par le calcul
     public Colors ReceivedColor => receivedColor;
 

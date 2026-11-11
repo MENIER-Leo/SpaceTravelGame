@@ -91,7 +91,7 @@ public class BeamManager : MonoBehaviour
 
         foreach (Crystal c in crystals)
         {
-            if (c.crystalType != CrystalType.Receiver) continue;
+            if (c.crystalType != CrystalType.Receiver || !c.countsForVictory) continue;
             anyReceiver = true;
             if (!c.IsSatisfied) return false;
         }

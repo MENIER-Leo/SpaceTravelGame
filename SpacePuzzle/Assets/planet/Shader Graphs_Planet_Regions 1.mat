@@ -57,9 +57,9 @@ Material:
     - _Grain_Max: 1.1
     - _Grain_Min: 0.8
     - _Grain_Scale: 60
-    - _Lit_Bleu: 0
-    - _Lit_Rouge: 0
-    - _Lit_Vert: 0
+    - _Lit_Bleu: 1
+    - _Lit_Rouge: 1
+    - _Lit_Vert: 1
     - _Luminosite_Eteint: 0.7
     - _QueueControl: 0
     - _QueueOffset: 0
