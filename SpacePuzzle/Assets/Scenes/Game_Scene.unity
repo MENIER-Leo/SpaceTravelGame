@@ -1596,6 +1596,37 @@ MonoBehaviour:
   sensitivityY: 2
   minY: 5
   maxY: 80
+--- !u!1 &332168553
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 332168554}
+  m_Layer: 0
+  m_Name: Respawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &332168554
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332168553}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -2, z: 11.52}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1788706283}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &351597330
 GameObject:
   m_ObjectHideFlags: 0
@@ -7688,6 +7719,7 @@ Transform:
   m_Children:
   - {fileID: 1435303848}
   - {fileID: 976555063}
+  - {fileID: 332168554}
   m_Father: {fileID: 366493824}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1788706284
@@ -7702,9 +7734,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cacaf4534c293af4fa418ed45b3f3e26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  respawnPoint: {fileID: 0}
-  planet: {fileID: 0}
+  player: {fileID: 1866591812}
+  respawnPoint: {fileID: 332168554}
+  planet: {fileID: 366493824}
   waypoints: []
   walkSpeed: 4
   turnSpeed: 40
