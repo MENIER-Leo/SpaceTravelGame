@@ -314,19 +314,27 @@ MonoBehaviour:
   inputCount: 0
   emittedColor: 0
   targetColor: 0
+  countsForVictory: 1
   receivedColor: 0
   groundMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 72
   aimTarget: {fileID: 0}
   glow: {fileID: 116268245184473601}
   meshRenderer: {fileID: 1435042190734007219}
   lightIntensity: 2
   emissionIntensity: 3
   weakFactor: 0.25
+  hintColor: 0
+  hintFactor: 0.1
+  hintPulseSpeed: 0.5
   stepAngle: 7.5
   rotationSpeed: 15
   relightDelay: 0.15
+  startStep: 0
+  splitAngle: 45
+  firstTarget: {fileID: 0}
+  secondTarget: {fileID: 0}
   highlight: {fileID: 752305273318393167}
 --- !u!1 &8294690967575821339
 GameObject:

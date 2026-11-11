@@ -210,6 +210,14 @@ public class Crystal : MonoBehaviour
         turnHeld = false;
     }
 
+    public void AutoStep(int direction)
+    {
+        if (isAbsorbed || isRotating || !isActiveAndEnabled) return;
+        turnDirection = direction >= 0 ? 1 : -1;
+        stepRequested = true;
+        turnRoutine = StartCoroutine(TurnRoutine());
+    }
+
     private IEnumerator TurnRoutine()
     {
         isRotating = true;

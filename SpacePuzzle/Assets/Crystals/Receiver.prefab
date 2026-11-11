@@ -318,7 +318,7 @@ MonoBehaviour:
   receivedColor: 0
   groundMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 72
   aimTarget: {fileID: 0}
   glow: {fileID: 116268245184473601}
   meshRenderer: {fileID: 1435042190734007219}
