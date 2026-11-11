@@ -341,6 +341,10 @@ PrefabInstance:
       propertyPath: receivedColor
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
+      propertyPath: rotationSpeed
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 4685416557354449098, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: m_Name
       value: Relay
@@ -1879,6 +1883,10 @@ PrefabInstance:
     - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: emittedColor
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
+      propertyPath: rotationSpeed
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 4685416557354449098, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: m_Name
@@ -3588,6 +3596,10 @@ PrefabInstance:
       propertyPath: emittedColor
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
+      propertyPath: rotationSpeed
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 4685416557354449098, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: m_Name
       value: Emitter_Red
@@ -3702,6 +3714,10 @@ PrefabInstance:
     - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: receivedColor
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
+      propertyPath: rotationSpeed
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 4685416557354449098, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: m_Name
@@ -3972,6 +3988,10 @@ PrefabInstance:
     - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: emittedColor
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
+      propertyPath: rotationSpeed
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 4685416557354449098, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: m_Name
@@ -4588,6 +4608,10 @@ PrefabInstance:
     - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: receivedColor
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
+      propertyPath: rotationSpeed
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 4685416557354449098, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: m_Name
@@ -5437,6 +5461,10 @@ PrefabInstance:
     - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: receivedColor
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
+      propertyPath: rotationSpeed
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 4685416557354449098, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: m_Name
@@ -8548,6 +8576,10 @@ PrefabInstance:
     - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: emittedColor
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644563164198859521, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
+      propertyPath: rotationSpeed
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 4685416557354449098, guid: 5be1b155382e494419e166c50f2c77f1, type: 3}
       propertyPath: m_Name
