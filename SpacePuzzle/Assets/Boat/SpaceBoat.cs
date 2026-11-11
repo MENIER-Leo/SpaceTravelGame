@@ -24,10 +24,10 @@ public class SpaceBoat : MonoBehaviour
         Transform target = waypoints[currentIndex];
         if (target == null) return;
 
-        // 1. Calcul de la direction du centre (le "bas")
+        // Calcul de la direction du centre
         Vector3 dirFromCenter = (transform.position - planet.position).normalized;
 
-        // 2. S'orienter vers la cible
+        // On s'oriente vers la cible
         Vector3 dirToTarget = (target.position - transform.position).normalized;
         Vector3 forwardOnSphere = Vector3.ProjectOnPlane(dirToTarget, dirFromCenter).normalized;
 
@@ -37,13 +37,12 @@ public class SpaceBoat : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, turnSpeed * Time.deltaTime);
         }
 
-        // 3. Avancer
         transform.position += transform.forward * boatSpeed * Time.deltaTime;
 
-        // LA CORRECTION EST ICI : On recalcule le "bas" depuis la nouvelle position
+        // LA CORRECTION EST ICI : On recalcule le "bas" depuis la nouvelle position -> IA
         dirFromCenter = (transform.position - planet.position).normalized;
 
-        // 4. Se plaquer au sol/eau
+        // On se plaque au sol ou a l'eau
         Vector3 rayStart = planet.position + dirFromCenter * 100f;
         RaycastHit[] hits = Physics.RaycastAll(rayStart, -dirFromCenter, 100f, planetLayer);
 
@@ -57,7 +56,7 @@ public class SpaceBoat : MonoBehaviour
             }
         }
 
-        // 5. Vérification de la distance à plat
+        // Vérif de la distance à plat
         Vector3 offsetToTarget = target.position - transform.position;
         Vector3 flatOffset = Vector3.ProjectOnPlane(offsetToTarget, dirFromCenter);
 

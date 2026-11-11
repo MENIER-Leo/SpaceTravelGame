@@ -97,11 +97,11 @@ public class SpacePirate : MonoBehaviour
             playerInSight = canSee;
             if (playerInSight)
             {
-                Debug.Log("Le pirate voit le joueur !");
+                Debug.Log("Le pirate voit le joueur");
             }
             else
             {
-                Debug.Log("Le pirate ne voit plus le joueur.");
+                Debug.Log("Le pirate ne voit plus le joueur");
             }
         }
 

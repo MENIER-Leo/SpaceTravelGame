@@ -17,7 +17,7 @@ public class LightBridge : MonoBehaviour
 
         if (!isActivated)
         {
-            // Échelle minimale à 0.01f (JAMAIS 0f pour éviter le bug d'éclairage infini "Soleil")
+            // Échelle minimale à 0.01f pour éviter de récréer le soleil mdrr
             transform.localScale = new Vector3(targetScale.x, targetScale.y, 0.01f);
             if (meshRenderer != null) meshRenderer.enabled = false;
             if (bridgeCollider != null) bridgeCollider.enabled = false;

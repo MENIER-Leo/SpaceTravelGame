@@ -110,8 +110,8 @@ public class PlayerMovement : MonoBehaviour
         {
             Transform hitPlanet = GetPlanetOf(wall.collider);
 
-            // Si on touche le pont de face ou de côté, on NE change PAS isOnBridge ici !
-            // On vérifie simplement si la surface touchée est praticable, sinon c'est un mur normal.
+            // Si on touche le pont de face ou de côté, on ne change pas isOnBridge
+            // On vérifie simplement si la surface touchée est praticable, sinon c'est un mur normal
             if (isOnBridge && hitPlanet != null)
             {
                 // Si on est au bout du pont et qu'on touche la nouvelle planète devant nous
@@ -175,7 +175,7 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit[] hits = Physics.RaycastAll(origin, -up, searchRange, groundLayer);
         if (hits.Length == 0)
         {
-            // Rien même à 10m sous nos pieds : on a sauté dans le vide à côté du pont !
+            // Rien même à 10m sous nos pieds, on a sauté dans le vide à côté du pont
             if (isOnBridge)
             {
                 isOnBridge = false;
@@ -232,7 +232,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        // Si le pont est détecté loin sous nos pieds (pendant le saut), on garde sa gravité mais on continue de tomber normalement !
+        // Si le pont est détecté loin sous nos pieds (pendant le saut), on garde sa gravité mais on continue de tomber normalement
         if (bestHit.distance > groundRange)
         {
             transform.position += up * step;
