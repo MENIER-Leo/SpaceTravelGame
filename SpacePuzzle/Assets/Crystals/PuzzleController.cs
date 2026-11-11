@@ -9,7 +9,7 @@ public class PuzzleController : MonoBehaviour
 {
     [SerializeField] private float confirmDelay = 0.5f;   // la solution doit tenir ce temps avant validation
     [SerializeField] private bool lockWhenSolved = true;  // bloque tous les cristaux une fois résolu
-    [SerializeField] private KeyCode resetKey = KeyCode.R;   // None pour désactiver
+    [SerializeField] private KeyCode resetKey = KeyCode.None;   // None pour désactiver
     [SerializeField] private float absorbDuration = 0.5f;   // durée du noir pendant la réinitialisation
 
     [Header("Affichage (optionnel)")]
