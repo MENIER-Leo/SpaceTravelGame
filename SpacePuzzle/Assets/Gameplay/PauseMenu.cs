@@ -13,6 +13,7 @@ public class PauseMenu : MonoBehaviour
     private bool[] previousStates;
     private CursorLockMode previousLock;
     private bool previousVisible;
+    [SerializeField] private string menuScene = "Menu";
 
     private void Start()
     {
@@ -72,6 +73,13 @@ public class PauseMenu : MonoBehaviour
         IsPaused = false;
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void BackToMenu()
+    {
+        IsPaused = false;
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(menuScene);
     }
 
     public void Quit()

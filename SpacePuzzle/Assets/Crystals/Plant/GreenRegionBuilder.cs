@@ -10,6 +10,7 @@ using UnityEditor.Events;
 // Construit en un clic (hors Play) le puzzle de la région Verte sous cette ancre, puis le VÉRIFIE
 // avec le vrai BeamManager. Plantes phototropes, pont-liane qui pousse (layer Planete = sol pour les rayons),
 // troncs qui ferment les raccourcis, jungle décorative hors des rayons.
+// Le récepteur final est JAUNE : il faut le vert de la chaîne + le rouge d'Emitter_Rouge_V.
 // Coordonnées locales : X sur le côté, Z vers le pôle (le Phare), Y vers l'extérieur.
 public class GreenRegionBuilder : MonoBehaviour
 {
@@ -31,14 +32,12 @@ public class GreenRegionBuilder : MonoBehaviour
     [SerializeField] private Material vineMaterial;
     [SerializeField] private Material trunkMaterial;
     [SerializeField] private Material mushroomMaterial;
-
     [Tooltip("Vide = cylindre simple. Le tronc doit garder un collider d'au moins 1,2 m de diamètre.")]
     [SerializeField] private GameObject treePrefab;
     [Tooltip("Vide = champignon simple.")]
     [SerializeField] private GameObject mushroomPrefab;
     [Tooltip("Échelle aléatoire min / max des arbres et champignons.")]
     [SerializeField] private Vector2 decorScale = new Vector2(0.85f, 1.3f);
-
     [Tooltip("Layer des troncs et champignons : coché dans le Beam Mask, différent de Planete.")]
     [SerializeField] private string obstacleLayer = "Default";
     [SerializeField] private float obstacleSink = 0.4f;
@@ -120,12 +119,13 @@ public class GreenRegionBuilder : MonoBehaviour
         decor.Clear();
 
         // --- 1. Cristaux ---
-        Crystal emitter  = MakeCrystal(emitterPrefab,  "Emitter_Vert",  At(4f, -9f),   CrystalType.Emitter,  Colors.Green, Colors.None,  true,  true);
-        Crystal plant1   = MakePlant(plantSrc,         "Plante_1",      At(0f, 0f),    1);
-        Crystal relayV   = MakeCrystal(relayPrefab,    "Relay_V",       At(-13f, 1f),  CrystalType.Relay,    Colors.None,  Colors.None,  true,  true);
-        Crystal plant2   = MakePlant(plantSrc,         "Plante_2",      At(-16f, 10f), -1);
-        Crystal receiver = MakeCrystal(receiverPrefab, "Receiver_Vert", At(-24f, 14f), CrystalType.Receiver, Colors.None,  Colors.Green, false, true);
-        placed.AddRange(new[] { emitter, plant1, relayV, plant2, receiver });
+        Crystal emitter  = MakeCrystal(emitterPrefab,  "Emitter_Vert",    At(4f, -9f),   CrystalType.Emitter,  Colors.Green, Colors.None,   true,  true);
+        Crystal plant1   = MakePlant(plantSrc,         "Plante_1",        At(0f, 0f),    1);
+        Crystal relayV   = MakeCrystal(relayPrefab,    "Relay_V",         At(-13f, 1f),  CrystalType.Relay,    Colors.None,  Colors.None,   true,  true);
+        Crystal plant2   = MakePlant(plantSrc,         "Plante_2",        At(-16f, 10f), -1);
+        Crystal receiver = MakeCrystal(receiverPrefab, "Receiver_Vert",   At(-24f, 14f), CrystalType.Receiver, Colors.None,  Colors.Yellow, false, true);
+        Crystal emitterR = MakeCrystal(emitterPrefab,  "Emitter_Rouge_V", At(-27f, 3f),  CrystalType.Emitter,  Colors.Red,   Colors.None,   true,  true);
+        placed.AddRange(new[] { emitter, plant1, relayV, plant2, receiver, emitterR });
 
         // --- 2. Ravin : naturel si une pente coupe déjà Plante_1 → Relay_V, sinon arête rocheuse ---
         AimExact(plant1, relayV.transform.position, 0);
@@ -154,7 +154,11 @@ public class GreenRegionBuilder : MonoBehaviour
         FixLink(receiver, plant2, new[] { 0f, 45f, -45f, 90f, -90f }, dists, ridge,
                 () => AimExact(plant2, receiver.transform.position, 0), () => Reaches(plant2, 0, receiver, out _), "Receiver_Vert");
 
+        FixLink(emitterR, receiver, new[] { 0f, 20f, -20f, 40f, -40f, 60f, -60f, 90f, -90f }, dists, ridge,
+                () => AimExact(emitterR, receiver.transform.position, 0), () => Reaches(emitterR, 0, receiver, out _), "Emitter_Rouge_V");
+
         AddBeam(emitter, plant1); AddBeam(plant1, relayV); AddBeam(relayV, plant2); AddBeam(plant2, receiver);
+        AddBeam(emitterR, receiver);
 
         // --- 4. Graine (dans un autre cran de Plante_1, sur un trajet libre) ---
         Crystal graine = MakeSeed(plant1, out int gStep);
@@ -163,12 +167,12 @@ public class GreenRegionBuilder : MonoBehaviour
         GameObject bridge = MakeBridge(plant1, relayV);
         if (bridge == null) Debug.LogError("Pont : aucun relief à franchir entre Plante_1 et Relay_V.");
 
-        Crystal[] all = { emitter, plant1, relayV, plant2, receiver, graine };
+        Crystal[] all = { emitter, plant1, relayV, plant2, receiver, graine, emitterR };
         Dictionary<Crystal, Quaternion> sol = new Dictionary<Crystal, Quaternion>();
-        foreach (Crystal c in new[] { emitter, plant1, relayV, plant2 }) sol[c] = c.transform.rotation;
+        foreach (Crystal c in new[] { emitter, plant1, relayV, plant2, emitterR }) sol[c] = c.transform.rotation;
 
         // --- 6. Troncs sur les raccourcis, puis jungle décorative ---
-        int trunks = BlockShortcuts(bridge, emitter, plant1, relayV, graine, plant2, receiver, gStep);
+        int trunks = BlockShortcuts(bridge, emitter, plant1, relayV, graine, plant2, receiver, gStep, emitterR);
         if (trunks > 0) Debug.Log($"Jungle : {trunks} tronc(s) posé(s) pour fermer des raccourcis.");
         MakeJungle();
 
@@ -192,11 +196,12 @@ public class GreenRegionBuilder : MonoBehaviour
         else Debug.LogWarning($"{name} : aucun RegionLight trouvé, branche On Lit de Receiver_Vert à la main.");
 
         // --- 8. Orientation de départ ---
-        const int sE = -3, sR = 4, sP1 = 3, sP2 = -2;
+        const int sE = -3, sR = 4, sP1 = 3, sP2 = -2, sRd = 3;
         RotateSteps(emitter, sE);
         RotateSteps(relayV, sR);
         RotateSteps(plant1, sP1);
         RotateSteps(plant2, sP2);
+        RotateSteps(emitterR, sRd);
 
         // --- 9. Vérification avec le vrai BeamManager ---
         int errors = 0;
@@ -218,12 +223,12 @@ public class GreenRegionBuilder : MonoBehaviour
 
         // Départ
         Bridge(false);
-        Pose(emitter, sE); Pose(plant1, sP1); Pose(relayV, sR); Pose(plant2, sP2);
+        Pose(emitter, sE); Pose(plant1, sP1); Pose(relayV, sR); Pose(plant2, sP2); Pose(emitterR, sRd);
         Run();
         Expect(!graine.IsSatisfied && !receiver.IsSatisfied, "Départ : un récepteur est déjà allumé sans rien faire.");
 
-        // Étape 1 : Plante_1 vers la graine
-        Pose(emitter, 0); Pose(plant1, gStep); Pose(relayV, 0); Pose(plant2, 0);
+        // Étape 1 : Plante_1 vers la graine (rouge encore écarté)
+        Pose(emitter, 0); Pose(plant1, gStep); Pose(relayV, 0); Pose(plant2, 0); Pose(emitterR, sRd);
         Run();
         ExpectBeam(plant1.OutputColor == Colors.Green, $"Étape 1 : Plante_1 ne relaie pas (reçoit {plant1.ReceivedColor}).", emitter, plant1);
         ExpectBeam(graine.IsSatisfied, $"Étape 1 : Graine_1 reçoit {graine.ReceivedColor} au lieu de Green.", plant1, graine);
@@ -233,14 +238,19 @@ public class GreenRegionBuilder : MonoBehaviour
         Run();
         Expect(relayV.ReceivedColor == Colors.None, "Sans le pont, Relay_V reçoit déjà le vert : le ravin ne coupe pas le rayon.");
 
-        // Étape 3 : avec le pont, toute la chaîne
+        // Étape 3 : avec le pont ; d'abord le rouge seul, puis rouge + vert
         Expect(bridge != null, "Pas de pont construit.");
         Bridge(true);
+        Pose(emitter, sE); Pose(emitterR, 0);
+        Run();
+        Expect(!receiver.IsSatisfied, "Rouge seul : Receiver_Vert s'allume déjà sans le vert.");
+        Pose(emitter, 0);
         Run();
         ExpectBeam(plant1.OutputColor == Colors.Green, $"Final : Plante_1 ne relaie pas (reçoit {plant1.ReceivedColor}).", emitter, plant1);
         ExpectBeam(relayV.OutputColor == Colors.Green, $"Final : Relay_V ne relaie pas (reçoit {relayV.ReceivedColor}).", plant1, relayV);
         ExpectBeam(plant2.OutputColor == Colors.Green, $"Final : Plante_2 ne relaie pas (reçoit {plant2.ReceivedColor}).", relayV, plant2);
-        ExpectBeam(receiver.IsSatisfied, $"Final : Receiver_Vert reçoit {receiver.ReceivedColor} au lieu de Green.", plant2, receiver);
+        ExpectBeam(receiver.IsSatisfied, $"Final : Receiver_Vert reçoit {receiver.ReceivedColor} au lieu de Yellow.", plant2, receiver);
+        ExpectBeam(Reaches(emitterR, 0, receiver, out _), "Final : le rayon rouge n'atteint pas Receiver_Vert.", emitterR, receiver);
         string forced = ForcedOff(all);
         Expect(forced.Length == 0, $"Final : cristaux éteints de force par le BeamManager (boucle instable) : {forced}.");
 
@@ -263,12 +273,12 @@ public class GreenRegionBuilder : MonoBehaviour
         Pose(plant2, 0);
 
         // Raccourcis restants
-        foreach (Shortcut s in FindShortcuts(bridge, emitter, plant1, relayV, graine, plant2, receiver, gStep))
+        foreach (Shortcut s in FindShortcuts(bridge, emitter, plant1, relayV, graine, plant2, receiver, gStep, emitterR))
             report.AppendLine($"⚠ Raccourci : {s.src.name} au cran {s.steps} atteint {s.dst.name} directement{(s.bridgeOn ? " (pont poussé)" : "")}.");
 
         // Retour à l'état de départ
         Bridge(false);
-        Pose(emitter, sE); Pose(plant1, sP1); Pose(relayV, sR); Pose(plant2, sP2);
+        Pose(emitter, sE); Pose(plant1, sP1); Pose(relayV, sR); Pose(plant2, sP2); Pose(emitterR, sRd);
         Run();
 
         Undo.CollapseUndoOperations(group);
@@ -281,7 +291,8 @@ public class GreenRegionBuilder : MonoBehaviour
         solText.AppendLine("2. Si Plante_1 s'arrête dans la mauvaise direction : tourne Emitter_Vert d'un cran pour la relâcher, puis reviens quand elle pointe vers Graine_1 → le pont-liane pousse.");
         solText.AppendLine("3. Même manœuvre : rallume Plante_1 quand elle pointe vers le pont (Relay_V).");
         solText.AppendLine($"4. Relay_V : {Moves(-sR, StepOf(relayV))} pour viser Plante_2. Garde le dernier cran pour le moment où Plante_2 pointe vers Receiver_Vert.");
-        solText.AppendLine("→ Receiver_Vert s'allume, puis la région Verte.");
+        solText.AppendLine($"5. Emitter_Rouge_V : {Moves(-sRd, StepOf(emitterR))} → vise Receiver_Vert (rouge + vert = jaune).");
+        solText.AppendLine("→ Receiver_Vert s'allume en jaune, puis la région Verte.");
         Debug.Log(solText.ToString());
 
         if (errors == 0) Debug.Log($"Vérification région Verte : OK, la solution fonctionne avec le BeamManager.\n{report}");
@@ -467,7 +478,7 @@ public class GreenRegionBuilder : MonoBehaviour
     // ---------- Raccourcis et jungle ----------
 
     private List<Shortcut> FindShortcuts(GameObject bridge, Crystal emitter, Crystal plant1, Crystal relayV,
-                                         Crystal graine, Crystal plant2, Crystal receiver, int gStep)
+                                         Crystal graine, Crystal plant2, Crystal receiver, int gStep, Crystal emitterR)
     {
         List<Shortcut> list = new List<Shortcut>();
         void Test(Crystal src, int[] skip, Crystal[] dsts, bool on)
@@ -486,19 +497,21 @@ public class GreenRegionBuilder : MonoBehaviour
         Test(emitter, new[] { 0 }, new[] { relayV, plant2, receiver }, true);
         Test(plant1, new[] { 0, Mod(gStep, Turn(plant1)) }, new[] { receiver }, true);
         Test(relayV, new[] { 0 }, new[] { receiver }, true);
+        Test(emitterR, new[] { 0 }, new[] { graine, plant1, relayV, plant2 }, false);
+        Test(emitterR, new[] { 0 }, new[] { plant1, relayV, plant2 }, true);
         if (bridge != null) bridge.SetActive(false);
         Physics.SyncTransforms();
         return list;
     }
 
     private int BlockShortcuts(GameObject bridge, Crystal emitter, Crystal plant1, Crystal relayV,
-                               Crystal graine, Crystal plant2, Crystal receiver, int gStep)
+                               Crystal graine, Crystal plant2, Crystal receiver, int gStep, Crystal emitterR)
     {
         int count = 0;
         HashSet<string> failed = new HashSet<string>();
-        for (int pass = 0; pass < 8; pass++)
+        for (int pass = 0; pass < 10; pass++)
         {
-            List<Shortcut> list = FindShortcuts(bridge, emitter, plant1, relayV, graine, plant2, receiver, gStep);
+            List<Shortcut> list = FindShortcuts(bridge, emitter, plant1, relayV, graine, plant2, receiver, gStep, emitterR);
             list.RemoveAll(s => failed.Contains($"{s.src.name}{s.steps}{s.dst.name}"));
             if (list.Count == 0) break;
             Shortcut sc = list[0];
@@ -554,7 +567,16 @@ public class GreenRegionBuilder : MonoBehaviour
         Physics.SyncTransforms();
     }
 
-        private GameObject MakeTrunk(Vector3 pos, string objName)
+    private GameObject SpawnDecor(GameObject prefab)
+    {
+        GameObject go = PrefabUtility.IsPartOfPrefabAsset(prefab)
+            ? (GameObject)PrefabUtility.InstantiatePrefab(prefab)
+            : Instantiate(prefab);
+        go.transform.localScale = prefab.transform.localScale * Random.Range(decorScale.x, decorScale.y);
+        return go;
+    }
+
+    private GameObject MakeTrunk(Vector3 pos, string objName)
     {
         GameObject t;
         if (treePrefab != null) t = SpawnDecor(treePrefab);
@@ -570,19 +592,9 @@ public class GreenRegionBuilder : MonoBehaviour
         return t;
     }
 
-    private GameObject SpawnDecor(GameObject prefab)
-    {
-        GameObject go = PrefabUtility.IsPartOfPrefabAsset(prefab)
-            ? (GameObject)PrefabUtility.InstantiatePrefab(prefab)
-            : Instantiate(prefab);
-        go.transform.localScale = prefab.transform.localScale * Random.Range(decorScale.x, decorScale.y);
-        return go;
-    }
-
     private GameObject MakeMushroom(Vector3 pos, string objName)
     {
-
-            if (mushroomPrefab != null)
+        if (mushroomPrefab != null)
         {
             GameObject mp = SpawnDecor(mushroomPrefab);
             PlaceObstacle(mp, objName, pos);

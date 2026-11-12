@@ -21,6 +21,7 @@ public class RegionLight : MonoBehaviour
 
     [Header("Événements")]
     public UnityEvent onAllRegionsLit;
+    public UnityEvent<string> onRegionLit;
 
     private readonly HashSet<string> lit = new HashSet<string>();
     private readonly Dictionary<string, float> values = new Dictionary<string, float>();
@@ -28,6 +29,8 @@ public class RegionLight : MonoBehaviour
     private Coroutine sunRoutine;
 
     public int LitCount => lit.Count;
+
+    public bool IsLit(string property) => lit.Contains(property);
 
     private void Awake()
     {
@@ -54,6 +57,8 @@ public class RegionLight : MonoBehaviour
             return;
         }
         if (!lit.Add(property)) return;   // déjà allumée
+
+        onRegionLit?.Invoke(property);
 
         StartCoroutine(AnimateRegion(property));
 

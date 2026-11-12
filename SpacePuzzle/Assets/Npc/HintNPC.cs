@@ -86,6 +86,7 @@ public class HintNPC : MonoBehaviour
     {
         solved = true;
         if (playerInside) Refresh();
+        GetComponentInChildren<PotagerLook>()?.Revive();
     }
 
     bool IsPlayer(Collider other)

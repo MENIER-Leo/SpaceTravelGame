@@ -3,6 +3,8 @@ using UnityEngine;
 // Cristal noir : maintenir E pour réinitialiser le puzzle de la planète
 public class ResetCrystal : MonoBehaviour
 {
+    [SerializeField] private RegionReset region;          // prioritaire sur puzzle ; rempli automatiquement si vide (parent)
+
     [SerializeField] private PuzzleController puzzle;     // rempli automatiquement si vide (parent)
     [SerializeField] private float holdDuration = 1.5f;
     [SerializeField] private float decaySpeed = 3f;       // vitesse de vidage de la jauge au relâchement
@@ -37,13 +39,14 @@ public class ResetCrystal : MonoBehaviour
     private MaterialPropertyBlock block;
     private static readonly int EmissionColorId = Shader.PropertyToID("_EmissionColor");
 
-    public bool CanInteract => puzzle != null && puzzle.CanReset;
+    public bool CanInteract => region != null ? region.CanReset : puzzle != null && puzzle.CanReset;
     public float Charge => charge;
 
     private void Awake()
     {
-        if (puzzle == null) puzzle = GetComponentInParent<PuzzleController>();
-        if (puzzle == null) Debug.LogWarning($"{name} : aucun PuzzleController trouvé dans les parents.");
+        if (region == null) region = GetComponentInParent<RegionReset>();
+        if (region == null && puzzle == null) puzzle = GetComponentInParent<PuzzleController>();
+        if (region == null && puzzle == null) Debug.LogWarning($"{name} : aucun RegionReset ni PuzzleController trouvé dans les parents.");
 
         block = new MaterialPropertyBlock();
         if (glow != null) baseRange = glow.range;
@@ -63,7 +66,8 @@ public class ResetCrystal : MonoBehaviour
                 charge = 0f;
                 holding = false;     // il faudra relâcher et réappuyer pour recommencer
                 burstTimer = 0f;     // déclenche l'explosion de lumière
-                puzzle.ResetPuzzle();
+                if (region != null) region.ResetRegion(); else puzzle.ResetPuzzle();
+                GetComponent<ResetCrystalLook>()?.Pulse();
             }
         }
         else

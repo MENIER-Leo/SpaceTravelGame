@@ -64,7 +64,7 @@ public class Crystal : MonoBehaviour
     {
         get
         {
-            if (isRotating || isAbsorbed || forcedOff) return Colors.None;
+            if (isRotating || isAbsorbed || forcedOff || overheated) return Colors.None;
             switch (crystalType)
             {
                 case CrystalType.Emitter:
@@ -100,6 +100,7 @@ public class Crystal : MonoBehaviour
     [SerializeField] private float lightIntensity = 2f;
     [SerializeField] private float emissionIntensity = 3f;
     [SerializeField, Range(0f, 1f)] private float weakFactor = 0.25f;
+    [HideInInspector] public Color idleEmission = Color.black;
 
     [Header("Indice")]
     [SerializeField]
@@ -144,6 +145,8 @@ public class Crystal : MonoBehaviour
     private bool stepRequested;
     private int turnDirection = 1;
     private Coroutine turnRoutine;
+    private bool overheated;
+    public bool IsOverheated => overheated;
 
     public bool IsRotating => isRotating;
     private int StepsPerTurn => Mathf.Max(1, Mathf.RoundToInt(360f / stepAngle));
@@ -308,6 +311,14 @@ public class Crystal : MonoBehaviour
     {
         isAbsorbed = value;
     }
+
+    public void SetOverheated(bool value)
+    {
+        if (overheated == value) return;
+        overheated = value;
+        NotifyChanged();
+    }
+
 
 
     public void AddInput(Colors color)
@@ -565,7 +576,7 @@ public class Crystal : MonoBehaviour
         {
             if (propertyBlock == null) propertyBlock = new MaterialPropertyBlock();
             meshRenderer.GetPropertyBlock(propertyBlock);
-            propertyBlock.SetColor(EmissionColorId, on ? c * emissionIntensity * factor : Color.black);
+            propertyBlock.SetColor(EmissionColorId, on ? c * emissionIntensity * factor : idleEmission);
             meshRenderer.SetPropertyBlock(propertyBlock);
         }
     }
