@@ -18,8 +18,11 @@ public class GreenRegionBuilder : MonoBehaviour
     [SerializeField] private GameObject emitterPrefab;
     [SerializeField] private GameObject relayPrefab;
     [SerializeField] private GameObject receiverPrefab;
-    [Tooltip("Vide = prefab Relay.")]
+    [Tooltip("Vide = prefab Relay. Prefab avec Crystal = utilisé tel quel. " +
+             "Visuel seul (ex. PlanteLook) = posé au sol sur un prefab Relay dont le cristal est masqué.")]
     [SerializeField] private GameObject plantPrefab;
+    [Tooltip("Taille du visuel de plante dans le monde (si visuel seul).")]
+    [SerializeField] private float plantScale = 1f;
 
     [Header("Plantes")]
     [Tooltip("Secondes sans lumière avant chaque cran.")]
@@ -60,6 +63,7 @@ public class GreenRegionBuilder : MonoBehaviour
     private Vector3 center;
     private int groundMask;
     private BeamManager mgr;
+    private GameObject plantVisual;
 
     private struct Beam { public Vector3 a, b; public string label; }
     private struct Shortcut { public Crystal src, dst; public int steps; public bool bridgeOn; }
@@ -84,13 +88,24 @@ public class GreenRegionBuilder : MonoBehaviour
     {
         if (Application.isPlaying) { Debug.LogWarning($"{name} : construction uniquement hors Play."); return; }
 
-        GameObject plantSrc = plantPrefab != null ? plantPrefab : relayPrefab;
-        foreach (GameObject p in new[] { emitterPrefab, relayPrefab, receiverPrefab, plantSrc })
-            if (p == null || p.GetComponent<Crystal>() == null)
-            {
-                Debug.LogWarning($"{name} : assigne les prefabs Emitter, Relay et Receiver (avec Crystal à la racine).");
-                return;
-            }
+        // Plante : prefab Crystal complet, ou visuel seul posé sur le prefab Relay.
+        GameObject plantSrc = relayPrefab;
+        plantVisual = null;
+        if (plantPrefab != null)
+        {
+            if (plantPrefab.GetComponent<Crystal>() != null) plantSrc = plantPrefab;
+            else plantVisual = plantPrefab;
+        }
+
+        string missing = "";
+        if (emitterPrefab == null || emitterPrefab.GetComponent<Crystal>() == null) missing += " Emitter";
+        if (relayPrefab == null || relayPrefab.GetComponent<Crystal>() == null) missing += " Relay";
+        if (receiverPrefab == null || receiverPrefab.GetComponent<Crystal>() == null) missing += " Receiver";
+        if (missing.Length > 0)
+        {
+            Debug.LogWarning($"{name} : prefab(s) manquant(s) ou sans Crystal à la racine :{missing}.");
+            return;
+        }
 
         BeamManager manager = GetComponentInParent<BeamManager>();
         if (manager == null || manager.PlanetTransform == null)
@@ -175,6 +190,11 @@ public class GreenRegionBuilder : MonoBehaviour
         int trunks = BlockShortcuts(bridge, emitter, plant1, relayV, graine, plant2, receiver, gStep, emitterR);
         if (trunks > 0) Debug.Log($"Jungle : {trunks} tronc(s) posé(s) pour fermer des raccourcis.");
         MakeJungle();
+
+        // Les plantes ont pu être déplacées par le relief : on les recolle au sol.
+        Physics.SyncTransforms();
+        SnapPlants(plant1);
+        SnapPlants(plant2);
 
         // --- 7. Croissance et allumage ---
         ReceiverWatcher seedWatch = Watch(graine);
@@ -758,9 +778,16 @@ public class GreenRegionBuilder : MonoBehaviour
     private static SerializedProperty Prop(SerializedObject so, string field)
     {
         SerializedProperty p = so.FindProperty(field);
-        if (p == null) Debug.LogError($"Champ « {field} » introuvable sur {so.targetObject.name}.");
+        if (p == null) Debug.LogError($"Champ « {field} » introuvable sur {so.targetObject.name} ({so.targetObject.GetType().Name}) : ignoré.");
         return p;
     }
+
+    // Setters sûrs : un champ renommé produit un message clair au lieu d'une NullReferenceException.
+    private static void SetInt(SerializedObject so, string f, int v) { SerializedProperty p = Prop(so, f); if (p != null) p.intValue = v; }
+    private static void SetFloat(SerializedObject so, string f, float v) { SerializedProperty p = Prop(so, f); if (p != null) p.floatValue = v; }
+    private static void SetBool(SerializedObject so, string f, bool v) { SerializedProperty p = Prop(so, f); if (p != null) p.boolValue = v; }
+    private static void SetRef(SerializedObject so, string f, Object v) { SerializedProperty p = Prop(so, f); if (p != null) p.objectReferenceValue = v; }
+    private static void SetSize(SerializedObject so, string f, int v) { SerializedProperty p = Prop(so, f); if (p != null && p.isArray) p.arraySize = v; }
 
     private Crystal MakeCrystal(GameObject prefab, string objName, Vector3 worldPos, CrystalType type,
                                 Colors emitted, Colors target, bool rotatable, bool countsForVictory)
@@ -775,17 +802,17 @@ public class GreenRegionBuilder : MonoBehaviour
 
         Crystal c = go.GetComponent<Crystal>();
         SerializedObject so = new SerializedObject(c);
-        Prop(so, "crystalType").intValue = (int)type;
-        Prop(so, "emittedColor").intValue = (int)emitted;
-        Prop(so, "targetColor").intValue = (int)target;
-        Prop(so, "rotatable").boolValue = rotatable;
-        Prop(so, "countsForVictory").boolValue = countsForVictory;
-        Prop(so, "startStep").intValue = 0;
-        Prop(so, "stepAngle").floatValue = 15f;
-        Prop(so, "hintColor").intValue = (int)Colors.None;
-        Prop(so, "firstTarget").objectReferenceValue = null;
-        Prop(so, "secondTarget").objectReferenceValue = null;
-        Prop(so, "aimTarget").objectReferenceValue = null;
+        SetInt(so, "crystalType", (int)type);
+        SetInt(so, "emittedColor", (int)emitted);
+        SetInt(so, "targetColor", (int)target);
+        SetBool(so, "rotatable", rotatable);
+        SetBool(so, "countsForVictory", countsForVictory);
+        SetInt(so, "startStep", 0);
+        SetFloat(so, "stepAngle", 15f);
+        SetInt(so, "hintColor", (int)Colors.None);
+        SetRef(so, "firstTarget", null);
+        SetRef(so, "secondTarget", null);
+        SetRef(so, "aimTarget", null);
         so.ApplyModifiedPropertiesWithoutUndo();
 
         c.AlignToPlanet(false);
@@ -796,17 +823,62 @@ public class GreenRegionBuilder : MonoBehaviour
     {
         Crystal c = MakeCrystal(prefab, objName, worldPos, CrystalType.Relay, Colors.None, Colors.None, false, true);
         SerializedObject so = new SerializedObject(c);
-        Prop(so, "stepAngle").floatValue = 45f;
-        Prop(so, "rotationSpeed").floatValue = plantRotationSpeed;
+        SetFloat(so, "stepAngle", 45f);
+        SetFloat(so, "rotationSpeed", plantRotationSpeed);
         so.ApplyModifiedPropertiesWithoutUndo();
 
         Phototropisme ph = c.GetComponent<Phototropisme>();
         if (ph == null) ph = Undo.AddComponent<Phototropisme>(c.gameObject);
         SerializedObject sp = new SerializedObject(ph);
-        Prop(sp, "interval").floatValue = plantInterval;
-        Prop(sp, "direction").intValue = direction;
+        SetFloat(sp, "interval", plantInterval);
+        SetInt(sp, "direction", direction);
         sp.ApplyModifiedPropertiesWithoutUndo();
+
+        if (plantVisual != null) DressPlant(c);
         return c;
+    }
+
+    // Masque le cristal Relay (le collider reste pour les rayons) et pose le visuel de plante au sol.
+    private void DressPlant(Crystal c)
+    {
+        foreach (MeshRenderer mr in c.GetComponentsInChildren<MeshRenderer>(true))
+        {
+            if (mr.gameObject.name.Contains("Highlight")) continue;
+            if (mr.GetComponent("TextMeshPro") != null || mr.GetComponent("TMP_Text") != null) continue;
+            Undo.RecordObject(mr, "Plante");
+            mr.enabled = false;
+        }
+
+        GameObject v = PrefabUtility.IsPartOfPrefabAsset(plantVisual)
+            ? (GameObject)PrefabUtility.InstantiatePrefab(plantVisual, c.transform)
+            : Instantiate(plantVisual, c.transform);
+        Undo.RegisterCreatedObjectUndo(v, "Plante");
+        v.name = "Visuel_" + plantVisual.name;
+        v.transform.localPosition = Vector3.zero;
+        v.transform.localRotation = Quaternion.identity;
+
+        // Compense l'échelle du cristal pour que la plante garde sa taille réelle.
+        Vector3 ls = c.transform.lossyScale;
+        v.transform.localScale = new Vector3(
+            plantScale / Mathf.Max(1e-4f, Mathf.Abs(ls.x)),
+            plantScale / Mathf.Max(1e-4f, Mathf.Abs(ls.y)),
+            plantScale / Mathf.Max(1e-4f, Mathf.Abs(ls.z)));
+
+        // Le visuel ne doit jamais bloquer les rayons ni le joueur.
+        foreach (Collider col in v.GetComponentsInChildren<Collider>(true)) col.enabled = false;
+
+        Physics.SyncTransforms();
+        SnapPlants(c);
+    }
+
+    // Recolle au sol tous les visuels PlanteLook posés sur ce cristal.
+    private static void SnapPlants(Crystal c)
+    {
+        foreach (PlanteLook pl in c.GetComponentsInChildren<PlanteLook>(true))
+        {
+            Undo.RecordObject(pl.transform, "Plante au sol");
+            pl.CollerAuSol();
+        }
     }
 
     private float HDist(Vector3 a, Vector3 b)
@@ -845,7 +917,11 @@ public class GreenRegionBuilder : MonoBehaviour
         return min;
     }
 
-    private static float StepOf(Crystal c) => new SerializedObject(c).FindProperty("stepAngle").floatValue;
+    private static float StepOf(Crystal c)
+    {
+        SerializedProperty p = new SerializedObject(c).FindProperty("stepAngle");
+        return p != null && p.floatValue > 0f ? p.floatValue : 15f;
+    }
 
     // ---------- Rayons ----------
 
@@ -1042,9 +1118,9 @@ public class GreenRegionBuilder : MonoBehaviour
     {
         ReceiverWatcher w = Undo.AddComponent<ReceiverWatcher>(receiver.gameObject);
         SerializedObject so = new SerializedObject(w);
-        Prop(so, "receiver").objectReferenceValue = receiver;
-        Prop(so, "crystalsToUnlock").arraySize = 0;
-        Prop(so, "objectsToHide").arraySize = 0;
+        SetRef(so, "receiver", receiver);
+        SetSize(so, "crystalsToUnlock", 0);
+        SetSize(so, "objectsToHide", 0);
         so.ApplyModifiedPropertiesWithoutUndo();
         return w;
     }

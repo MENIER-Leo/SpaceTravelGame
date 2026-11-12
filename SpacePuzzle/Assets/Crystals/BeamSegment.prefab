@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1298926750461693487}
   - component: {fileID: 5908516753840015364}
+  - component: {fileID: 3444073940629305506}
   m_Layer: 0
   m_Name: BeamSegment
   m_TagString: Untagged
@@ -139,3 +140,35 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &3444073940629305506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4545852097920090671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 015117b9c015a41459e8ee16816d6e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materiauCoeur: {fileID: 2100000, guid: e853a4d153997b14ab96c0e3a3d01336, type: 2}
+  materiauHalo: {fileID: 2100000, guid: f81417d81d0da9440b0843a2db08ca72, type: 2}
+  materiauParticules: {fileID: 2100000, guid: b63415903d09726488b8acd6c3503818, type: 2}
+  coreWidth: 0.07
+  coreIntensity: 3
+  coreWhiteness: 0.45
+  scrollSpeed: 2.5
+  tiling: 1.2
+  haloWidth: 0.4
+  haloIntensity: 1.2
+  pulseAmount: 0.15
+  pulseSpeed: 1.2
+  sparkRate: 6
+  sparkSpeed: 2.5
+  sparkSize: 0.05
+  sparkLife: 0.6
+  sparkJitter: 0.04
+  impactRate: 18
+  impactSize: 0.45
+  impactLife: 0.25
