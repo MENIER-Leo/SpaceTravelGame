@@ -18,7 +18,7 @@ public class LightBridge : MonoBehaviour
         if (!isActivated)
         {
             // Échelle minimale à 0.01f pour éviter de récréer le soleil mdrr
-            transform.localScale = new Vector3(targetScale.x, targetScale.y, 0.01f);
+            transform.localScale = new Vector3(targetScale.x, targetScale.y, 0.01f); // AI
             if (meshRenderer != null) meshRenderer.enabled = false;
             if (bridgeCollider != null) bridgeCollider.enabled = false;
         }
@@ -34,7 +34,7 @@ public class LightBridge : MonoBehaviour
 
             if (transform.localScale.z < targetScale.z)
             {
-                float newZ = Mathf.MoveTowards(transform.localScale.z, targetScale.z, deploySpeed * Time.deltaTime);
+                float newZ = Mathf.MoveTowards(transform.localScale.z, targetScale.z, deploySpeed * Time.deltaTime); // AI
                 transform.localScale = new Vector3(targetScale.x, targetScale.y, newZ);
             }
         }

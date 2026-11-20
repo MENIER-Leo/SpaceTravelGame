@@ -75,11 +75,11 @@ public class SpacePirate : MonoBehaviour
     {
         bool canSee = false;
         Vector3 dirToPlayer = player.position - transform.position;
-        float distance = dirToPlayer.magnitude;
+        float distance = dirToPlayer.magnitude; // AI
 
         if (distance <= viewDistance)
         {
-            Vector3 flatDir = Vector3.ProjectOnPlane(dirToPlayer, transform.up).normalized;
+            Vector3 flatDir = Vector3.ProjectOnPlane(dirToPlayer, transform.up).normalized; // AI
             float angle = Vector3.Angle(transform.forward, flatDir);
 
             if (angle <= viewAngle * 0.5f)
@@ -115,7 +115,7 @@ public class SpacePirate : MonoBehaviour
     {
         if (respawnPoint != null)
         {
-            CharacterController cc = player.GetComponent<CharacterController>();
+            CharacterController cc = player.GetComponent<CharacterController>(); // AI
             if (cc != null) cc.enabled = false;
 
             player.position = respawnPoint.position;

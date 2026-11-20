@@ -3,7 +3,7 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
 
-    [Header("Collision caméra")]
+    [Header("Collision caméra")] // AI
     public LayerMask collisionMask;         // couches qui bloquent la caméra (Ground)
     public float collisionRadius = 0.3f;    // marge autour du rayon pour ne pas frôler les murs
     public float minDistance = 1.0f;        // distance minimale au joueur
@@ -13,11 +13,11 @@ public class CameraFollow : MonoBehaviour
     public Transform player;
     public float distance = 10.0f;
 
-    [Header("Sensibilité de la souris")]
+    [Header("Sensibilité de la souris")] // AI
     public float sensitivityX = 4.0f;
     public float sensitivityY = 2.0f;
 
-    [Header("Limites d'angle vertical")]
+    [Header("Limites d'angle vertical")] // AI
     public float minY = 5.0f;  // Bloqué à 5 degrés pour ne pas traverser le sol de la planète
     public float maxY = 80.0f;
 
@@ -51,11 +51,11 @@ public class CameraFollow : MonoBehaviour
             Vector3 back = finalRotation * Vector3.back;
             float wanted = distance;
 
-            if (Physics.SphereCast(player.position, collisionRadius, back, out RaycastHit hit, distance, collisionMask, QueryTriggerInteraction.Ignore))
+            if (Physics.SphereCast(player.position, collisionRadius, back, out RaycastHit hit, distance, collisionMask, QueryTriggerInteraction.Ignore)) // AI
                 wanted = Mathf.Max(hit.distance, minDistance);
 
             // Se rapproche immédiatement d'un mur, recule en douceur quand il disparaît
-            currentDistance = wanted < currentDistance ? wanted : Mathf.MoveTowards(currentDistance, wanted, zoomOutSpeed * Time.deltaTime);
+            currentDistance = wanted < currentDistance ? wanted : Mathf.MoveTowards(currentDistance, wanted, zoomOutSpeed * Time.deltaTime); //AI
 
             transform.position = player.position + back * currentDistance;
 

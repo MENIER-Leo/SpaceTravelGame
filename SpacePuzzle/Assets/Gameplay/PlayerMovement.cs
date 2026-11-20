@@ -3,20 +3,20 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
-    [Header("Mode plat (scène sans planète)")]
+    [Header("Mode plat (scène sans planète)")] // AI
     public float killHeight = -20f;           // sous cette hauteur, retour à la dernière position sûre
     private bool IsFlat => planet == null;    // aucune planète "Boule" dans la scène
 
 
-    [Header("Gravité et Saut")]
+    [Header("Gravité et Saut")] // AI
     public float gravity = 20f;
     public float jumpForce = 8f;
     public float maxFallSpeed = 10f;
 
-    [HideInInspector] public bool isOnBridge = false;
+    [HideInInspector] public bool isOnBridge = false; // The [HideInInspector] is AI
     [HideInInspector] public Vector3 bridgeUp;
 
-    [Header("Collisions")]
+    [Header("Collisions")] //AI
     public float sphereRadius = 0.5f;
     public const float raycastMargin = 0.1f;
     public const float maxSlopeAngle = 50f;
@@ -79,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
 
     Transform GetPlanetOf(Collider col)
     {
-        Planet p = col.GetComponentInParent<Planet>();
+        Planet p = col.GetComponentInParent<Planet>(); // .GetComponentInParent from AI idea
         if (p != null) return p.transform;
 
         for (Transform t = col.transform; t != null; t = t.parent)
@@ -101,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 BlockWalls(Vector3 move, Vector3 up)
     {
-        if (move.sqrMagnitude < 1e-7f) return move;
+        if (move.sqrMagnitude < 1e-7f) return move; // AI
 
         Vector3 origin = transform.position - up * (sphereRadius * 0.8f);
         float checkDistance = sphereRadius + move.magnitude;
@@ -147,8 +147,8 @@ public class PlayerMovement : MonoBehaviour
                 dist = 0f;
             }
 
-            away = Vector3.ProjectOnPlane(away, up);   // pas de poussée verticale (on peut rester posé dessus)
-            if (away.sqrMagnitude < 1e-8f) continue;
+            away = Vector3.ProjectOnPlane(away, up); // AI  // pas de poussée verticale (on peut rester posé dessus)
+            if (away.sqrMagnitude < 1e-8f) continue; //AI
 
             center += away.normalized * (sphereRadius - dist);
         }
@@ -192,7 +192,7 @@ public class PlayerMovement : MonoBehaviour
 
         foreach (RaycastHit h in hits)
         {
-            bool hitIsBridge = !IsFlat && GetPlanetOf(h.collider) == null;
+            bool hitIsBridge = !IsFlat && GetPlanetOf(h.collider) == null; // AI
 
             if (hitIsBridge)
             {
@@ -284,7 +284,7 @@ public class PlayerMovement : MonoBehaviour
     // Permet de retomber sur la planète la plus proche si on saute/tombe sur les côtés du pont
     void FindClosestPlanet()
     {
-        Planet[] allPlanets = FindObjectsByType<Planet>(FindObjectsSortMode.None);
+        Planet[] allPlanets = FindObjectsByType<Planet>(FindObjectsSortMode.None); // FindObjectsByType AI idea
         float minDistance = Mathf.Infinity;
 
         foreach (Planet p in allPlanets)
@@ -306,10 +306,10 @@ public class PlayerMovement : MonoBehaviour
         {
             lastSafePosition = transform.position;
         }
-        else if (IsFlat ? transform.position.y < killHeight : (transform.position - planet.position).magnitude < minDistanceFromCenter)
+        else if (IsFlat ? transform.position.y < killHeight : (transform.position - planet.position).magnitude < minDistanceFromCenter) // AI
         {
-            transform.position = lastSafePosition;
-            verticalSpeed = 0f;
+            transform.position = lastSafePosition; //AI
+            verticalSpeed = 0f;//AI
         }
     }
 

@@ -9,7 +9,7 @@ public class SpaceBoat : MonoBehaviour
     public float boatSpeed = 5f;
     public float turnSpeed = 3f;
     public float heightOffset = 0.5f;
-    public float reachThreshold = 2f;
+    public float reachThreshold = 2f; // AI idea
     public LayerMask planetLayer;
 
     [Header("Scène à charger")]
@@ -29,27 +29,27 @@ public class SpaceBoat : MonoBehaviour
 
         // On s'oriente vers la cible
         Vector3 dirToTarget = (target.position - transform.position).normalized;
-        Vector3 forwardOnSphere = Vector3.ProjectOnPlane(dirToTarget, dirFromCenter).normalized;
+        Vector3 forwardOnSphere = Vector3.ProjectOnPlane(dirToTarget, dirFromCenter).normalized; //AI
 
         if (forwardOnSphere.sqrMagnitude > 0.001f)
         {
-            Quaternion targetRot = Quaternion.LookRotation(forwardOnSphere, dirFromCenter);
+            Quaternion targetRot = Quaternion.LookRotation(forwardOnSphere, dirFromCenter); // AI
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, turnSpeed * Time.deltaTime);
         }
 
         transform.position += transform.forward * boatSpeed * Time.deltaTime;
 
-        // LA CORRECTION EST ICI : On recalcule le "bas" depuis la nouvelle position -> IA
-        dirFromCenter = (transform.position - planet.position).normalized;
+        // LA CORRECTION EST ICI : On recalcule le "bas" depuis la nouvelle position 
+        dirFromCenter = (transform.position - planet.position).normalized; // AI
 
         // On se plaque au sol ou a l'eau
         Vector3 rayStart = planet.position + dirFromCenter * 100f;
         RaycastHit[] hits = Physics.RaycastAll(rayStart, -dirFromCenter, 100f, planetLayer);
 
-        foreach (RaycastHit hit in hits)
+        foreach (RaycastHit hit in hits) // AI
         {
             // On ignore le collider du bateau lui-même
-            if (hit.transform != transform && !hit.transform.IsChildOf(transform))
+            if (hit.transform != transform && !hit.transform.IsChildOf(transform)) // AI
             {
                 transform.position = hit.point + dirFromCenter * heightOffset;
                 break;
@@ -62,7 +62,7 @@ public class SpaceBoat : MonoBehaviour
 
         if (flatOffset.magnitude <= reachThreshold)
         {
-            currentIndex = (currentIndex + 1) % waypoints.Length;
+            currentIndex = (currentIndex + 1) % waypoints.Length; // AI modif on the % i was wrong it got fixed
         }
     }
 
