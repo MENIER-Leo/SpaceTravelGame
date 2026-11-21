@@ -1,15 +1,11 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-// À placer sur l'ancre d'une région (Region_Rouge…). Remet SA région dans son état de départ, sans toucher aux autres.
-// Le ResetCrystal placé sous l'ancre l'utilise automatiquement. Inutilisable une fois la région allumée.
+
 public class RegionReset : MonoBehaviour
 {
-    [Tooltip("Propriété de la région dans RegionLight : _Lit_Rouge, _Lit_Vert, _Lit_Bleu. Vide = jamais désactivé (Phare).")]
     [SerializeField] private string regionProperty;
-    [Tooltip("Vide = cherché automatiquement dans la scène.")]
     [SerializeField] private RegionLight regionLight;
-    [Tooltip("Actions supplémentaires au reset (si une mécanique n'est pas gérée ci-dessous).")]
     public UnityEvent onReset;
 
     public bool IsSolved => regionLight != null && !string.IsNullOrEmpty(regionProperty) && regionLight.IsLit(regionProperty);

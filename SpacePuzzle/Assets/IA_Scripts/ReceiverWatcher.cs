@@ -2,8 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-// Surveille un récepteur et réagit quand il est satisfait (bonne couleur reçue).
-// Usages : dégel, verrous, croissance, allumage d'une région.
+//AI script
 public class ReceiverWatcher : MonoBehaviour
 {
     [Tooltip("Récepteur surveillé. Vide = le Crystal de cet objet.")]

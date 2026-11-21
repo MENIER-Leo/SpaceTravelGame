@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
+//Little help from AI
 public class CinematicManager : MonoBehaviour
 {
     [Header("Références")]

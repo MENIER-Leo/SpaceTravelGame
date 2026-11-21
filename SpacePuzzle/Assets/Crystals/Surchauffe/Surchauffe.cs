@@ -1,30 +1,22 @@
 using UnityEngine;
 
-// Relais qui surchauffe : après heatTime s à relayer, il s'éteint jusqu'à avoir complètement refroidi.
-// Lisibilité : le cristal vire orange → rouge, tremble dans la dernière seconde, puis rougeoie comme une braise.
 [RequireComponent(typeof(Crystal))]
 public class Surchauffe : MonoBehaviour
 {
-    [Tooltip("Secondes à relayer avant la surchauffe.")]
     [SerializeField] private float heatTime = 4f;
-    [Tooltip("Vitesse de refroidissement (1 = aussi vite qu'il chauffe).")]
     [SerializeField] private float coolRate = 1f;
 
     [Header("Lisibilité")]
-    [Tooltip("Vide = premier enfant qui a un Renderer.")]
     [SerializeField] private Transform visual;
     [SerializeField] private float shiverTime = 1.2f;
     [SerializeField] private float shiverAngle = 6f;
-    [Tooltip("Part de la chaleur (0-1) à partir de laquelle le cristal change de couleur.")]
     [SerializeField] private float tintStart = 0.2f;
     [SerializeField] private Color warmColor = new Color(1f, 0.6f, 0.1f);
     [SerializeField] private Color hotColor = new Color(1f, 0.1f, 0.05f);
     [SerializeField] private Color emberColor = new Color(0.3f, 0.06f, 0.03f);
     [SerializeField] private float tintEmission = 3f;
-    [Tooltip("Optionnel : fumée jouée pendant le refroidissement.")]
-    [SerializeField] private ParticleSystem smoke;
 
-    [Header("Lumière (optionnel)")]
+    [Header("Lumière")]
     [SerializeField] private Light heatLight;
     [SerializeField] private float maxIntensity = 6f;
 
@@ -34,7 +26,7 @@ public class Surchauffe : MonoBehaviour
 
     private Crystal crystal;
     private float heat;
-    private bool cooling;      // phase de refroidissement, gérée ici (ne dépend pas de Crystal)
+    private bool cooling;
     private bool stabilized;
     private bool warnedReset, warnedOutput;
 
@@ -47,6 +39,7 @@ public class Surchauffe : MonoBehaviour
     public float Heat01 => heatTime > 0f ? heat / heatTime : 0f;
     public bool IsCooling => cooling;
 
+//Help from Ai
     private void Awake()
     {
         crystal = GetComponent<Crystal>();
@@ -74,7 +67,7 @@ public class Surchauffe : MonoBehaviour
     private void Update()
     {
         if (stabilized) return;
-        float dt = Time.deltaTime;   // s'arrête en pause (timeScale = 0)
+        float dt = Time.deltaTime;
 
         if (cooling)
         {
@@ -138,7 +131,6 @@ public class Surchauffe : MonoBehaviour
         crystal.SetOverheated(false);
     }
 
-    // Pour un futur Restart
     public void ResetHeat()
     {
         stabilized = false;
@@ -147,6 +139,7 @@ public class Surchauffe : MonoBehaviour
         crystal.SetOverheated(false);
     }
 
+//Ai function
     private void UpdateTint()
     {
         float h = Mathf.InverseLerp(tintStart, 1f, Heat01);
@@ -185,7 +178,7 @@ public class Surchauffe : MonoBehaviour
             tintRenderers[i].SetPropertyBlock(mpb);
         }
     }
-
+//Ai script
     private void UpdateShiver()
     {
         if (visual == null) return;
@@ -198,6 +191,7 @@ public class Surchauffe : MonoBehaviour
         else visual.localRotation = visualRot;
     }
 
+//Ai script
     private void UpdateLight()
     {
         if (heatLight == null) return;

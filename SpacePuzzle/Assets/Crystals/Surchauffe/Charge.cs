@@ -1,8 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-// Récepteur à charger : doit rester satisfait chargeTime s au total ; la charge redescend dans le noir.
-// Une couronne d'éclats autour du récepteur sert de jauge (créée au lancement).
+//Ai helped to build the logic behind and explain Unity features necessary to do this script
 [RequireComponent(typeof(Crystal))]
 public class Charge : MonoBehaviour
 {
@@ -79,8 +78,6 @@ public class Charge : MonoBehaviour
         charged = false;
         charge = 0f;
     }
-
-    // ---------- Couronne ----------
 
     private void BuildCrown()
     {

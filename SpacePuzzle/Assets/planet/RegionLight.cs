@@ -3,20 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-// Rallume progressivement une région de la planète (propriété Lit du Shader Graph)
-// et fait monter le Soleil d'un palier par région allumée, quel que soit l'ordre.
 public class RegionLight : MonoBehaviour
 {
     [Header("Planète")]
-    [Tooltip("Vide = tous les Renderers enfants de cet objet.")]
     [SerializeField] private Renderer[] renderers;
-    [Tooltip("Noms de référence (Reference) des propriétés Lit dans le Shader Graph.")]
     [SerializeField] private string[] regionProperties = { "_Lit_Rouge", "_Lit_Vert", "_Lit_Bleu" };
     [SerializeField] private float duration = 2f;
 
     [Header("Soleil")]
     [SerializeField] private Light sun;
-    [Tooltip("Intensité selon le nombre de régions allumées : 0, 1, 2, 3.")]
     [SerializeField] private float[] sunSteps = { 0.6f, 0.8f, 1f, 1.2f };
 
     [Header("Événements")]
@@ -48,7 +43,7 @@ public class RegionLight : MonoBehaviour
         ResetRegions();
     }
 
-    // À appeler depuis un UnityEvent (On Lit), avec le nom de la propriété : _Lit_Bleu…
+    //AI helped for this function
     public void LightRegion(string property)
     {
         if (!values.ContainsKey(property))
@@ -109,7 +104,6 @@ public class RegionLight : MonoBehaviour
         }
     }
 
-    // Tout éteint, Soleil au palier 0 (départ ou Restart sans rechargement)
     [ContextMenu("Reset regions")]
     public void ResetRegions()
     {

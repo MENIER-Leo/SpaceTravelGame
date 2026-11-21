@@ -2,9 +2,7 @@ using TMPro;
 using UnityEngine;
 using System.Collections;
 
-// PNJ habitant : affiche une bulle quand le joueur approche.
-// Réplique 1 à l'arrivée, réplique 2 sur demande (touche F),
-// réplique "après résolution" une fois le puzzle terminé.
+
 public class HintNPC : MonoBehaviour
 {
     [Header("Personnage")]
@@ -122,6 +120,7 @@ public class HintNPC : MonoBehaviour
         typing = StartCoroutine(TypeText(line));
     }
 
+//Lot of AI use for this function
     IEnumerator TypeText(string line)
     {
         isTyping = true;

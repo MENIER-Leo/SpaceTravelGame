@@ -1,12 +1,10 @@
 using UnityEngine;
 
-// Outils de placement sur un terrain de planète (relief procédural).
+// AI Helped for this script but did not make it
 public static class TerrainSnap
 {
     private static readonly RaycastHit[] buffer = new RaycastHit[16];
 
-    // Distance au centre de la surface la plus haute de 'planet' dans la direction 'dir'.
-    // Seuls les colliders enfants de 'planet' comptent (ignore les autres planètes).
     public static bool GroundRadius(Transform planet, Vector3 dir, float startRadius, int mask,
                                     out float radius, out Vector3 point)
     {

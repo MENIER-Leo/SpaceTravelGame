@@ -3,6 +3,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
+
+//Ai helped understand co-routines of Unity
 public class VictorySequence : MonoBehaviour
 {
     [Header("Contrôles coupés pendant la séquence")]
@@ -15,7 +17,7 @@ public class VictorySequence : MonoBehaviour
     [SerializeField] private Light sun;
     [SerializeField] private float sunTargetIntensity = 1.5f;
     [SerializeField] private float lightDuration = 2f;
-    [SerializeField, Tooltip("Objets désactivés au départ, allumés un par un.")]
+    [SerializeField]
     private GameObject[] lamps;
     [SerializeField] private float lampInterval = 0.15f;
 

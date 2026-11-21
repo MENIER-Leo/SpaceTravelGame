@@ -7,11 +7,12 @@ using System.Collections;
 [RequireComponent(typeof(BeamManager))]
 public class PuzzleController : MonoBehaviour
 {
-    [SerializeField] private float confirmDelay = 0.5f;   // la solution doit tenir ce temps avant validation
-    [SerializeField] private bool lockWhenSolved = true;  // bloque tous les cristaux une fois résolu
+    [SerializeField] private float confirmDelay = 0.5f;
+    [SerializeField] private bool lockWhenSolved = true;
     [SerializeField] private KeyCode resetKey = KeyCode.None;   // None pour désactiver
     [SerializeField] private float absorbDuration = 0.5f;   // durée du noir pendant la réinitialisation
 
+//Pour debug
     [Header("Affichage (optionnel)")]
     [SerializeField] private TMP_Text statusText;
     [SerializeField] private bool showDebugHUD = false;
@@ -112,7 +113,6 @@ public class PuzzleController : MonoBehaviour
 
     private void Solve()
     {
-        // Sécurité : on revérifie au moment de valider
         if (CountSatisfied() != receivers.Count || AnyRotating()) return;
 
         isSolved = true;
@@ -138,6 +138,8 @@ public class PuzzleController : MonoBehaviour
         StartCoroutine(ResetRoutine());
     }
 
+
+//AI function
     private IEnumerator ResetRoutine()
     {
         isResetting = true;

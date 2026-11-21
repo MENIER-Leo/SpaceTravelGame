@@ -3,17 +3,19 @@ using UnityEngine;
 // Cristal noir : maintenir E pour réinitialiser le puzzle de la planète
 public class ResetCrystal : MonoBehaviour
 {
-    [SerializeField] private RegionReset region;          // prioritaire sur puzzle ; rempli automatiquement si vide (parent)
+    [SerializeField] private RegionReset region;
 
-    [SerializeField] private PuzzleController puzzle;     // rempli automatiquement si vide (parent)
+    [SerializeField] private PuzzleController puzzle;
     [SerializeField] private float holdDuration = 1.5f;
-    [SerializeField] private float decaySpeed = 3f;       // vitesse de vidage de la jauge au relâchement
+    [SerializeField] private float decaySpeed = 3f;
 
+
+//Visuals made by AI
     [Header("Visuel")]
     [SerializeField] private GameObject highlight;
     [SerializeField] private Light glow;
-    [SerializeField] private Renderer meshRenderer;       // enfant Mesh
-    [SerializeField] private Transform meshTransform;     // enfant Mesh (tremblement)
+    [SerializeField] private Renderer meshRenderer;
+    [SerializeField] private Transform meshTransform;
     [SerializeField] private Color glowColor = new Color(0.47f, 0.16f, 1f);
 
     [Header("Charge")]
@@ -99,6 +101,7 @@ public class ResetCrystal : MonoBehaviour
         if (highlight != null) highlight.SetActive(on);
     }
 
+//AI Visuals
     private void UpdateVisual()
     {
         float c = charge * charge;   // montée qui s'accélère vers la fin

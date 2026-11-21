@@ -133,7 +133,7 @@ public class Crystal : MonoBehaviour
     [SerializeField] private GameObject highlight;
     private bool isAbsorbed;
     public bool IsAbsorbed => isAbsorbed;
-    private bool forcedOff;      // éteint de force par le BeamManager (boucle instable)
+    private bool forcedOff;      // éteint de force par le BeamManager
     private Colors lastOutput;   // sortie utilisée au dernier passage du calcul
     public bool IsUnstable => OutputColor != lastOutput;
     public void SetForcedOff(bool value) { forcedOff = value; }
@@ -221,6 +221,7 @@ public class Crystal : MonoBehaviour
         turnRoutine = StartCoroutine(TurnRoutine());
     }
 
+//AI explained what a routine was
     private IEnumerator TurnRoutine()
     {
         isRotating = true;
@@ -288,7 +289,6 @@ public class Crystal : MonoBehaviour
         inputCount = 0;
     }
 
-    // Remet le cristal dans son état de départ (orientation + verrou), sans recalcul
     public void ResetState()
     {
         StopAllCoroutines();
@@ -301,6 +301,7 @@ public class Crystal : MonoBehaviour
         rotatable = initialRotatable;
     }
 
+    //AI helped to explain. This logic is re-used in other scripts 
     // Déclenche un recalcul unique des faisceaux depuis l'extérieur
     public static void NotifyChanged()
     {
@@ -352,7 +353,7 @@ public class Crystal : MonoBehaviour
             Debug.LogWarning($"{name} : aucun BeamManager avec Planet dans les parents.");
             return false;
         }
-
+//AI explained the next 3 lines of code
 #if UNITY_EDITOR
     if (!Application.isPlaying) UnityEditor.Undo.RecordObject(transform, "Align to planet");
 #endif
@@ -520,8 +521,7 @@ public class Crystal : MonoBehaviour
     }
 
 
-
-    // Appelée par BeamManager après chaque recalcul
+//AI helped in this function
     public void UpdateVisual()
     {
         Colors color = Colors.None;
@@ -610,7 +610,7 @@ public class Crystal : MonoBehaviour
         for (float t = 0f; t < duration; t += Time.deltaTime)
         {
             float k = t / duration;
-            // Montée très rapide (15 % du temps), puis redescente douce.
+            //Ai helped for this variable
             float env = k < 0.15f ? k / 0.15f : 1f - Mathf.SmoothStep(0f, 1f, (k - 0.15f) / 0.85f);
             ApplyGlow(color, baseFactor * Mathf.Lerp(1f, peak, env));
             yield return null;
@@ -621,6 +621,8 @@ public class Crystal : MonoBehaviour
         UpdateVisual();
     }
 
+
+//Ai function
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.white;

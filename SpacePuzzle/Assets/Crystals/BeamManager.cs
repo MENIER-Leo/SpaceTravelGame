@@ -82,7 +82,6 @@ public class BeamManager : MonoBehaviour
         foreach (ResetCrystal r in GetComponentsInChildren<ResetCrystal>()) r.AlignToPlanet();
     }
 
-    // Vrai si tous les récepteurs de la scène sont satisfaits
     public bool AllReceiversSatisfied()
     {
         if (crystals == null) RefreshCrystals();
@@ -99,6 +98,7 @@ public class BeamManager : MonoBehaviour
         return anyReceiver;
     }
 
+//AI helped a lot with the logic of this function
     [ContextMenu("Recompute")]
     public void Recompute()
     {
@@ -172,6 +172,7 @@ public class BeamManager : MonoBehaviour
         OnRecomputed?.Invoke();
     }
 
+//AI helped a lot with the logic of this function
     private void TraceBeam(Crystal source, Colors color, Vector3 sourceHeading)
     {
         if (planet == null)
@@ -296,6 +297,8 @@ public class BeamManager : MonoBehaviour
         }
     }
 
+
+//AI function
     private void OnDrawGizmos()
     {
         foreach (BeamSegment s in segments)
@@ -306,6 +309,7 @@ public class BeamManager : MonoBehaviour
         }
     }
 
+//AI function
     private void LogReceivers()
     {
         foreach (Crystal c in crystals)

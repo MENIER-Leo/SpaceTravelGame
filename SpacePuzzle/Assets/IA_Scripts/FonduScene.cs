@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 // Fondu plein écran qui survit au changement de scène.
-// FonduScene.Create(couleur) → FadeTo(1, durée) → LoadAndReveal(scène, durée) : l'image réapparaît dans la nouvelle scène.
 public class FonduScene : MonoBehaviour
 {
     private CanvasGroup group;

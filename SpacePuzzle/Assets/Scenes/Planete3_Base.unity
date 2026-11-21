@@ -23205,8 +23205,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'A project proposed by Kacper Pluta and Ruben Peres
 
-    Made by Leo Menier
-    and Angelin Herbaut-Perin'
+    Made by Angelin
+    Herbaut-Perin and Leo Menier'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

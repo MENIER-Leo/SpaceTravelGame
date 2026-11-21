@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-// Fait apparaître et pousser l'objet (pont-liane...).
 public class Croissance : MonoBehaviour
 {
     [SerializeField] private float duration = 2.5f;
@@ -15,7 +14,11 @@ public class Croissance : MonoBehaviour
     {
         if (grown) return;
         grown = true;
-        if (!hasFull) { fullScale = transform.localScale; hasFull = true; }
+        if (!hasFull) 
+        { 
+            fullScale = transform.localScale; 
+            hasFull = true; 
+        }
         transform.localScale = fullScale * 0.01f;
         gameObject.SetActive(true);
         StartCoroutine(GrowRoutine());
@@ -30,10 +33,9 @@ public class Croissance : MonoBehaviour
         }
         transform.localScale = fullScale;
         Physics.SyncTransforms();
-        Crystal.NotifyChanged();   // le pont compte maintenant comme du sol pour les rayons
+        Crystal.NotifyChanged();
     }
 
-    // Pour un futur Restart : cache à nouveau l'objet
     public void ResetGrowth()
     {
         StopAllCoroutines();

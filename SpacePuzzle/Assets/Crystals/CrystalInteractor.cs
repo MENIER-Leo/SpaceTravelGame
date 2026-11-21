@@ -158,7 +158,7 @@ public class CrystalInteractor : MonoBehaviour
     private void UpdateInvite()
     {
         if (inviteText == null || current == null) return;
-
+        //AI explained how to do this
         if (current is Crystal)
             inviteText.text = $"{rotateLeftKey}   {rotateRightKey}\n<size=60%>turn</size>";
         else if (current is ResetCrystal)

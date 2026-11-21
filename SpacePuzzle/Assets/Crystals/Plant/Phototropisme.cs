@@ -1,12 +1,10 @@
 using UnityEngine;
 
-// Plante-cristal : tourne seule d'un cran à chaque intervalle tant qu'elle ne reçoit pas de lumière.
 [RequireComponent(typeof(Crystal))]
 public class Phototropisme : MonoBehaviour
 {
-    [Tooltip("Secondes sans lumière avant chaque cran.")]
+    
     [SerializeField] private float interval = 3f;
-    [Tooltip("1 = horaire vu du dessus, -1 = anti-horaire.")]
     [SerializeField] private int direction = 1;
 
     [Header("Frémissement avant de tourner")]
@@ -36,7 +34,7 @@ public class Phototropisme : MonoBehaviour
     {
         if (crystal.IsLit || crystal.IsRotating || crystal.IsAbsorbed) { ResetTimer(); return; }
 
-        timer += Time.deltaTime;   // s'arrête si le jeu est en pause (timeScale = 0)
+        timer += Time.deltaTime;
 
         if (visual != null && interval - timer < shiverTime)
             visual.localRotation = visualRest * Quaternion.Euler(0f, 0f, Mathf.Sin(Time.time * 40f) * shiverAngle);
