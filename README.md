@@ -7,3 +7,4 @@
 * Help for some part of the code
 * Comments are generated with AI
 * Gave some idea for solving some problems
+* Help to debug some scripts
